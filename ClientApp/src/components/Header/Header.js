@@ -9,7 +9,7 @@ export class Header extends Component {
   render() {
     return (
       <div>
-        <Menu fixed="top" inverted>
+        <Menu fixed="top" inverted stackable>
           <Container>
             <Menu.Item as="a" header>
               <Image
