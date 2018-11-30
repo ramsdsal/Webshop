@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Container, Dropdown, Image, Menu, Search } from "semantic-ui-react";
+import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
+import { SearchMovie } from "./SearchMovie";
 
 export class Header extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export class Header extends Component {
             </Menu.Item>
             <Menu.Menu />
             <Menu.Item as="a" header>
-              <Search />
+              <SearchMovie />
             </Menu.Item>
             <Menu.Item as="a" header>
               Home

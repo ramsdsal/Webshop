@@ -24,7 +24,7 @@ namespace webshop
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<DbConnectionContext>(opt =>
-            opt.UseNpgsql("User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=MovieDBFinal")
+            opt.UseNpgsql("User ID=postgres;Password=postgres;Host=145.24.222.77;Port=8080;Database=MovieDBFinal")
             );
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Card,
-  Container,
-  Icon,
-  Image,
-  Grid,
-  Segment
-} from "semantic-ui-react";
+import { Button, Card, Container, Icon, Image, Grid } from "semantic-ui-react";
 
 export class Home extends Component {
   displayName = Home.name;
