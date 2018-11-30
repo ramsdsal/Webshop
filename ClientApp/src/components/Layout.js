@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import { Col, Grid, Row } from 'react-bootstrap';
-import { NavMenu } from './NavMenu';
+import React, { Component } from "react";
+import { Col, Grid, Row } from "react-bootstrap";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
 
 export class Layout extends Component {
-  displayName = Layout.name
+  displayName = Layout.name;
 
   render() {
     return (
       <Grid fluid>
         <Row>
-          <Col sm={3}>
-            <NavMenu />
-          </Col>
-          <Col sm={9}>
-            {this.props.children}
-          </Col>
+          <Header />
+        </Row>
+        <Row>{this.props.children}</Row>
+        <Row>
+          <Footer />
         </Row>
       </Grid>
     );
