@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import { Search, Grid, Label } from "semantic-ui-react";
-import history from "../Helper/history";
+import { Redirect } from "react-router-dom";
 
 export class SearchMovie extends Component {
   componentWillMount() {
@@ -31,14 +31,12 @@ export class SearchMovie extends Component {
     });
 
   handleResultSelect = (e, { result }) => {
-    history.push("/");
     this.setState({
       ...this.state,
       value: { title: result.title, id: result.id },
       redirect: true
     });
-    let path = "Details/" + result.id;
-    history.push(path);
+
     setTimeout(() => {
       return this.resetComponent();
     }, 200);
@@ -61,11 +59,12 @@ export class SearchMovie extends Component {
   };
 
   render() {
-    const { isLoading, value, results } = this.state;
-
+    const { isLoading, value, results, redirect } = this.state;
+    const path = "/productdetails/" + value.id;
     return (
       <div>
         <Grid>
+          {redirect ? <Redirect to={path} /> : ""}
           <Grid.Column width={6}>
             <Search
               loading={isLoading}
