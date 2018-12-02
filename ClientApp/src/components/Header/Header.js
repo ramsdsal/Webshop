@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import { SearchMovie } from "./SearchMovie";
 
 export class Header extends Component {
@@ -12,7 +13,7 @@ export class Header extends Component {
       <div>
         <Menu fixed="top" inverted stackable>
           <Container>
-            <Menu.Item as="a" header>
+            <Menu.Item as={Link} to="/fetchdata">
               <Image
                 size="mini"
                 src="/logo.png"

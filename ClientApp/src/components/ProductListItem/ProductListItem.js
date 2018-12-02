@@ -1,33 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-// import { Product } from "ClientApp/Models/Product";
 import "./ProductListItem.css";
 import { Button, Card, Icon, Image, Grid, Label } from "semantic-ui-react";
 
-export default class ProductListItem extends React.Component
-{
-  constructor(props) 
-  {
-    super(props);
-  }
-
- render() {
+export default class ProductListItem extends React.Component {
+  render() {
     const movie = this.props.movieToShow;
-    function addToCart(item) 
-    {
-
-      let items = [];
-
-      if (!window.localStorage.getItem("cart")) {
-        window.localStorage.setItem("cart", "[]");
-      }
-
-      items = JSON.parse(window.localStorage.getItem("cart") || '[]');
-      let test = items.push(item);
-      window.localStorage.setItem("cart", JSON.stringify(items));
-
-    }
-
     return (
         <Grid.Column>
             <Card>
