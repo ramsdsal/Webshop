@@ -24,14 +24,16 @@ namespace webshop.Controllers
         {
             var result = this._context.Products.Select(product => new
             {
-                product.Id,
-                product.Title,
-                product.Year,
-                product.Poster
+                Id = product.Id,
+                Title = product.Title,
+                Year = product.Year,
+                Poster = product.Poster,
+                Price = product.Prices.Where(price => price.Current == 1).Select(price => price.Value).DefaultIfEmpty(-1000000).Single()//Return -1000000 if no price was found
             });
 
             return new OkObjectResult(result);
         }
+        
         [HttpGet("search")]
         public IActionResult GeSearchItens()
         {
