@@ -35,7 +35,7 @@ namespace webshop.Controllers
         }
         
         [HttpGet("search")]
-        public IActionResult GeSearchItens()
+        public IActionResult GetSearchItems()
         {
             var result = this._context.Products.Select(product => new
             {
