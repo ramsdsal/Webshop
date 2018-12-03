@@ -63,7 +63,7 @@ namespace webshop.Controllers
                             Poster = prod.Poster,
                             TrailerUrl = prod.TrailerUrl,
                             AgeRating = prod.AgeRating, // Be aware 'Categories' is of type string, the string.join joins all of the genres with eachother to 1 string seperated with comma's
-                            Categories = string.Join(",", prod.Categories.Select(productCategory => productCategory.Category.Name)),
+                            Categories = string.Join(" | ", prod.Categories.Select(productCategory => productCategory.Category.Name)),
                             Price = prod.Prices.Where(price => price.Current == 1).Select(price => price.Value).DefaultIfEmpty(-1000000).Single()//Return -1000000 if no price was found
                         }).Where(prod => prod.Id == id);
 
