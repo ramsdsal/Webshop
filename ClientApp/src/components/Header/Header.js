@@ -13,7 +13,7 @@ export class Header extends Component {
       <div>
         <Menu fixed="top" inverted stackable>
           <Container>
-            <Menu.Item as={Link} to="/fetchdata">
+            <Menu.Item as={Link} to="/">
               <Image
                 size="mini"
                 src="/logo.png"
@@ -22,16 +22,16 @@ export class Header extends Component {
               Media Mania
             </Menu.Item>
             <Menu.Menu position="right" />
-            <Menu.Item as="a" header position="middle">
+            <Menu.Item as="a" header>
               <SearchMovie />
             </Menu.Item>
-            <Menu.Item as="a" header>
+            <Menu.Item as={Link} to="/">
               Home
             </Menu.Item>
             <Menu.Item as="a" header>
-              WINKELWAGEN(1)
+              WINKELWAGEN
             </Menu.Item>
-            <Menu.Item as="a" header>
+            <Menu.Item as={Link} to="/login">
               LOGIN
             </Menu.Item>
             <Menu.Item as={Link} to="/register">

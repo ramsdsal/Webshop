@@ -1,16 +1,13 @@
 import React, { Component } from "react";
-import { Container, Form } from "semantic-ui-react";
 import "./Login.css";
 
 //State: username: string && password: string
-export class Login extends Component
-{
-  constructor()
-  {
+export class Login extends Component {
+  constructor() {
     super();
     this.state = { username: "", password: "" };
   }
-  
+
   render() {
     return (
       <div className="container">

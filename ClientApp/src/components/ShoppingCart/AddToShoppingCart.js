@@ -7,8 +7,7 @@ class AddToShopingCart extends Component {
     this.state = {
       movieId: this.props.id,
       amount: 1,
-      stock: this.props.stock,
-      added: false
+      stock: this.props.stock
     };
   }
   componentWillMount() {
@@ -49,34 +48,30 @@ class AddToShopingCart extends Component {
   IsAdded = () => {
     let items = JSON.parse(window.localStorage.getItem("cart") || "[]");
     let obj = items.findIndex(x => x.id === this.state.movieId);
-    if (obj !== -1) this.setState({ ...this.state, added: true });
+    if (obj !== -1) this.setState({ ...this.state, amount: items[obj].qt });
   };
 
   render() {
-    const { amount, added } = this.state;
+    const { amount } = this.state;
 
     return (
       <Form>
-        {!added ? (
-          <Form.Group>
-            <Form.Button onClick={this.Subctractamount} size="large">
-              -
-            </Form.Button>
+        <Form.Group>
+          <Form.Button onClick={this.Subctractamount} size="large">
+            -
+          </Form.Button>
 
-            <Form.Input width={1} value={amount} />
+          <Form.Input width={1} value={amount} />
 
-            <Form.Button onClick={this.Addamount} size="large">
-              +
-            </Form.Button>
+          <Form.Button onClick={this.Addamount} size="large">
+            +
+          </Form.Button>
 
-            <Form.Button size="large" onClick={this.AddToCart}>
-              <Icon name="shopping cart" />
-              Toevoegen
-            </Form.Button>
-          </Form.Group>
-        ) : (
-          "Added"
-        )}
+          <Form.Button size="large" onClick={this.AddToCart}>
+            <Icon name="shopping cart" />
+            Toevoegen
+          </Form.Button>
+        </Form.Group>
       </Form>
     );
   }
