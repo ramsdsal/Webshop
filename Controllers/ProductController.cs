@@ -70,6 +70,39 @@ namespace webshop.Controllers
             return result;
         }
 
+        // [HttpGet("GetAdminProducts/{index_page}/{page_size}")]
+        // public IActionResult GetAdminProducts(int index_page, int page_size)
+        // {
+        //     Page<Product> paginationResult = _context.Products.GetPages(index_page, page_size, m => m.Id, "Prices");
+
+        //     IEnumerable<object> resultToReturn = paginationResult.Items.Select(prod => new
+        //     {
+        //         Id = prod.Id,
+        //         Title = prod.Title,
+        //         Quantity = prod.Quantity,
+        //         Price = prod.Prices.Where(price => price.Current == 1).Select(price => price.Value).DefaultIfEmpty(-1000000).Single(),//Return -1000000 if no price was found
+        //     });
+        //     return new OkObjectResult(new {TotalPages = paginationResult.TotalPages, Items = resultToReturn});
+        // }
+
+        //         //Get items per page
+        // [HttpGet("page/{index_page}/{page_size}")]
+        // public IActionResult GetProductsPaged(int index_page, int page_size)
+        // {
+        //     Page<Product> paginationResult = _context.Products.GetPages(index_page, page_size, m => m.Id, "Prices");
+            
+        //     IEnumerable<object> resultToReturn = paginationResult.Items.Select(prod => new 
+        //     {
+        //         Id = prod.Id,
+        //         Title = prod.Title,
+        //         Year = prod.Year,
+        //         Poster = prod.Poster,                
+        //         Price = prod.Prices.Where(price => price.Current == 1).Select(price => price.Value).DefaultIfEmpty(-1000000).Single()//Return -1000000 if no price was found
+        //     });
+
+        //     return new OkObjectResult(new {TotalPages = paginationResult.TotalPages, Items = resultToReturn});
+        // }
+
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

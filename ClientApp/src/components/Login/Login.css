@@ -1,0 +1,6 @@
+a[type="link"] {
+  color: black;
+  text-decoration: underline;
+  margin-left: 15px;
+  size: 8em;
+}
