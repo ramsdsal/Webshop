@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, Icon, Item, Label } from "semantic-ui-react";
+import AddToShopingCart from "../ShoppingCart/AddToShoppingCart";
 
 export class ProductDetails extends Component {
-  constructor(props) 
-  {
+  constructor(props) {
     super(props);
-    this.state = {movie: {}, isLoading: true};
+    this.state = { movie: {}, isLoading: true };
   }
 
-  componentDidMount()
-  {
+  componentDidMount() {
     fetch("/api/Product/" + this.props.id)
       .then(response => response.json())
       .then(data => {
@@ -17,18 +16,51 @@ export class ProductDetails extends Component {
       });
   }
 
-  renderMovie(movie)
-  {
-    return(      
+  renderMovie(movie) {
+    return (
       <Container style={{ marginTop: "7em" }}>
+        {console.log(movie)}
+        <Item.Group>
+          <Item>
+            <Item.Image size="medium" src={movie.poster} />
+            <Item.Content>
+              <Item.Header as="a" size="big">
+                {movie.title}
+              </Item.Header>{" "}
+              [{movie.year}]<Item.Meta>{movie.categories}</Item.Meta>
+              <Item.Description>{movie.description}</Item.Description>
+              <Item.Extra>
+                {movie.runTime} minuten. PG: {movie.ageRating}
+              </Item.Extra>
+              <Item.Extra>
+                <Label
+                  color={movie.quantity < 1 ? "red" : "green"}
+                  size="large"
+                >
+                  <Icon color="black" name="shopping basket" />
+                  {movie.quantity} {movie.quantity < 1 ? "Niet in " : "In "}
+                  voorraad
+                </Label>
+              </Item.Extra>
+              <Item.Description position="right">
+                <AddToShopingCart id={movie.id} stock={movie.quantity} />
+              </Item.Description>
+            </Item.Content>
+          </Item>
+        </Item.Group>
         <h1>Movie : {movie.title}</h1>
       </Container>
     );
   }
 
   render() {
-
-    const contents = this.state.isLoading ? (<p><em>Loading...</em></p>) : (this.renderMovie(this.state.movie));
+    const contents = this.state.isLoading ? (
+      <p>
+        <em>Loading...</em>
+      </p>
+    ) : (
+      this.renderMovie(this.state.movie)
+    );
 
     return contents;
   }

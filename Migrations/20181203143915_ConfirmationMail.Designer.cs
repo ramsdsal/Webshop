@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using webshop.Models;
@@ -9,9 +10,10 @@ using webshop.Models;
 namespace webshop.Migrations
 {
     [DbContext(typeof(DbConnectionContext))]
-    partial class DbConnectionContextModelSnapshot : ModelSnapshot
+    [Migration("20181203143915_ConfirmationMail")]
+    partial class ConfirmationMail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +57,7 @@ namespace webshop.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("webshop.Models.ConfirmationMail", b =>
+            modelBuilder.Entity("webshop.Models.ConfirmationMails", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -71,7 +73,7 @@ namespace webshop.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("ConfirmationMail");
+                    b.ToTable("ConfirmationMails");
                 });
 
             modelBuilder.Entity("webshop.Models.Discount", b =>
@@ -225,6 +227,8 @@ namespace webshop.Migrations
 
                     b.Property<DateTime>("BirthDate");
 
+                    b.Property<int>("ConfirmationId");
+
                     b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
@@ -253,23 +257,6 @@ namespace webshop.Migrations
                     b.ToTable("UserAddresses");
                 });
 
-            modelBuilder.Entity("webshop.Models.UserAuthentication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Token");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserAuthentication");
-                });
-
             modelBuilder.Entity("webshop.Models.UserRole", b =>
                 {
                     b.Property<int>("UserId");
@@ -283,11 +270,11 @@ namespace webshop.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("webshop.Models.ConfirmationMail", b =>
+            modelBuilder.Entity("webshop.Models.ConfirmationMails", b =>
                 {
                     b.HasOne("webshop.Models.User", "User")
                         .WithOne("ConfirmationMail")
-                        .HasForeignKey("webshop.Models.ConfirmationMail", "UserId")
+                        .HasForeignKey("webshop.Models.ConfirmationMails", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -342,14 +329,6 @@ namespace webshop.Migrations
                     b.HasOne("webshop.Models.User", "User")
                         .WithMany("Addresses")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("webshop.Models.UserAuthentication", b =>
-                {
-                    b.HasOne("webshop.Models.User", "User")
-                        .WithOne("UserAuthentication")
-                        .HasForeignKey("webshop.Models.UserAuthentication", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

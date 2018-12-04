@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using webshop.Models;
@@ -9,9 +10,10 @@ using webshop.Models;
 namespace webshop.Migrations
 {
     [DbContext(typeof(DbConnectionContext))]
-    partial class DbConnectionContextModelSnapshot : ModelSnapshot
+    [Migration("20181203144317_ConfirmationFix")]
+    partial class ConfirmationFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -253,23 +255,6 @@ namespace webshop.Migrations
                     b.ToTable("UserAddresses");
                 });
 
-            modelBuilder.Entity("webshop.Models.UserAuthentication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Token");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserAuthentication");
-                });
-
             modelBuilder.Entity("webshop.Models.UserRole", b =>
                 {
                     b.Property<int>("UserId");
@@ -342,14 +327,6 @@ namespace webshop.Migrations
                     b.HasOne("webshop.Models.User", "User")
                         .WithMany("Addresses")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("webshop.Models.UserAuthentication", b =>
-                {
-                    b.HasOne("webshop.Models.User", "User")
-                        .WithOne("UserAuthentication")
-                        .HasForeignKey("webshop.Models.UserAuthentication", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

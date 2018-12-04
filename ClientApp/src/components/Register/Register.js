@@ -1,13 +1,8 @@
 import React, { Component } from "react";
-import { RouteComponentProps } from "react-router";
-import { Container, Form, Input, TextArea, Button, Select } from 'semantic-ui-react'
+import { Container, Form } from "semantic-ui-react";
 
-
-export class Register extends Component
-{
-
-	constructor(props) 
-  {
+export class Register extends Component {
+  constructor(props) {
     super(props);
 		//this.state = {movie: {}, isLoading: true};
 		
@@ -26,8 +21,7 @@ export class Register extends Component
 		};
 	}
 
-  sendRegisterUser = () =>
-  {
+  sendRegisterUser = () => {
     var jsonToSend = {
 			"User":{
 				firstName: this.state.firstName,
@@ -58,8 +52,10 @@ export class Register extends Component
 	
   handleChange = (e, { name, value }) => this.setState({ [name]: value }, console.log(this.state))
 
-  render() {
+  handleChange = (e, { name, value }) =>
+    this.setState({ [name]: value }, console.log(this.state));
 
+  render() {
     return (
 			<Container style={{ marginTop: "7em" }}>
 				<Form onSubmit={this.sendRegisterUser} id="myForm">
