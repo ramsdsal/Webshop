@@ -21,8 +21,8 @@ export class Header extends Component {
               />
               Media Mania
             </Menu.Item>
-            <Menu.Menu />
-            <Menu.Item as="a" header>
+            <Menu.Menu position="right" />
+            <Menu.Item as="a" header position="middle">
               <SearchMovie />
             </Menu.Item>
             <Menu.Item as="a" header>
@@ -34,28 +34,27 @@ export class Header extends Component {
             <Menu.Item as="a" header>
               LOGIN
             </Menu.Item>
-            <Menu.Item as="a" header>
+            <Menu.Item as={Link} to="/register">
               SIGNUP
             </Menu.Item>
-            <Menu.Menu position="right">
-              <Dropdown text="Ramiro" pointing className="link item">
-                <Dropdown.Menu>
-                  <Dropdown.Item>List Item</Dropdown.Item>
-                  <Dropdown.Item>List Item</Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Header>Header Item</Dropdown.Header>
-                  <Dropdown.Item>
-                    <i className="dropdown icon" />
-                    <span className="text">Submenu</span>
-                    <Dropdown.Menu>
-                      <Dropdown.Item>List Item</Dropdown.Item>
-                      <Dropdown.Item>List Item</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown.Item>
-                  <Dropdown.Item>List Item</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </Menu.Menu>
+
+            <Dropdown text="Ramiro" pointing className="link item">
+              <Dropdown.Menu>
+                <Dropdown.Item>List Item</Dropdown.Item>
+                <Dropdown.Item>List Item</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Header>Header Item</Dropdown.Header>
+                <Dropdown.Item>
+                  <i className="dropdown icon" />
+                  <span className="text">Submenu</span>
+                  <Dropdown.Menu>
+                    <Dropdown.Item>List Item</Dropdown.Item>
+                    <Dropdown.Item>List Item</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown.Item>
+                <Dropdown.Item>List Item</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </Container>
         </Menu>
       </div>

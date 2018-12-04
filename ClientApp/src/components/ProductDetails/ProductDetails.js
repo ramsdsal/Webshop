@@ -38,11 +38,12 @@ export class ProductDetails extends Component {
                   size="large"
                 >
                   <Icon color="black" name="shopping basket" />
-                  {movie.quantity < 1 ? "Niet in " : "In "}voorraad
+                  {movie.quantity} {movie.quantity < 1 ? "Niet in " : "In "}
+                  voorraad
                 </Label>
               </Item.Extra>
               <Item.Description position="right">
-                <AddToShopingCart id={movie.id} />
+                <AddToShopingCart id={movie.id} stock={movie.quantity} />
               </Item.Description>
             </Item.Content>
           </Item>
