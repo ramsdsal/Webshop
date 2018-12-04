@@ -14,11 +14,25 @@ namespace webshop.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        string email = "Mevrouwrick";
         private readonly DbConnectionContext _context;
         public UserController(DbConnectionContext context)
         {
             this._context = context;
+        }
+
+        // GET api/Products
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var result = this._context.Users.Select(user => new
+            {
+                user.Id,
+                user.FirstName,
+                user.LastName,
+                user.Email
+            });
+
+            return new OkObjectResult(result);
         }
 
 		[HttpPost]
