@@ -12,20 +12,18 @@ export class Register extends Component
 		//this.state = {movie: {}, isLoading: true};
 		
 		this.state = {
-			firstName: "patrick",
-			lastName: "kirtap",
-			birthDate: "12-04-1981",
-			email: "email hierzo",
-			password: "skrrrrt",
+			firstName: "",
+			lastName: "",
+			birthDate: "09-04-1981",
+			email: "",
+			password: "",
 
-			street: "straatnaam hierzo",
-			city: "maassluis CITY",
-			country: "nederlands COUNTRY",
-			zipCode: "3113cp ZIPCODE",
+			street: "",
+			city: "",
+			country: "",
+			zipCode: "",
 			dateFrom: "09-04-1981"
 		};
-
-		console.log(this.state)
 	}
 
   sendRegisterUser = () =>
@@ -45,8 +43,8 @@ export class Register extends Component
 				zipCode: this.state.zipCode,
 				dateFrom: this.state.dateFrom
 			},
-  	};
-		console.log(JSON.stringify(jsonToSend))
+      };
+      
     const rawResponse = fetch("/api/user", {
       method: "POST",
       headers: {
@@ -55,6 +53,7 @@ export class Register extends Component
       },
       body: JSON.stringify(jsonToSend)
     });
+
 	}
 	
   handleChange = (e, { name, value }) => this.setState({ [name]: value }, console.log(this.state))
@@ -63,73 +62,23 @@ export class Register extends Component
 
     return (
 			<Container style={{ marginTop: "7em" }}>
-				                   <Form onSubmit={this.sendRegisterUser} id="myForm">
-                        <Form.Group unstackable widths={2}>
-                            <Form.Input
-                                label='First Name *'
-                                placeholder='First Name'
-                                name='firstName'
-                                onChange={this.handleChange}
-                            />
-                            <Form.Input
-                                label='Last Name *'
-                                placeholder='Last Name'
-                                name='lastName'
-                                onChange={this.handleChange}
-                            />
-                        </Form.Group>               
-                        {/* <Form.Group widths={2}>
-                            <Form.Input
-                                label='Brouwer'
-                                placeholder='BrewerName'
-                                name='brewerName'
-                                onChange={this.handleChange}
-                            />
-                            <Form.Input
-                                label='Land van herkomst'
-                                placeholder='CountryName'
-                                name='countryName'
-                                onChange={this.handleChange}
-                            />
-                        </Form.Group>
-
-                        <Form.Group widths={2}>
-                            <Form.Input
-                                label='Alcohol %'
-                                placeholder='AlcoholPercentage'
-                                name='alcoholPercentage'
-                                onChange={this.handleChange}
-                                type='number'
-                                step="0.05"
-                                min="0.00"
-                            />
-                            <Form.Input
-                                label='Inhoud'
-                                placeholder='Content'
-                                name='content'
-                                onChange={this.handleChange}
-                            />
-                        </Form.Group>
-
+				<Form onSubmit={this.sendRegisterUser} id="myForm">
+                    <Form.Group unstackable widths={2}>
                         <Form.Input
-                            label='Website Link'
-                            placeholder='Url'
-                            name='url'
-                            onChange={this.handleChange}
-                            type='url'
-                        />
-
-                        <Form.Field
-                            control={TextArea}
-                            label='Omschrijving'
-                            placeholder='Description'
-                            name='description'
+                            label='First Name *'
+                            placeholder='First Name'
+                            name='firstName'
                             onChange={this.handleChange}
                         />
-
-                        <Form.Checkbox label='Alle gegevens zijn gecontroleerd' /> */}
-                        <Form.Button content='Submit' />
-                    </Form>
+                        <Form.Input
+                            label='Last Name *'
+                            placeholder='Last Name'
+                            name='lastName'
+                            onChange={this.handleChange}
+                        />
+                    </Form.Group>               
+                    <Form.Button content='Submit' />
+                </Form>
 			</ Container>
     );
   }
