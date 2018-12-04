@@ -9,8 +9,7 @@ import { ManageProducts } from "./components/Pages/ManageProducts";
 import { AddProduct } from "./components/Pages/AddProduct";
 import { ManageUsers } from "./components/Pages/ManageUsers";
 import { Login } from "./components/Login";
-
-// import { ShoppingCart } from "./components/ShoppingCart";
+import { ShoppingCart } from "./components/ShoppingCart";
 
 export default class App extends Component {
   displayName = App.name;
@@ -26,7 +25,7 @@ export default class App extends Component {
         <Route path="/fetchdata" component={FetchData} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        {/* <Route path="/shoppingcart" component={ShoppingCart} /> */}
+        <Route path="/shoppingcart" component={ShoppingCart} /> 
         <Route path="/manageproducts" component={ManageProducts} />
         <Route path="/addproduct" component={AddProduct} />
         <Route path="/manageusers" component={ManageUsers} />

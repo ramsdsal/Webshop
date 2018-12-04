@@ -28,7 +28,7 @@ export class Header extends Component {
             <Menu.Item as={Link} to="/">
               Home
             </Menu.Item>
-            <Menu.Item as="a" header>
+            <Menu.Item as={Link} to="/shoppingcart">
               WINKELWAGEN
             </Menu.Item>
             <Menu.Item as={Link} to="/login">

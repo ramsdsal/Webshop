@@ -20,6 +20,10 @@ namespace webshop.Models
         public DbSet<Price> Prices { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<ConfirmationMail> ConfirmationMails { get; set; }
+
+        public DbSet<UserAuthentication> UserAuthentications { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
