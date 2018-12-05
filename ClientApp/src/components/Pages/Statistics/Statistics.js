@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Container } from "semantic-ui-react";
-import { Link } from "react-router-dom";
 import "./Statistics.css";
 
 export class Statistics extends Component {
