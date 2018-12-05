@@ -20,6 +20,10 @@ namespace webshop.Models
         public DbSet<Price> Prices { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<ConfirmationMail> ConfirmationMails { get; set; }
+        public DbSet<UserAuthentication> UserAuthentications { get; set; }
+        public DbSet<Favorit> Favorits { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,6 +74,18 @@ namespace webshop.Models
             modelBuilder.Entity<OrderProduct>()
             .HasOne(po => po.Product)
             .WithMany(p => p.Orders)
+            .HasForeignKey(po => po.ProductId);
+
+            //ERD Relations User Favorits and Product
+            modelBuilder.Entity<Favorit>()
+           .HasKey(t => new { t.UserId, t.ProductId });
+            modelBuilder.Entity<Favorit>()
+            .HasOne(op => op.User)
+            .WithMany(o => o.Favorits)
+            .HasForeignKey(op => op.UserId);
+            modelBuilder.Entity<Favorit>()
+            .HasOne(po => po.product)
+            .WithMany(p => p.Favorits)
             .HasForeignKey(po => po.ProductId);
 
         }
