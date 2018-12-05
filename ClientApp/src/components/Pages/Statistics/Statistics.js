@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { Container } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import "./ManageProducts.css";
+import "./Statistics.css";
 
-//State: movies: Product[], isLoading: string
-export class ManageProducts extends Component {
+export class Statistics extends Component {
 
   constructor()
   {

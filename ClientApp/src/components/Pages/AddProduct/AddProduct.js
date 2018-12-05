@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Container, Form } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import "./AddProduct.css";
 
 export class AddProduct extends Component {
   render() {
     return (
-      <div className="container">
+      <Container style={{ marginTop: "7em" }}>
+      
       <div className="spacesection-one">
         <h3>Product toevoegen</h3>
         <div className="spacesection-two" >
@@ -70,7 +71,7 @@ export class AddProduct extends Component {
       </form>
       </div>
       </div>
-      </div>
+      </Container>
     );
   }
 }
