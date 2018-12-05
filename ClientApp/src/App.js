@@ -10,6 +10,8 @@ import { AddProduct } from "./components/Pages/AddProduct";
 import { ManageUsers } from "./components/Pages/ManageUsers";
 import { Login } from "./components/Login";
 import { ShoppingCart } from "./components/ShoppingCart";
+import { UserProfile } from "./components/Pages/UserProfile";
+
 
 export default class App extends Component {
   displayName = App.name;
@@ -29,6 +31,8 @@ export default class App extends Component {
         <Route path="/manageproducts" component={ManageProducts} />
         <Route path="/addproduct" component={AddProduct} />
         <Route path="/manageusers" component={ManageUsers} />
+        <Route path="/userprofile" component={UserProfile}/>
+
       </Layout>
     );
   }

@@ -11,7 +11,7 @@ export class ManageProducts extends Component {
     super();
     this.state = { isLoading : "isLoading", movies : [] };
 
-    fetch("/api/Product/GetAdminProducts/1/4")
+    fetch("/api/Product/adminproducts/0/8")
       .then(response => response.json())
       .then(data => {
         console.log(data)
