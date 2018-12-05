@@ -17,6 +17,6 @@ namespace webshop.Models
         public List<Price> Prices { get; set; }
         public List<ProductCategory> Categories { get; set; }
         public List<OrderProduct> Orders { get; set; }
-
+        public List<Favorit> Favorits { get; set; }
     }
 }
