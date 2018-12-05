@@ -9,6 +9,7 @@ import { ManageProducts } from "./components/Pages/ManageProducts";
 import { AddProduct } from "./components/Pages/AddProduct";
 import { ManageUsers } from "./components/Pages/ManageUsers";
 import { Login } from "./components/Login";
+import { ConfirmationMail } from "./components/ConfirmationMail";
 import { ShoppingCart } from "./components/ShoppingCart";
 
 export default class App extends Component {
@@ -21,6 +22,10 @@ export default class App extends Component {
         <Route
           path="/ProductDetails/:id"
           render={props => <ProductDetails id={props.match.params.id} />}
+        />
+        <Route
+        path="/confirmation/:token"
+        render={props => <ConfirmationMail confirmationToken={props.match.params.token} />}
         />
         <Route path="/fetchdata" component={FetchData} />
         <Route path="/login" component={Login} />

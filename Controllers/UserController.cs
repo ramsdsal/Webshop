@@ -35,6 +35,14 @@ namespace webshop.Controllers
             return new OkObjectResult(result);
         }
 
+        [HttpGet("confirmation/{token}")]
+        public IActionResult CheckRegisterConfirmationToken(string token)
+        {//Check if confirmation token exists && that token is not turned in yet
+            bool result = true;
+
+            return new OkObjectResult(result);
+        }
+
 		[HttpPost]
         public IActionResult Post([FromBody]UserAddress u)//Check of email al bestaat, Kijk hoe je email kan versturen (Smtp client)
         {
@@ -46,9 +54,9 @@ namespace webshop.Controllers
                     StringBuilder sb = new StringBuilder();
                     sb.Append("<html><head><title>Confirmation mail:</title></head><body>");
                     sb.Append("<p>TO: " + u.User.FirstName + " " + u.User.LastName + "/" + "</p><br/>");
-                
+                    string confirmationCode = "skrrrt";
                     sb.Append("<p>Here is the link:</p><br/>");
-                    sb.Append("<p>" + "<a href=" + "http://www.google.com"+">" + "Confirmation link" +"</a></p><br/>");  
+                    sb.Append("<p>" + "<a href=" + "https://localhost:5001/confirmation/" + confirmationCode + ""+">" + "Confirmation link" +"</a></p><br/>");  
                     sb.Append("PLEASE DO NOT REPLY TO THIS MESSAGE AS IT IS FROM AN UNATTENDED MAILBOX. ANY REPLIES TO THIS EMAIL WILL NOT BE RESPONDED TO OR FORWARDED. THIS SERVICE IS USED FOR OUTGOING EMAILS ONLY AND CANNOT RESPOND TO INQUIRIES.");
 
                     SmtpClient SmtpServer = new SmtpClient("smtp.live.com");
