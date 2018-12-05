@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Container, Form } from "semantic-ui-react";
-import { Link, NavLink } from "react-router-dom";
+import { Container } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import "./ManageProducts.css";
 
 //State: movies: Product[], isLoading: string
@@ -46,11 +46,11 @@ export class ManageProducts extends Component {
   render() {
     let contents = this.renderProductTable()
     return (
-      <div className="container">
+      <Container style={{ marginTop: "7em" }}>
         <h1>Admin</h1>
         <Link className="nav-link" to={"/addproduct"}>Voeg Product</Link>
         { contents }
-      </div>
+      </Container>
     );
   }
 }
