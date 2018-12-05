@@ -14,6 +14,7 @@ namespace webshop.Models
         public List<UserRole> Roles { get; set; }
         public ConfirmationMail ConfirmationMail { get; set; }
         public UserAuthentication UserAuthentication { get; set; }
+        public List<Favorit> Favorits { get; set; }
 
     }
 }
