@@ -6,7 +6,8 @@ import {
   Image,
   Form,
   Segment,
-  Input
+  Input,
+  Message
 } from "semantic-ui-react";
 import _ from "lodash";
 
@@ -102,9 +103,8 @@ export class ShoppingCart extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
-      <Container style={{ marginTop: "10em" }}>
+      <Container style={{ marginTop: "7em" }}>
         <Segment inverted>
           <List divided inverted relaxed>
             <List.Item>
@@ -116,43 +116,56 @@ export class ShoppingCart extends Component {
         </Segment>
 
         <List divided verticalAlign="middle">
+          {this.state.movies.length === 0 ? (
+            <Message
+              icon="shop"
+              header="Je winkelwagen is leeg!"
+              content="Blijven winkelen"
+            />
+          ) : (
+            ""
+          )}
           {this.state.movies.map(item => (
             <List.Item key={item.id}>
-              <List.Content floated="right">
-                <Form>
-                  <Form.Group widths="equal">
-                    <Form.Field
-                      control={Button}
-                      content="-"
-                      onClick={() =>
-                        this.addAmount(item.id, "minus", item.quantity)
-                      }
-                      disabled={this.getQt(item.id) === 1 ? true : false}
-                    />
-                    <Form.Field control={Input} value={this.getQt(item.id)} />
-                    <Form.Field
-                      control={Button}
-                      content="+"
-                      onClick={() =>
-                        this.addAmount(item.id, "add", item.quantity)
-                      }
-                      disabled={
-                        this.getQt(item.id) === item.quantity ? true : false
-                      }
-                    />
-                    <Button
-                      color="red"
-                      icon="trash"
-                      onClick={() => this.delete(item.id)}
-                    />
-                  </Form.Group>
-                </Form>
-              </List.Content>
               <Image avatar src={item.poster} />
-              <List.Content>
-                {item.title}
-                {item.quantity}
-              </List.Content>
+              {item.title}
+              <List floated="right" horizontal divided size="big">
+                <List.Item>In voorraad: {item.quantity} stuk(s).</List.Item>
+                <List.Item>Prijs: {item.price}€</List.Item>
+                <List.Item>
+                  Totaal: {item.price * this.getQt(item.id)}€
+                </List.Item>
+                <List.Item>
+                  <Form>
+                    <Form.Group widths="equal">
+                      <Form.Field
+                        control={Button}
+                        content="-"
+                        onClick={() =>
+                          this.addAmount(item.id, "minus", item.quantity)
+                        }
+                        disabled={this.getQt(item.id) === 1 ? true : false}
+                      />
+                      <Form.Field control={Input} value={this.getQt(item.id)} />
+                      <Form.Field
+                        control={Button}
+                        content="+"
+                        onClick={() =>
+                          this.addAmount(item.id, "add", item.quantity)
+                        }
+                        disabled={
+                          this.getQt(item.id) === item.quantity ? true : false
+                        }
+                      />
+                      <Button
+                        color="red"
+                        icon="trash"
+                        onClick={() => this.delete(item.id)}
+                      />
+                    </Form.Group>
+                  </Form>
+                </List.Item>
+              </List>
             </List.Item>
           ))}
         </List>
@@ -160,7 +173,7 @@ export class ShoppingCart extends Component {
           <List divided inverted relaxed>
             <List.Item>
               <List.Content floated="right">
-                <List.Header>Subtotaal: 300€</List.Header>
+                <List.Header>Subtotaal: €</List.Header>
               </List.Content>
             </List.Item>
             <List.Item>
