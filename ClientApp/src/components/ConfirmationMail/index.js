@@ -1,0 +1,1 @@
+export { ConfirmationMail } from "./ConfirmationMail";

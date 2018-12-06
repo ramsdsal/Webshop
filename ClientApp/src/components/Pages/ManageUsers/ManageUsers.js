@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Container } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import "./ManageUsers.css";
 
@@ -55,7 +56,7 @@ export class ManageUsers extends Component {
     let contents = this.renderUserTable(this.state.users);
 
     return (
-      <div className="container">
+      <Container style={{ marginTop: "7em" }}>
         <div className="row">
           <h1>Admin</h1>
 
@@ -66,7 +67,7 @@ export class ManageUsers extends Component {
           </Link>
           {contents}
         </div>
-      </div>
+      </Container>
     );
   }
 }
