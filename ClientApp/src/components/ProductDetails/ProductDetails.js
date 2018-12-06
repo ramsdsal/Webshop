@@ -5,21 +5,38 @@ import AddToShopingCart from "../ShoppingCart/AddToShoppingCart";
 export class ProductDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = { movie: {}, isLoading: true };
+    this.state = { movie: {}, isLoading: true, id: this.props.id };
+  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.id !== nextProps.id) {
+      this.setState({
+        ...this.state,
+        id: nextProps.id,
+        movie: {}
+      });
+      this.getMovie(nextProps.id);
+    }
+  }
+  getMovie(id) {
+    fetch("/api/Product/" + id)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          ...this.state,
+          movie: data[0],
+          isLoading: false
+        });
+      });
   }
 
   componentDidMount() {
-    fetch("/api/Product/" + this.props.id)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ ...this.state, movie: data[0], isLoading: false });
-      });
+    this.getMovie(this.state.id);
   }
 
   renderMovie(movie) {
     return (
       <Container style={{ marginTop: "7em" }}>
-        {console.log(movie)}
+        {console.log(this.state.id)}
         <Item.Group>
           <Item>
             <Item.Image size="medium" src={movie.poster} />
