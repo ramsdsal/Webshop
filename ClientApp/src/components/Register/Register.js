@@ -4,45 +4,26 @@ import { Container, Form } from "semantic-ui-react";
 export class Register extends Component {
   constructor(props) {
     super(props);
-<<<<<<< HEAD
 		//this.state = {movie: {}, isLoading: true};
 		
 		this.state = {
-			firstName: "dgdfgdfgwadwad",
-			lastName: "dawfdfsfdad",
-			birthDate: "09-04-1981",
-			email: "dwadafesfefsgd",
-      password: "dsffdsfsfdsf",
+        firstName: "dgdfgdfgwadwad",
+        lastName: "dawfdfsfdad",
+        birthDate: "09-04-1981",
+        email: "dwadafesfefsgd",
+        password: "dsffdsfsfdsf",
       
-      //Birthday
-      day: "12",
-      month: "10",
-      year: "2012",
+        //Birthday
+        day: "12",
+        month: "10",
+        year: "2012",
 
-			street: "dfsdf",
-			city: "dwadsfsdfsdfad",
-			country: "wdfsdfsdfadad",
-			zipCode: "fsfs",
+        street: "dfsdf",
+        city: "dwadsfsdfsdfad",
+        country: "wdfsdfsdfadad",
+        zipCode: "fsfs",
 		};
 	}
-=======
-    //this.state = {movie: {}, isLoading: true};
-
-    this.state = {
-      firstName: "",
-      lastName: "",
-      birthDate: "09-04-1981",
-      email: "",
-      password: "",
-
-      street: "",
-      city: "",
-      country: "",
-      zipCode: "",
-      dateFrom: "09-04-1981"
-    };
-  }
->>>>>>> 41da53823f6c9692a536db0508cbf0031861943b
 
   sendRegisterUser = () => {
 
@@ -83,7 +64,6 @@ export class Register extends Component {
 
   render() {
     return (
-<<<<<<< HEAD
 			<Container style={{ marginTop: "7em" }}>
 				<Form onSubmit={this.sendRegisterUser} id="myForm">
                     <Form.Group unstackable widths={2}>
@@ -178,27 +158,6 @@ export class Register extends Component {
                     <Form.Button content='Submit' />
                 </Form>
 			</ Container>
-=======
-      <Container style={{ marginTop: "7em" }}>
-        <Form onSubmit={this.sendRegisterUser} id="myForm">
-          <Form.Group unstackable widths={2}>
-            <Form.Input
-              label="First Name *"
-              placeholder="First Name"
-              name="firstName"
-              onChange={this.handleChange}
-            />
-            <Form.Input
-              label="Last Name *"
-              placeholder="Last Name"
-              name="lastName"
-              onChange={this.handleChange}
-            />
-          </Form.Group>
-          <Form.Button content="Submit" />
-        </Form>
-      </Container>
->>>>>>> 41da53823f6c9692a536db0508cbf0031861943b
     );
   }
 }
