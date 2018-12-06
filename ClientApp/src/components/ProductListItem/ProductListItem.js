@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import "./ProductListItem.css";
-import { Button, Card, Icon, Image, Grid, Label } from "semantic-ui-react";
+import { Button, Card, Image, Grid, Label } from "semantic-ui-react";
 import { AddToShopingCartHome } from "../ShoppingCart/AddToShoppingCartHome";
 
 export default class ProductListItem extends React.Component {
@@ -18,17 +18,15 @@ export default class ProductListItem extends React.Component {
             <Card.Meta>
               {movie.year}
               <Card.Content color="black" extra textAlign="right">
-                <Label color="orange" size="large">
-                  Price: {movie.price} €
+                <Label color="orange" size="big">
+                  {movie.price} €
                 </Label>
               </Card.Content>
             </Card.Meta>
           </Card.Content>
           <Card.Content extra textAlign="right">
             <AddToShopingCartHome id={movie.id} stock={movie.quantity} />
-            <Button size="large">
-              <Icon name="heart" /> Favorits
-            </Button>
+            <Button size="large" icon="heart" />
           </Card.Content>
         </Card>
       </Grid.Column>

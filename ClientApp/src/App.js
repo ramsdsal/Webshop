@@ -25,7 +25,7 @@ export default class App extends Component {
         <Route path="/fetchdata" component={FetchData} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route path="/shoppingcart" component={ShoppingCart} /> 
+        <Route path="/shoppingcart" component={ShoppingCart} />
         <Route path="/manageproducts" component={ManageProducts} />
         <Route path="/addproduct" component={AddProduct} />
         <Route path="/manageusers" component={ManageUsers} />
