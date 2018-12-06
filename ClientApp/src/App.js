@@ -11,6 +11,7 @@ import { ManageUsers } from "./components/Pages/ManageUsers";
 import { Login } from "./components/Login";
 import { ConfirmationMail } from "./components/ConfirmationMail";
 import { ShoppingCart } from "./components/ShoppingCart";
+import { Statistics } from "./components/Pages/Statistics";
 
 export default class App extends Component {
   displayName = App.name;
@@ -30,10 +31,11 @@ export default class App extends Component {
         <Route path="/fetchdata" component={FetchData} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route path="/shoppingcart" component={ShoppingCart} /> 
+        <Route path="/shoppingcart" component={ShoppingCart} />
         <Route path="/manageproducts" component={ManageProducts} />
         <Route path="/addproduct" component={AddProduct} />
         <Route path="/manageusers" component={ManageUsers} />
+        <Route path="/statistics" component={Statistics} />
       </Layout>
     );
   }

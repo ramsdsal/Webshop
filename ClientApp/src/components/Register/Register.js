@@ -4,6 +4,7 @@ import { Container, Form } from "semantic-ui-react";
 export class Register extends Component {
   constructor(props) {
     super(props);
+<<<<<<< HEAD
 		//this.state = {movie: {}, isLoading: true};
 		
 		this.state = {
@@ -24,6 +25,24 @@ export class Register extends Component {
 			zipCode: "fsfs",
 		};
 	}
+=======
+    //this.state = {movie: {}, isLoading: true};
+
+    this.state = {
+      firstName: "",
+      lastName: "",
+      birthDate: "09-04-1981",
+      email: "",
+      password: "",
+
+      street: "",
+      city: "",
+      country: "",
+      zipCode: "",
+      dateFrom: "09-04-1981"
+    };
+  }
+>>>>>>> 41da53823f6c9692a536db0508cbf0031861943b
 
   sendRegisterUser = () => {
 
@@ -57,13 +76,14 @@ export class Register extends Component {
       },
       body: JSON.stringify(jsonToSend)
     });
+  };
 
-	}
-	
-  handleChange = (e, { name, value }) => this.setState({ [name]: value }, console.log(this.state))
+  handleChange = (e, { name, value }) =>
+    this.setState({ [name]: value }, console.log(this.state));
 
   render() {
     return (
+<<<<<<< HEAD
 			<Container style={{ marginTop: "7em" }}>
 				<Form onSubmit={this.sendRegisterUser} id="myForm">
                     <Form.Group unstackable widths={2}>
@@ -158,6 +178,27 @@ export class Register extends Component {
                     <Form.Button content='Submit' />
                 </Form>
 			</ Container>
+=======
+      <Container style={{ marginTop: "7em" }}>
+        <Form onSubmit={this.sendRegisterUser} id="myForm">
+          <Form.Group unstackable widths={2}>
+            <Form.Input
+              label="First Name *"
+              placeholder="First Name"
+              name="firstName"
+              onChange={this.handleChange}
+            />
+            <Form.Input
+              label="Last Name *"
+              placeholder="Last Name"
+              name="lastName"
+              onChange={this.handleChange}
+            />
+          </Form.Group>
+          <Form.Button content="Submit" />
+        </Form>
+      </Container>
+>>>>>>> 41da53823f6c9692a536db0508cbf0031861943b
     );
   }
 }

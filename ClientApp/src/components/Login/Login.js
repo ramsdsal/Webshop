@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./Login.css";
 
-//State: username: string && password: string
 export class Login extends Component {
   constructor() {
     super();
@@ -38,9 +37,7 @@ export class Login extends Component {
             <button type="submit" className="btn btn-primary">
               Inloggen
             </button>
-            <a type="link" href="#">
-              Wachtwoord vergeten?
-            </a>
+            <a type="link">Wachtwoord vergeten?</a>
           </div>
         </form>
       </div>

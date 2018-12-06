@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Icon } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 
 class AddToShopingCart extends Component {
   constructor(props) {
@@ -67,10 +67,7 @@ class AddToShopingCart extends Component {
             +
           </Form.Button>
 
-          <Form.Button size="large" onClick={this.AddToCart}>
-            <Icon name="shopping cart" />
-            Toevoegen
-          </Form.Button>
+          <Button size="large" onClick={this.AddToCart} icon="shop" />
         </Form.Group>
       </Form>
     );
