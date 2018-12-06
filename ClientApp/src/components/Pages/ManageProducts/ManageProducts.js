@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { Container } from "semantic-ui-react";
 import "./ManageProducts.css";
 
 //State: movies: Product[], isLoading: string
