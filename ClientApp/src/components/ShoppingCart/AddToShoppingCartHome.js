@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Icon } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
 export class AddToShopingCartHome extends Component {
   constructor(props) {
@@ -38,10 +38,12 @@ export class AddToShopingCartHome extends Component {
     const { added } = this.state;
 
     return (
-      <Button size="large" disabled={added} onClick={this.AddToCart}>
-        <Icon name="shopping cart" />
-        Toevoegen
-      </Button>
+      <Button
+        disabled={added}
+        onClick={this.AddToCart}
+        icon="shop"
+        size="large"
+      />
     );
   }
 }

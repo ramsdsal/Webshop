@@ -1,5 +1,10 @@
 {
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "chart.js": "^2.7.3",
+    "react-chartjs-2": "^2.7.4",
+>>>>>>> 4be5a797de42c8a2ef13954836fe9a79b05ad01e
     "react-router": "^4.3.1",
     "semantic-ui-react": "^0.83.0"
   }

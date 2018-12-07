@@ -35,6 +35,7 @@ namespace webshop.Controllers
             return new OkObjectResult(result);
         }
 
+<<<<<<< HEAD
         [HttpGet("{id}")]
         public IQueryable Get(int id)
         {
@@ -63,20 +64,40 @@ namespace webshop.Controllers
 
 
 
+=======
+        [HttpGet("confirmation/{token}")]
+        public IActionResult CheckRegisterConfirmationToken(string token)
+        {
+            //Check if confirmation token exists && that token is not turned in yet
+            ConfirmationMail result = _context.ConfirmationMails.FirstOrDefault(cMail => cMail.ConfirmationToken == token && cMail.AccountStatus == 0);
+            if (result != null)
+            {
+                result.AccountStatus = 1;
+                _context.SaveChanges();
+
+                return new OkObjectResult(true);
+            }
+            
+            return new OkObjectResult(false);
+        }
+
+>>>>>>> 4be5a797de42c8a2ef13954836fe9a79b05ad01e
 		[HttpPost]
         public IActionResult Post([FromBody]UserAddress u)//Check of email al bestaat, Kijk hoe je email kan versturen (Smtp client)
         {
             if (u != null)
             {
+                string confirmationTokenGuid = Guid.NewGuid().ToString();
+
                 var emailAlreadyExists = _context.Users.Any(user => user.Email.ToLower() == u.User.Email.ToLower());
-                if (true)
+                if (!emailAlreadyExists)
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.Append("<html><head><title>Confirmation mail:</title></head><body>");
                     sb.Append("<p>TO: " + u.User.FirstName + " " + u.User.LastName + "/" + "</p><br/>");
-                
+
                     sb.Append("<p>Here is the link:</p><br/>");
-                    sb.Append("<p>" + "<a href=" + "http://www.google.com"+">" + "Confirmation link" +"</a></p><br/>");  
+                    sb.Append("<p>" + "<a href=" + "https://localhost:5001/confirmation/" + confirmationTokenGuid + ""+">" + "Confirmation link" +"</a></p><br/>");  
                     sb.Append("PLEASE DO NOT REPLY TO THIS MESSAGE AS IT IS FROM AN UNATTENDED MAILBOX. ANY REPLIES TO THIS EMAIL WILL NOT BE RESPONDED TO OR FORWARDED. THIS SERVICE IS USED FOR OUTGOING EMAILS ONLY AND CANNOT RESPOND TO INQUIRIES.");
 
                     SmtpClient SmtpServer = new SmtpClient("smtp.live.com");
@@ -94,9 +115,18 @@ namespace webshop.Controllers
                     SmtpServer.EnableSsl = true;
                     SmtpServer.Send(mail);
 
-                    // u.Current = 1;
-                    // _context.UserAddresses.Add(u);
-                    // _context.SaveChanges();
+
+                    ConfirmationMail confirmationMail = new ConfirmationMail();
+                    confirmationMail.User = u.User;
+                    confirmationMail.AccountStatus = 0;// eerst 0, als hij in de mail link klikt dan 1
+                    confirmationMail.ConfirmationToken = confirmationTokenGuid;
+
+                    u.User.ConfirmationMail = confirmationMail;
+
+                    u.Current = 1;
+                    _context.UserAddresses.Add(u);
+                    
+                    _context.SaveChanges();
                     
                     return Ok();
                 }
@@ -106,31 +136,6 @@ namespace webshop.Controllers
             }
             
             return NoContent();
-
-
-            // var a = new UserAddress
-            // {
-            //     User = new User
-            //     {
-            //         FirstName = u.User.FirstName,
-            //         LastName = "Delgado",
-            //         BirthDate = new DateTime(),
-            //         Email = "ramiro@hotmail.com",
-            //         Password = "estrela"
-            //     },
-            //     Address = new Address
-            //     {
-            //         Street = "Piersonstraat",
-            //         City = "Maassluis",
-            //         Country = "Nederland",
-            //         ZipCode = "3144Cp",
-            //         DateFrom = new DateTime()
-            //     }
-            // };
-            // _context.UserAddresses.Add(a);
-            // _context.SaveChanges();
-
-            // return new OkResult();
         }
         
         // PUT api/values/5

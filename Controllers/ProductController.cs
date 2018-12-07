@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using webshop.Models;
 using webshop.Pagination;
 
@@ -34,10 +35,6 @@ namespace webshop.Controllers
 
             return new OkObjectResult(result);
         }
-
-
-        
-
 
         [HttpGet("search")]
         public IActionResult GetSearchItems()
@@ -74,6 +71,26 @@ namespace webshop.Controllers
 
             return result;
         }
+        [HttpPost("getShoppingcart")]
+        public IActionResult Post([FromBody]int[] items)
+        {
+
+            var result = this._context.Products
+                       .Select(prod => new
+                       {
+                           Id = prod.Id,
+                           Title = prod.Title,
+                           Poster = prod.Poster,
+                           Quantity = prod.Quantity,
+                           Price = prod.Prices.Where(price => price.Current == 1).Select(price => price.Value).Single()
+                       }).Where(prod => items.Contains(prod.Id));
+
+
+            return new OkObjectResult(result);
+
+        }
+
+
 
         [HttpGet("adminproducts/{index_page}/{page_size}")]
         public IActionResult GetAdminProducts(int index_page, int page_size)
@@ -109,7 +126,7 @@ namespace webshop.Controllers
         // public IActionResult GetProductsPaged(int index_page, int page_size)
         // {
         //     Page<Product> paginationResult = _context.Products.GetPages(index_page, page_size, m => m.Id, "Prices");
-            
+
         //     IEnumerable<object> resultToReturn = paginationResult.Items.Select(prod => new 
         //     {
         //         Id = prod.Id,
