@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container } from "semantic-ui-react";
 import "./Statistics.css";
-import {Bar, Pie} from 'react-chartjs-2';
+import {Bar, Pie, Line} from 'react-chartjs-2';
 
 export class Statistics extends Component {
 
@@ -32,7 +32,7 @@ constructor(props){
    
     return (
       <Container style={{ marginTop: "7em" }}>
-        <Bar
+        <Line
           height={50}
           width={50}
           data={this.state.chartData}
@@ -73,6 +73,7 @@ constructor(props){
             }
            }}
         />
+        
         
       </Container>
     );
