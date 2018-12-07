@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container } from "semantic-ui-react";
 import "./Statistics.css";
-import {Bar, Pie, Line} from 'react-chartjs-2';
+import {Pie, Line} from 'react-chartjs-2';
 
 export class Statistics extends Component {
 
