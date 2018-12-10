@@ -1,27 +1,30 @@
 import React, { Component } from "react";
-import { Container, Form } from "semantic-ui-react";
+import { Container, Form, Message } from "semantic-ui-react";
 
 export class Register extends Component {
   constructor(props) {
     super(props);
-		//this.state = {movie: {}, isLoading: true};
 		
 		this.state = {
-        firstName: "dgdfgdfgwadwad",
-        lastName: "dawfdfsfdad",
-        birthDate: "09-04-1981",
-        email: "dwadafesfefsgd",
-        password: "dsffdsfsfdsf",
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
       
         //Birthday
-        day: "12",
-        month: "10",
-        year: "2012",
+        day: "",
+        month:"", 
+        year: "",
 
-        street: "dfsdf",
-        city: "dwadsfsdfsdfad",
-        country: "wdfsdfsdfadad",
-        zipCode: "fsfs",
+        street: "",
+        city: "",
+        country: "",
+        zipCode: "",
+
+        //Form validation and server response
+        createUserError: false,
+        emailSend: false,
+        serverResponse: ""
 		};
 	}
 
@@ -47,36 +50,58 @@ export class Register extends Component {
 			},
     };
 
-    console.log(jsonToSend)
-      
-    const rawResponse = fetch("/api/user", {
+    fetch("/api/user", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify(jsonToSend)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      this.setState({...this.state, serverResponse: data.response, createUserError: data.isError, emailSend: data.emailSend})
     });
   };
 
-  handleChange = (e, { name, value }) =>
-    this.setState({ [name]: value }, console.log(this.state));
+  handleChange = (e, { name, value }) =>this.setState({ [name]: value });
 
   render() {
     return (
 			<Container style={{ marginTop: "7em" }}>
-				<Form onSubmit={this.sendRegisterUser} id="myForm">
+                <Form 
+                    onSubmit={this.sendRegisterUser}
+                    error={this.state.createUserError}
+                    success={this.state.emailSend}
+                >
+                {
+                    this.state.createUserError ? <Message error 
+                    header="Account kon niet aangemaakt worden" 
+                    content={this.state.serverResponse}/>
+                    :
+                    null
+                }
+                {
+                    this.state.emailSend ? <Message success 
+                    header="Validatie email verstuurd!" 
+                    content={this.state.serverResponse}/>
+                    : 
+                    null
+                }
                     <Form.Group unstackable widths={2}>
                         <Form.Input
+                            required
                             size='massive'
-                            label='Voornaam *'
+                            label='Voornaam'
                             placeholder='Voornaam'
                             name='firstName'
                             onChange={this.handleChange}
                         />
                         <Form.Input
+                            required
                             size='massive'
-                            label='Achternaam *'
+                            label='Achternaam'
                             placeholder='Achternaam'
                             name='lastName'
                             onChange={this.handleChange}
@@ -84,49 +109,52 @@ export class Register extends Component {
                     </Form.Group>
                     <Form.Group unstackable widths={2}>
                         <Form.Input
+                            required
                             size='massive'
-                            label='E-mail *'
+                            label='E-mail'
                             placeholder='E-mail'
                             name='email'
                             onChange={this.handleChange}
                         />
                         <Form.Input
+                            required
                             size='massive'
-                            label='Wachtwoord *'
+                            label='Wachtwoord'
                             placeholder='Wachtwoord'
                             name='password'
+                            type='password'
                             onChange={this.handleChange}
                         />
-                    </Form.Group> 			
-                    {/* street: "dfsdf",
-			city: "dwadsfsdfsdfad",
-			country: "wdfsdfsdfadad",
-      zipCode: "fsfs",                  */}
+                    </Form.Group>
                     <Form.Group unstackable widths={2}>
                         <Form.Input
+                            required
                             size='massive'
-                            label='Straat *'
+                            label='Straat'
                             placeholder='Straat'
                             name='street'
                             onChange={this.handleChange}
                         />
                         <Form.Input
+                            required
                             size='massive'
-                            label='Stad *'
+                            label='Stad'
                             placeholder='Stad'
                             name='city'
                             onChange={this.handleChange}
                         />
                         <Form.Input
+                            required
                             size='massive'
-                            label='Land *'
+                            label='Land'
                             placeholder='Land'
                             name='country'
                             onChange={this.handleChange}
                         />
                         <Form.Input
+                            required
                             size='massive'
-                            label='Postcode *'
+                            label='Postcode'
                             placeholder='Postcode'
                             name='zipCode'
                             onChange={this.handleChange}
@@ -134,28 +162,51 @@ export class Register extends Component {
                     </Form.Group>
                     <Form.Group unstackable widths={3}>
                         <Form.Input
+                            required
                             size='massive'
-                            label='Dag *'
+                            label='Dag'
                             placeholder='Dag'
                             name='day'
+                            type='number'
                             onChange={this.handleChange}
                         />
                         <Form.Input
+                            required
                             size='massive'
                             label='Maand'
                             placeholder='Maand'
                             name='month'
+                            type='number'
                             onChange={this.handleChange}
                         />
                         <Form.Input
+                            required
                             size='massive'
-                            label='Jaar *'
+                            label='Jaar'
                             placeholder='Jaar'
                             name='year'
+                            type='number'
                             onChange={this.handleChange}
                         />
                     </Form.Group> 			
-                    <Form.Button content='Submit' />
+                    <Form.Button 
+                    content='Submit' 
+                    color='blue'
+                    type='submit'
+                    disabled={
+                        !this.state.email
+                        || !this.state.firstName
+                        || !this.state.lastName
+                        || !this.state.password
+                        || !this.state.day
+                        || !this.state.month
+                        || !this.state.year
+                        || !this.state.street
+                        || !this.state.city
+                        || !this.state.country
+                        || !this.state.zipCode
+                     }
+                    />
                 </Form>
 			</ Container>
     );

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Label } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 
 export class ConfirmationMail extends Component {
 

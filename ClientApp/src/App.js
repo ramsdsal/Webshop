@@ -11,7 +11,9 @@ import { ManageUsers } from "./components/Pages/ManageUsers";
 import { Login } from "./components/Login";
 import { ConfirmationMail } from "./components/ConfirmationMail";
 import { ShoppingCart } from "./components/ShoppingCart";
+import { UpdateUser } from "./components/Pages/UpdateUser";
 import { Statistics } from "./components/Pages/Statistics";
+
 
 export default class App extends Component {
   displayName = App.name;
@@ -27,6 +29,10 @@ export default class App extends Component {
         <Route
         path="/confirmation/:token"
         render={props => <ConfirmationMail confirmationToken={props.match.params.token} />}
+        />
+        <Route
+        path="/updateuser/:userId"
+        render={props => <UpdateUser userId={props.match.params.userId} />}
         />
         <Route path="/fetchdata" component={FetchData} />
         <Route path="/login" component={Login} />
