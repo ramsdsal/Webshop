@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container } from "semantic-ui-react";
 import "./Statistics.css";
-import {Bar} from 'react-chartjs-2';
+import {Pie, Line} from 'react-chartjs-2';
 
 export class Statistics extends Component {
 
@@ -32,10 +32,9 @@ constructor(props){
    
     return (
       <Container style={{ marginTop: "7em" }}>
-        <div className="chart">
-        <Bar
-          height={250}
-          width={100}
+        <Line
+          height={50}
+          width={50}
           data={this.state.chartData}
           options={{
             maintainAspectRatio: false,
@@ -57,7 +56,24 @@ constructor(props){
           }
            }}
         />
-        </div>
+        <Pie
+        height={50}
+        width={50}
+          data={this.state.chartData}
+          options={{
+            maintainAspectRatio: false,
+            title:{
+              display:true,
+              text:'Product meest verkocht',
+              fontSize: 25
+            },
+            legend:{
+              display:true,
+              position:'right'
+            }
+           }}
+        />
+        
         
       </Container>
     );
