@@ -10,8 +10,9 @@ import {
   Message
 } from "semantic-ui-react";
 import _ from "lodash";
+import { connect } from "react-redux";
 
-export class ShoppingCart extends Component {
+class ShoppingCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -100,6 +101,7 @@ export class ShoppingCart extends Component {
       index: _.map(items, "id"),
       movies: items1
     });
+    this.props.dispatch({ type: "CART_COUNTER_UPDATE" });
   };
 
   render() {
@@ -195,3 +197,11 @@ export class ShoppingCart extends Component {
     );
   }
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    updateCart: () => {
+      dispatch({ type: "CART_COUNTER_UPDATE" });
+    }
+  };
+};
+export default connect(mapDispatchToProps)(ShoppingCart);

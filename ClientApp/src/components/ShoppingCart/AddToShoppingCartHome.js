@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Button } from "semantic-ui-react";
+import { connect } from "react-redux";
 
-export class AddToShopingCartHome extends Component {
+class AddToShopingCartHome extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +27,7 @@ export class AddToShopingCartHome extends Component {
     items.push(item);
     window.localStorage.setItem("cart", JSON.stringify(items));
     this.setState({ ...this.state, added: true });
+    this.props.dispatch({ type: "CART_COUNTER_UPDATE" });
   };
 
   IsAdded = () => {
@@ -36,7 +38,6 @@ export class AddToShopingCartHome extends Component {
 
   render() {
     const { added } = this.state;
-
     return (
       <Button
         disabled={added}
@@ -47,3 +48,12 @@ export class AddToShopingCartHome extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateCart: () => {
+      dispatch({ type: "CART_COUNTER_UPDATE" });
+    }
+  };
+};
+export default connect(mapDispatchToProps)(AddToShopingCartHome);

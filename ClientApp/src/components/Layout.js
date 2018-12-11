@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Grid, Row } from "react-bootstrap";
-import { Header } from "./Header";
+import Header from "./Header/Header";
 import { Footer } from "./Footer";
 
 export class Layout extends Component {
