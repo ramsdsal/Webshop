@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using webshop.Models;
 
 
@@ -48,7 +49,7 @@ namespace webshop.Controllers
 
                 return new OkObjectResult(true);
             }
-            
+
             return new OkObjectResult(false);
         }
 
@@ -68,7 +69,7 @@ namespace webshop.Controllers
 
                 return new OkObjectResult("Gebruiker is aangepast.");
             }
-            
+
             return new OkObjectResult("Gebruiker niet gevonden in de database.");
         }
 
@@ -92,13 +93,29 @@ namespace webshop.Controllers
 
                 userAddress.User = user;
                 _context.UserAddresses.Add(userAddress);
-                _context.SaveChanges();   
+                _context.SaveChanges();
             }
-            
+
             return new OkObjectResult("Adres van gebruiken is toegevoegd");
         }
+        [HttpPost("authenticate")]
+        public IActionResult authenticate([FromBody] User u)
+        {
 
-        [HttpGet("GetUserById/{id}")]   
+            var result = this._context.Users
+            .Where(us => us.Email == u.Email && us.Password == u.Password)
+            .Select(
+                us => new { us.Id, us.Email, us.FirstName, token = "token" });
+
+
+            //var res = new { id = result.FirstOrDefault().Id, firstName = result.FirstOrDefault().FirstName, token = "fake-jwt-token" };
+
+
+            //return JsonConvert.SerializeObject(res);
+            return new OkObjectResult(result);
+        }
+
+        [HttpGet("GetUserById/{id}")]
         public IQueryable GetUserById(int id)
         {
             var result = this._context.Users
@@ -117,7 +134,7 @@ namespace webshop.Controllers
             return result;
         }
 
-		[HttpPost]
+        [HttpPost]
         public IActionResult Post([FromBody]UserAddress u)
         {
             if (u != null && u.User != null)
@@ -139,18 +156,18 @@ namespace webshop.Controllers
 
                         u.Current = 1;
                         _context.UserAddresses.Add(u);
-                        
-                        _context.SaveChanges();   
-                        return new OkObjectResult(new {emailSend = true, isError = false, response = "Wij hebben een validatie mail gestuurd naar: " + u.User.Email + ". Klik op de link in deze mail om uw account aan te maken"});
+
+                        _context.SaveChanges();
+                        return new OkObjectResult(new { emailSend = true, isError = false, response = "Wij hebben een validatie mail gestuurd naar: " + u.User.Email + ". Klik op de link in deze mail om uw account aan te maken" });
                     }
                 }
 
                 //User already exists
-                return new ConflictObjectResult(new {emailSend = false, isError = true,response = "Email bestaat al"});
+                return new ConflictObjectResult(new { emailSend = false, isError = true, response = "Email bestaat al" });
             }
 
             //Information was incorrect
-            return new ConflictObjectResult(new {emailSend = false, isError = true, response = "De gegeven informatie is niet correct"});
+            return new ConflictObjectResult(new { emailSend = false, isError = true, response = "De gegeven informatie is niet correct" });
         }
 
 
@@ -164,7 +181,7 @@ namespace webshop.Controllers
                 sb.Append("<p>TO: " + user.FirstName + " " + user.LastName + "/" + "</p><br/>");
 
                 sb.Append("<p>Here is the link:</p><br/>");
-                sb.Append("<p>" + "<a href=" + "https://localhost:5001/confirmation/" + confirmationToken + ""+">" + "Confirmation link" +"</a></p><br/>");  
+                sb.Append("<p>" + "<a href=" + "https://localhost:5001/confirmation/" + confirmationToken + "" + ">" + "Confirmation link" + "</a></p><br/>");
                 sb.Append("PLEASE DO NOT REPLY TO THIS MESSAGE AS IT IS FROM AN UNATTENDED MAILBOX. ANY REPLIES TO THIS EMAIL WILL NOT BE RESPONDED TO OR FORWARDED. THIS SERVICE IS USED FOR OUTGOING EMAILS ONLY AND CANNOT RESPOND TO INQUIRIES.");
 
                 SmtpClient SmtpServer = new SmtpClient("smtp.live.com");
@@ -197,13 +214,13 @@ namespace webshop.Controllers
         private bool IsEmailValid(string emailAddress)
         {
             try
-            {                
+            {
                 MailAddress eMailAddress = new MailAddress(emailAddress);
                 return true;
             }
             catch (FormatException)
             {
-                return false;  
+                return false;
             }
         }
     }
