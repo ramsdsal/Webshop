@@ -37,6 +37,34 @@ namespace webshop.Controllers
             return new OkObjectResult(result);
         }
 
+        [HttpGet("{id}")]
+        public IQueryable Get(int id)
+        {
+            var result = this._context.Users.Select(user => new
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate,
+                Email = user.Email
+            }).Where(user => user.Id == id);      
+            
+            return result;
+        }
+        
+        [HttpGet("getdata/{id}")]
+        public IActionResult GetData(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return new ObjectResult(user);
+        }
+
+
+
         [HttpGet("confirmation/{token}")]
         public IActionResult CheckRegisterConfirmationToken(string token)
         {
