@@ -7,9 +7,7 @@ import "./ManageProducts.css";
 export class ManageProducts extends Component {
   constructor() {
     super();
-    this.state = { isLoading: "isLoading", movies: [] };
-
-    fetch("/api/Product/GetAdminProducts/1/4")
+    fetch("/api/Product/adminproducts/0/8")
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -18,7 +16,10 @@ export class ManageProducts extends Component {
           movies: data.items,
           isLoading: "Not needed"
         });
-      });
+        console.log(this.state.movies)
+        });
+    this.state = { isLoading: "isLoading", movies: [] };
+    
   }
 
   renderProductTable() {
