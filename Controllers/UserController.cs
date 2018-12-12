@@ -35,7 +35,6 @@ namespace webshop.Controllers
             return new OkObjectResult(result);
         }
 
-<<<<<<< HEAD
         [HttpGet("{id}")]
         public IQueryable Get(int id)
         {
@@ -64,7 +63,6 @@ namespace webshop.Controllers
 
 
 
-=======
         [HttpGet("confirmation/{token}")]
         public IActionResult CheckRegisterConfirmationToken(string token)
         {
@@ -81,7 +79,6 @@ namespace webshop.Controllers
             return new OkObjectResult(false);
         }
 
->>>>>>> 4be5a797de42c8a2ef13954836fe9a79b05ad01e
 		[HttpPost]
         public IActionResult Post([FromBody]UserAddress u)//Check of email al bestaat, Kijk hoe je email kan versturen (Smtp client)
         {
