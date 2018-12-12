@@ -10,14 +10,10 @@ import { AddProduct } from "./components/Pages/AddProduct";
 import { ManageUsers } from "./components/Pages/ManageUsers";
 import { Login } from "./components/Login";
 import { ConfirmationMail } from "./components/ConfirmationMail";
-<<<<<<< HEAD
-import { ShoppingCart } from "./components/ShoppingCart";
-import { UserProfile } from "./components/Pages/UserProfile";
-=======
 import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
 import { UpdateUser } from "./components/Pages/UpdateUser";
->>>>>>> c390d574d7afbedf1032e3d7ddd7eba5eb0951ff
 import { Statistics } from "./components/Pages/Statistics";
+import { UserProfile } from "./components/Pages/UserProfile";
 
 export default class App extends Component {
   displayName = App.name;
