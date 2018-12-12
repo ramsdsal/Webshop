@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, Segment, Table } from "semantic-ui-react";
 import "./Statistics.css";
 import {Pie, Line} from 'react-chartjs-2';
 
@@ -40,17 +40,14 @@ export class Statistics extends Component {
    
     return (
       <Container style={{ marginTop: "7em" }}>
+      <Table size="massive">
+      <Table.Row>
         <Line
           height={25}
           width={25}
           data = { this.state.chartData }
           options={{
             maintainAspectRatio: false,
-            title:{
-              display:true,
-              text:'Verkoop 2018',
-              fontSize: 25
-            },
             legend:{
               display:true,
               position:'bottom'
@@ -64,25 +61,22 @@ export class Statistics extends Component {
           }
            }}
         />
+        </Table.Row>
+        <Table.Row>
         <Pie
         height={25}
         width={25}
           data={this.state.chartData}
           options={{
             maintainAspectRatio: false,
-            title:{
-              display:true,
-              text:'Product meest verkocht',
-              fontSize: 25
-            },
             legend:{
               display:true,
               position:'right'
             }
            }}
         />
-        
-        
+        </Table.Row>
+        </Table>
       </Container>
     );
   }
