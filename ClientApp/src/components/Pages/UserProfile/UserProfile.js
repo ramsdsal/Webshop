@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './UserProfile.css';
-import { Link, NavLink} from "react-router-dom";
-import { RouteComponentProps } from 'react-router';
 
 
 export class UserProfile extends Component{
@@ -20,7 +18,7 @@ export class UserProfile extends Component{
     
     
     render() {
-        if (this.state.user == "isLoading")
+        if (this.state.user === "isLoading")
         {
             return <p>Loading...</p>
         }
