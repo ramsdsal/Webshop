@@ -1,3 +1,14 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import thunkMiddleware from "redux-thunk";
+import { createLogger } from "redux-logger";
+import rootReducer from "../reducer";
 
-export const store = createStore();
+const loggerMiddleware = createLogger();
+
+export const store = createStore(
+  rootReducer,
+  {},
+  applyMiddleware(thunkMiddleware, loggerMiddleware)
+);
+
+store.dispatch({ type: "ALERT_SUCCESS", message: "Voce entrou" });

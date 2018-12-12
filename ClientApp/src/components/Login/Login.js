@@ -1,46 +1,91 @@
 import React, { Component } from "react";
-import "./Login.css";
+import { connect } from "react-redux";
+import { Button, Container, Segment, Header, Form } from "semantic-ui-react";
+import { Redirect } from "react-router-dom";
 
-export class Login extends Component {
-  constructor() {
-    super();
-    this.state = { username: "", password: "" };
+import { userActions } from "../../Redux/actions";
+
+class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: "",
+      password: "",
+      submitted: false
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.setState({ submitted: true });
+    const { username, password } = this.state;
+    const { dispatch } = this.props;
+    console.log(this.state);
+
+    if (username && password) {
+      dispatch(userActions.login(username, password));
+    }
   }
 
   render() {
-    return (
-      <div className="container">
-        <h3>Log in op je account</h3>
-        <form>
-          <div className="form-group">
-            <h5>Email address</h5>
-            <input
-              type="Email"
-              className="form-control"
-              id="email"
-              placeholder="Email"
-            />
-          </div>
-          <div className="form-group">
-            <h5>Wachtwoord</h5>
-            <div className="logintextbox">
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                placeholder="Wachtwoord"
-              />
-            </div>
-          </div>
+    const { loggedIn } = this.props;
+    const { username, password, submitted } = this.state;
 
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary">
-              Inloggen
-            </button>
-            <a type="link">Wachtwoord vergeten?</a>
-          </div>
-        </form>
-      </div>
+    return (
+      <Container style={{ marginTop: "7em" }}>
+        {loggedIn ? <Redirect to={"/"} /> : ""}
+        <Header as="h2" attached="top">
+          Login
+        </Header>
+        <Segment attached>
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Field>
+              <Form.Input
+                fluid
+                label="Email"
+                placeholder="Email"
+                error={submitted && !username}
+                onChange={this.handleChange}
+                name="username"
+                value={username}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Form.Input
+                fluid
+                label="Password"
+                placeholder="Password"
+                error={submitted && !password}
+                type="password"
+                onChange={this.handleChange}
+                name="password"
+                value={password}
+              />
+            </Form.Field>
+
+            <Button type="submit">Submit</Button>
+          </Form>
+        </Segment>
+      </Container>
     );
   }
 }
+
+function mapStateToProps(state) {
+  const { loggedIn } = state.authentication;
+  return {
+    loggedIn
+  };
+}
+
+const connectedLoginPage = connect(mapStateToProps)(Login);
+export { connectedLoginPage as Login };

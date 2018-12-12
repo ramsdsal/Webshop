@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, Form } from "semantic-ui-react";
+import { connect } from "react-redux";
 
 class AddToShopingCart extends Component {
   constructor(props) {
@@ -43,6 +44,7 @@ class AddToShopingCart extends Component {
     else items[obj] = { id: this.state.movieId, qt: this.state.amount };
     window.localStorage.setItem("cart", JSON.stringify(items));
     this.setState({ ...this.state, added: true });
+    this.props.dispatch({ type: "CART_COUNTER_UPDATE" });
   };
 
   IsAdded = () => {
@@ -74,4 +76,11 @@ class AddToShopingCart extends Component {
   }
 }
 
-export default AddToShopingCart;
+const mapDispatchToProps = dispatch => {
+  return {
+    updateCart: () => {
+      dispatch({ type: "CART_COUNTER_UPDATE" });
+    }
+  };
+};
+export default connect(mapDispatchToProps)(AddToShopingCart);

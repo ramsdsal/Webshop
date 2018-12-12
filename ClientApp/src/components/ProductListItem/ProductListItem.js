@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import "./ProductListItem.css";
 import { Button, Card, Image, Grid, Label } from "semantic-ui-react";
-import { AddToShopingCartHome } from "../ShoppingCart/AddToShoppingCartHome";
+import AddToShopingCartHome from "../ShoppingCart/AddToShoppingCartHome";
 
 export default class ProductListItem extends React.Component {
   render() {

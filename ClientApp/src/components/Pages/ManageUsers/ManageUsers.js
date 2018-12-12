@@ -12,7 +12,6 @@ export class ManageUsers extends Component {
     fetch("/api/User")
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         this.setState({ ...this.state, users: data, isLoading: "Not needed" });
       });
   }
@@ -41,9 +40,11 @@ export class ManageUsers extends Component {
                 </button>
               </td>
               <td>
-                <button className="btn btn-primary" type="button">
-                  update
-                </button>
+                <Link to={`/updateuser/${user.id}`}>
+                  <button className="btn btn-primary" type="button">
+                    Update
+                  </button>
+                </Link>
               </td>
             </tr>
           ))}
