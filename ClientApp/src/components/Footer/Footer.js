@@ -63,7 +63,9 @@ export class Footer extends Component {
             </Grid>
 
             <Divider inverted section />
-            <Image centered size="mini" src="/logo.png" />
+            <Grid.Row>
+            <Image centered size="mini" src="/MM-logo.png" />
+            </Grid.Row>
             <List horizontal inverted divided link>
               <List.Item as="a" href="#">
                 Site Map
