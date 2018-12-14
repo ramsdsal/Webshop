@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, Grid, Header, Segment } from "semantic-ui-react";
 import "./Statistics.css";
 import {Pie, Line, Bar} from 'react-chartjs-2';
 
@@ -15,7 +15,14 @@ export class Statistics extends Component {
             {
               label:'Aantal verkocht',
               data: [1,1,1,1,1,1,1],
-              backgroundColor:'rgba(54, 162, 235, 0.6)',  
+              backgroundColor:  ['rgba(255, 99, 132, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+              'rgba(255, 206, 86, 0.6)',
+              'rgba(75, 192, 192, 0.6)',
+              'rgba(153, 102, 255, 0.6)',
+              'rgba(255, 159, 64, 0.6)',
+              'rgba(245, 199, 102, 0.6)',
+              'rgba(75, 99, 86, 0.6)' ] 
             }
           ]
         },
@@ -32,8 +39,7 @@ export class Statistics extends Component {
       }
   fetch("/api/Order/GetMonth")
     .then(response => response.json())
-    .then(data => {
-      this.setState({
+    .then(data => {this.setState({
         ...this.state,
         data : data
       });
@@ -62,17 +68,56 @@ export class Statistics extends Component {
    
     return (
       <Container style={{ marginTop: "7em" }}>
-        <Bar
-          height={5}
-          width={10}
-          data = { this.state.chartData1 }
+      <Grid divided='vertically'>
+    <Grid.Row columns={2}>
+      <Grid.Column>
+      <Header as='h2' attached='top' textAlign="center">
+      Verkocht afgelopen maanden
+    </Header>
+    <Segment attached>
+      <Bar
+          height={200}
+          width={200}
+          data = { this.state.chartData }
+          options={{
+            maintainAspectRatio: false
+           }}
+        />
+        </Segment>
+      </Grid.Column>
+      <Grid.Column>
+      <Header as='h2' attached='top' textAlign="center">
+      Meest verkochte producten
+    </Header>
+    <Segment attached>
+      <Pie
+        height={200}
+        width={200}
+          data={this.state.chartData}
           options={{
             maintainAspectRatio: false,
-            title:{
+            legend:{
               display:true,
-              text:'Verkoop 2018',
-              fontSize: 25
-            },
+              position:'right'
+            }
+           }}
+        />
+        </Segment>
+      </Grid.Column>
+    </Grid.Row>
+
+    <Grid.Row columns={1}>
+      <Grid.Column>
+      <Header as='h2' attached='top' textAlign="center">
+      Verloop in product prijs
+    </Header>
+    <Segment attached>
+      <Line
+          height={150}
+          width={150}
+          data = { this.state.chartData }
+          options={{
+            maintainAspectRatio: false,
             legend:{
               display:true,
               position:'bottom'
@@ -86,26 +131,12 @@ export class Statistics extends Component {
           }
            }}
         />
-        <Pie
-        height={10}
-        width={10}
-          data={this.state.chartData2}
-          options={{
-            maintainAspectRatio: false,
-            title:{
-              display:true,
-              text:'Product meest verkocht',
-              fontSize: 25
-            },
-            legend:{
-              display:true,
-              position:'right'
-            }
-           }}
-        />
-        
-        
-      </Container>
+        </Segment>
+      </Grid.Column>
+    </Grid.Row>
+  </Grid>
+  </Container>
+
     );
   }
 }

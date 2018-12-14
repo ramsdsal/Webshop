@@ -29,7 +29,7 @@ class Header extends Component {
             <Menu.Item as={Link} to="/">
               <Image
                 size="mini"
-                src="/logo.png"
+                src="MM-logo.png"
                 style={{ marginRight: "1.5em" }}
               />
               Media Mania
