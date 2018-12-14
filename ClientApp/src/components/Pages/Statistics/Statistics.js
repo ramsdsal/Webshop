@@ -9,7 +9,7 @@ export class Statistics extends Component {
   constructor(props){
     super(props);
       this.state = {
-        chartData: {      
+        chartData1: {      
           labels: ["januari", "februari", "maart", "april", "mei", "juni", "september", "december"],
           datasets: [
             {
@@ -25,6 +25,16 @@ export class Statistics extends Component {
               'rgba(75, 99, 86, 0.6)' ] 
             }
           ]
+        },
+        chartData2: {
+          labels:[],
+          datasets: [
+            {
+              label : 'Producten meest verkocht',
+              data : [],
+              backgroundColor:'rgba(54, 162, 235, 0.6)'
+            }
+          ]
         }
       }
   fetch("/api/Order/GetMonth")
@@ -33,8 +43,23 @@ export class Statistics extends Component {
         ...this.state,
         data : data
       });
-      this.state.chartData.labels = this.state.data.months
-      this.state.chartData.datasets[0].data = this.state.data.sums
+      this.state.chartData1.labels = this.state.data.months
+      this.state.chartData1.datasets[0].data = this.state.data.sums
+      console.log(this.state.data)
+      console.log(this.state.chartData1.datasets[0].data)
+      console.log(this.state.chartData1.labels)
+    });
+  fetch("/api/Order/mostProducts")
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        data2 : data
+      });
+      this.state.chartData2.labels = this.state.data2.titles
+      this.state.chartData2.datasets[0].data = this.state.data2.total
+      console.log(this.state.data2)
+      console.log(this.state.chartData2.labels)
+      console.log(this.state.chartData2.datasets[0].data)
     });
 
 }
