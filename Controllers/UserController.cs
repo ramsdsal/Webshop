@@ -95,10 +95,10 @@ namespace webshop.Controllers
 
                 _context.SaveChanges();
 
-                return new OkObjectResult("Gebruiker is aangepast.");
+                return new OkObjectResult(new {isError = false, userUpdated = true, response = "Gebruiker is aangepast."});
             }
 
-            return new OkObjectResult("Gebruiker niet gevonden in de database.");
+            return new OkObjectResult(new {isError = true, userUpdated = false, response = "Gebruiker bestaat niet."});
         }
 
         [HttpPost("AddUserAddress")]
@@ -106,7 +106,7 @@ namespace webshop.Controllers
         {
             if (userAddress == null)
             {
-                return new OkObjectResult("Adres is niet goed ingevult");
+                return new OkObjectResult(new {isError = true, addresAdded = false, response = "Adres is niet goed ingevuld."});
             }
 
             User user = _context.Users.FirstOrDefault(u => u.Id == userAddress.UserId);
@@ -122,12 +122,16 @@ namespace webshop.Controllers
                 userAddress.User = user;
                 _context.UserAddresses.Add(userAddress);
                 _context.SaveChanges();
+                
+                return new OkObjectResult(new {isError = false, addresAdded = true, response = "Adres is succesvol toegevoegd."});
             }
 
-            return new OkObjectResult("Adres van gebruiken is toegevoegd");
+            return new OkObjectResult(new {isError = true, addresAdded = false, response = "Gebruiker bestaat niet."});
+
         }
+
         [HttpPost("authenticate")]
-        public IActionResult authenticate([FromBody] User u)
+        public IActionResult Authenticate([FromBody] User u)
         {
 
             var loginToken = Guid.NewGuid().ToString();
@@ -154,9 +158,7 @@ namespace webshop.Controllers
                             u.Id,
                             u.FirstName,
                             u.LastName,
-                            Day = u.BirthDate.Day,
-                            Month = u.BirthDate.Month,
-                            Year = u.BirthDate.Year,
+                            u.BirthDate,
                             u.Email,
                             Addresses = u.Addresses.Select(a => a).Select(ad => ad.Address),
                         }).Where(u => u.Id == id);
@@ -190,6 +192,9 @@ namespace webshop.Controllers
                         _context.SaveChanges();
                         return new OkObjectResult(new { emailSend = true, isError = false, response = "Wij hebben een validatie mail gestuurd naar: " + u.User.Email + ". Klik op de link in deze mail om uw account aan te maken" });
                     }
+
+                    return new OkObjectResult(new { emailSend = false, isError = true, response = "De email kon niet verzonden worden, de email bestaat niet" });
+
                 }
 
                 //User already exists
@@ -199,7 +204,6 @@ namespace webshop.Controllers
             //Information was incorrect
             return new ConflictObjectResult(new { emailSend = false, isError = true, response = "De gegeven informatie is niet correct" });
         }
-
 
         private bool SendEmail(User user, string confirmationToken)
         {
