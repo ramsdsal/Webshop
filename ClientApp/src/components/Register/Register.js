@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Form, Message } from "semantic-ui-react";
+import { Container, Form, Message, Segment, Header } from "semantic-ui-react";
 
 export class Register extends Component {
   constructor(props) {
@@ -12,9 +12,7 @@ export class Register extends Component {
         password: "",
       
         //Birthday
-        day: "",
-        month:"", 
-        year: "",
+        birthDate: "",
 
         street: "",
         city: "",
@@ -24,11 +22,13 @@ export class Register extends Component {
         //Form validation and server response
         createUserError: false,
         emailSend: false,
-        serverResponse: ""
+        serverResponse: "",
+        formIsLoading: false
 		};
 	}
 
   sendRegisterUser = () => {
+    this.setState({...this.state, formIsLoading: true})
 
     var today = new Date();
     var dateFrom = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -36,8 +36,8 @@ export class Register extends Component {
     var jsonToSend = {
 			"User":{
 				firstName: this.state.firstName,
-				lastName: this.state.lastName,
-				birthDate: this.state.year + '-' + this.state.month + '-' + this.state.day,
+                lastName: this.state.lastName,
+                birthDate: this.state.birthDate,
 				email: this.state.email,
 				password: this.state.password,
 			},
@@ -60,30 +60,48 @@ export class Register extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
-      this.setState({...this.state, serverResponse: data.response, createUserError: data.isError, emailSend: data.emailSend})
+      this.setState({...this.state, serverResponse: data.response, createUserError: data.isError, emailSend: data.emailSend, formIsLoading: false})
     });
   };
 
-  handleChange = (e, { name, value }) =>this.setState({ [name]: value });
+  handleChange = (e, { name, value }) =>this.setState({ [name]: value }, console.log(this.state));
 
   render() {
+
+    var today = new Date();
+
+    var monthToday = today.getUTCMonth() + 1;
+    if (monthToday < 10) {
+      monthToday = "0" + monthToday;
+    }
+    var dayToday = today.getDate();
+    if (dayToday < 10) {
+      dayToday = "0" + dayToday;
+    }
+
+    var currentDate = today.getFullYear() + '-' + monthToday + '-' + dayToday;
+
     return (
 			<Container style={{ marginTop: "7em" }}>
-                <Form 
+                <Header as="h2" attached="top">
+                     Registreren
+                </Header>
+                <Segment>
+                <Form
+                    loading = {this.state.formIsLoading}
                     onSubmit={this.sendRegisterUser}
                     error={this.state.createUserError}
                     success={this.state.emailSend}
                 >
                 {
-                    this.state.createUserError ? <Message error 
+                    this.state.createUserError ? <Message size='large' error 
                     header="Account kon niet aangemaakt worden" 
                     content={this.state.serverResponse}/>
                     :
                     null
                 }
                 {
-                    this.state.emailSend ? <Message success 
+                    this.state.emailSend ? <Message size='large' success 
                     header="Validatie email verstuurd!" 
                     content={this.state.serverResponse}/>
                     : 
@@ -106,6 +124,16 @@ export class Register extends Component {
                             name='lastName'
                             onChange={this.handleChange}
                         />
+                        <Form.Input 
+                            required 
+                            label='Geboortedatum' 
+                            type='date' 
+                            size='massive' 
+                            name="birthDate" 
+                            max= {currentDate}
+                            min= "1800-07-27"
+                            onChange={this.handleChange} 
+                        />
                     </Form.Group>
                     <Form.Group unstackable widths={2}>
                         <Form.Input
@@ -115,6 +143,7 @@ export class Register extends Component {
                             placeholder='E-mail'
                             name='email'
                             onChange={this.handleChange}
+                            type="email"
                         />
                         <Form.Input
                             required
@@ -159,36 +188,7 @@ export class Register extends Component {
                             name='zipCode'
                             onChange={this.handleChange}
                         />
-                    </Form.Group>
-                    <Form.Group unstackable widths={3}>
-                        <Form.Input
-                            required
-                            size='massive'
-                            label='Dag'
-                            placeholder='Dag'
-                            name='day'
-                            type='number'
-                            onChange={this.handleChange}
-                        />
-                        <Form.Input
-                            required
-                            size='massive'
-                            label='Maand'
-                            placeholder='Maand'
-                            name='month'
-                            type='number'
-                            onChange={this.handleChange}
-                        />
-                        <Form.Input
-                            required
-                            size='massive'
-                            label='Jaar'
-                            placeholder='Jaar'
-                            name='year'
-                            type='number'
-                            onChange={this.handleChange}
-                        />
-                    </Form.Group> 			
+                    </Form.Group>		
                     <Form.Button 
                     content='Submit' 
                     color='blue'
@@ -198,16 +198,16 @@ export class Register extends Component {
                         || !this.state.firstName
                         || !this.state.lastName
                         || !this.state.password
-                        || !this.state.day
-                        || !this.state.month
-                        || !this.state.year
                         || !this.state.street
                         || !this.state.city
                         || !this.state.country
                         || !this.state.zipCode
+                        || !this.state.birthDate
+                        || this.formIsLoading
                      }
                     />
                 </Form>
+                </ Segment>
 			</ Container>
     );
   }
