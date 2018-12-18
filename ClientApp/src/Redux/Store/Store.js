@@ -10,5 +10,3 @@ export const store = createStore(
   {},
   applyMiddleware(thunkMiddleware, loggerMiddleware)
 );
-
-store.dispatch({ type: "ALERT_SUCCESS", message: "Voce entrou" });

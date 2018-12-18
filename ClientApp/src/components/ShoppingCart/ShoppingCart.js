@@ -18,7 +18,9 @@ class ShoppingCart extends Component {
     this.state = {
       movies: [],
       shoppingcart: [],
-      index: []
+      index: [],
+      total: 0,
+      discount: 0
     };
   }
 
@@ -37,10 +39,34 @@ class ShoppingCart extends Component {
   };
 
   getQt = id => {
-    let obj = this.state.shoppingcart.findIndex(x => x.id === id);
-    if (obj !== -1) return this.state.shoppingcart[obj].qt;
+    const b = this.state.shoppingcart.find(item => item.id === id);
+    if (b) {
+      return b.qt;
+    }
+  };
 
-    return;
+  setTotal = () => {
+    let movies = this.state.movies;
+    let sh = this.state.shoppingcart;
+    console.log(movies);
+    for (var i = 0; i < sh.length; i++) {
+      console.log(sh[i]);
+    }
+    return 1;
+  };
+
+  getTotal = () => {
+    let movies = this.state.movies;
+    let sh = this.state.shoppingcart;
+    let total = 0;
+
+    for (var i = 0; i < sh.length; i++) {
+      var obj = movies.find(item => item.id === sh[i].id);
+      if (obj) {
+        total = total + sh[i].qt * obj.price;
+      }
+    }
+    return total;
   };
 
   getShoppingCartFromDb = () => {
@@ -55,6 +81,7 @@ class ShoppingCart extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({ ...this.state, movies: data });
+        this.setState({ ...this.state, total: this.getTotal() });
       })
       .catch(() => {
         console.log("error");
@@ -65,13 +92,18 @@ class ShoppingCart extends Component {
     let items = this.state.shoppingcart;
     let index = items.findIndex(x => x.id === id);
     let obj = items[index];
+    let movie = this.state.movies.find(x => x.id === id);
 
     switch (op) {
       case "add":
         if (obj.qt < max) {
           obj.qt = obj.qt + 1;
           items[index] = obj;
-          this.setState({ ...this.state, shoppingcart: items });
+          this.setState({
+            ...this.state,
+            shoppingcart: items,
+            total: this.state.total + movie.price
+          });
           localStorage.setItem("cart", JSON.stringify(items));
         }
         break;
@@ -79,7 +111,11 @@ class ShoppingCart extends Component {
         if (obj.qt > 1) {
           obj.qt = obj.qt - 1;
           items[index] = obj;
-          this.setState({ ...this.state, shoppingcart: items });
+          this.setState({
+            ...this.state,
+            shoppingcart: items,
+            total: this.state.total - movie.price
+          });
           localStorage.setItem("cart", JSON.stringify(items));
         }
         break;
@@ -92,6 +128,8 @@ class ShoppingCart extends Component {
     let items1 = this.state.movies;
     let index = items.findIndex(x => x.id === id);
     let index1 = items1.findIndex(x => x.id === id);
+    let tot = items[index].qt * items1[index1].price;
+
     items.splice(index, 1);
     items1.splice(index1, 1);
     localStorage.setItem("cart", JSON.stringify(items));
@@ -99,7 +137,8 @@ class ShoppingCart extends Component {
       ...this.state,
       shoppingcart: items,
       index: _.map(items, "id"),
-      movies: items1
+      movies: items1,
+      total: this.state.total - tot
     });
     this.props.dispatch({ type: "CART_COUNTER_UPDATE" });
   };
@@ -133,9 +172,9 @@ class ShoppingCart extends Component {
               {item.title}
               <List floated="right" horizontal divided size="big">
                 <List.Item>In voorraad: {item.quantity} stuk(s).</List.Item>
-                <List.Item>Prijs: {item.price}€</List.Item>
+                <List.Item>Prijs: {item.price.toLocaleString()}€</List.Item>
                 <List.Item>
-                  Totaal: {item.price * this.getQt(item.id)}€
+                  Totaal: {item.price * this.getQt(item.id).toLocaleString()}€
                 </List.Item>
                 <List.Item>
                   <Form>
@@ -175,16 +214,24 @@ class ShoppingCart extends Component {
           <List divided inverted relaxed>
             <List.Item>
               <List.Content floated="right">
-                <List.Header>Subtotaal: €</List.Header>
+                <List.Header>
+                  Subtotaal: {this.state.total.toLocaleString()} €
+                </List.Header>
               </List.Content>
             </List.Item>
             <List.Item>
               <List.Content floated="right">
-                <List.Header>Discount: 10%</List.Header>
+                <List.Header>Discount: {this.state.discount}%</List.Header>
               </List.Content>
             </List.Item>
             <List.Item>
-              <List.Content floated="right">Totaal: 270€</List.Content>
+              <List.Content floated="right">
+                <List.Item>
+                  <List.Header>
+                    Totaal: {this.state.total.toLocaleString()} €
+                  </List.Header>
+                </List.Item>
+              </List.Content>
             </List.Item>
             <List.Item>
               <List.Content floated="right">
