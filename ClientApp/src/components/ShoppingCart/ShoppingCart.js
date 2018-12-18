@@ -164,7 +164,7 @@ class ShoppingCart extends Component {
   render() {
     return (
       <Container style={{ marginTop: "7em" }}>
-        <Segment inverted>
+        <Segment inverted size="big">
           <List divided inverted relaxed>
             <List.Item>
               <List.Content>
