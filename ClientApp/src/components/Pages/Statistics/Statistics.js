@@ -9,29 +9,15 @@ export class Statistics extends Component {
   constructor(props){
     super(props);
     this.state = {
-      dropDownStanIn : [{
-        text : 'Mission: Impossible - Fallout',
-        value: 'Mission: Impossible - Fallout'
-      },
-      {
-        text : 'Bohemian Rhapsody',
-        value : 'Bohemian Rhapsody'
-      },
-      {
-        text : 'The Equalizer 2',
-        value : 'The Equalizer 2'
-      },
-      {
-        text : 'Ralph Breaks the Internet',
-        value : 'Ralph Breaks the Internet'
-      }
+      movieId : 11, 
+      dropDownList : [
     ],
       barChartData: {
         labels : [ "A", "B" ],
         datasets: [
           {
             label:'Aantal verkocht',
-            data: [2, 8],
+            data: [],
             backgroundColor:  ['rgba(255, 99, 132, 0.6)',
             'rgba(54, 162, 235, 0.6)',
             'rgba(255, 206, 86, 0.6)',
@@ -49,11 +35,11 @@ export class Statistics extends Component {
         ]
       },
       pieChartData: {
-        labels:["Hello", "Wow", "Yo"],
+        labels:[],
         datasets: [
           {
             label : 'Producten meest verkocht',
-            data : [5, 2, 8],
+            data : [],
             backgroundColor:[
               'rgba(54, 162, 235, 0.6)',
               'rgba(33, 189, 111, 0.6)',
@@ -65,22 +51,23 @@ export class Statistics extends Component {
         ]
       },
       lineChartData: {
-        labels:["2018-12-09", "2019-01-02", "2019-02-09", "2019-03-12"],
+        labels:[],
         datasets : [
           {
             label : "Verloop van tijd",
-            data : [10.90, 11.90, 14.99, 12.95],
+            data : [ ],
             backgroundColor : 'rgba(53, 162,220, 0.5)'
           }
         ]
       }
     }
     console.log(this.state.barChartData.datasets)
-    fetch("/api/Order/GetStats/Mission: Impossible - Fallout")
+    fetch("/api/Order/GetStats/")
       .then(response => response.json())
       .then(data => {this.setState({
           ...this.state,
           data : data,
+          dropDownList : data.dropdown,
           barChartData : {
             ...this.state.barChartData,
             labels : data.months,
@@ -92,20 +79,28 @@ export class Statistics extends Component {
             labels : data.titles,
             datasets : 
             [{...this.state.pieChartData.datasets[0], data : data.total}]
-          },
-          lineChartData : {
-            ...this.state.lineChartData,
-            labels : data.dates,
-            datasets : 
-            [{...this.state.lineChartData.datasets[0], data : data.prices}]
           }
         });
         console.log(this.state.data)
-        console.log(this.state.barChartData.datasets)
-      });
-      
-  }
+      });      
+  };
   
+  changeMovieId = (e, {value}) =>
+  {
+    fetch("/api/Order/GetPriceChanges/" + value)
+      .then(response => response.json())
+      .then(data => {this.setState({
+        ...this.state,
+        lineChartData : {
+          ...this.state.lineChartData,
+          labels : data.dates,
+          datasets : 
+          [{...this.state.lineChartData.datasets[0], data : data.prices}]
+        
+        }
+      })})
+  };
+
   render() {
     
     return (
@@ -201,7 +196,7 @@ export class Statistics extends Component {
            }}
         />
         </Segment>
-        <Dropdown placeholder='Select Movie' fluid selection options={this.state.dropDownStanIn}/>
+        <Dropdown placeholder='Select Movie' fluid selection options={this.state.dropDownList} onChange={this.changeMovieId}/>
       </Grid.Column>
     </Grid.Row>
 </Grid>
