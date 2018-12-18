@@ -25,8 +25,8 @@ namespace webshop.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetStats/{requestedTitle}")]
-        public IActionResult GetYearMonth(string requestedTitle)
+        [HttpGet("GetStats/")]
+        public IActionResult GetYearMonth()
         {
             var testMonths = new List<string>();
             
@@ -35,8 +35,6 @@ namespace webshop.Controllers
             var sums = new List<double>();
             var titles = new List<string>();
             var quantity = new List<int>();
-            var prices = new List<double>();
-            var dates = new List<string>();
             string[] sampleMonths = DateTimeFormatInfo.CurrentInfo.MonthNames;
             
 
@@ -57,14 +55,12 @@ namespace webshop.Controllers
                              Sum = groupTable.Sum(t => t.Price),
                              Year = groupTable.Key.Year
                          };
-
-            var priceChange = from p in _context.Prices
-                         join pr in _context.Products on p.ProductId equals pr.Id
-                         where pr.Title == requestedTitle
-                         orderby p.DateOn
-                         select new { Title = pr.Title, Price = p.Value, Date = p.DateOn.Date };
-
             
+            var dropDownTitles = this._context.Products.Select(product => new
+            {
+                text = product.Title,
+                value = product.Id,
+            }).ToList();
 
             foreach (var table in titleQuantity)
             {
@@ -91,17 +87,36 @@ namespace webshop.Controllers
                     sums.Add(0);
                 }
             }
+
+            var result = new {
+                Months = months, Sums = sums, 
+                Titles = titles, Total = quantity, 
+                Dropdown = dropDownTitles};
+
+
+            return Ok(result);
+        }
+        [HttpGet("GetPriceChanges/{id}")]
+        public IActionResult GetPriceChanges(int id)
+        {
+            var prices = new List<double>();
+            var dates = new List<string>();
+
+            var priceChange = 
+                from p in _context.Prices
+                join pr in _context.Products on p.ProductId equals pr.Id
+                where p.ProductId == id
+                orderby p.DateOn
+                select new { Title = pr.Title, Price = p.Value, Date = p.DateOn.Date };
+            
+            
             foreach (var table in priceChange)
             {
                 prices.Add(table.Price);
                 dates.Add(table.Date.ToString("dd-MM-yyyy"));
             }
 
-            var result = new {
-                Months = months, Sums = sums, 
-                Titles = titles, Total = quantity, 
-                Dates = dates, Prices = prices};
-
+            var result = new { Dates = dates, Prices = prices };
 
             return Ok(result);
         }
