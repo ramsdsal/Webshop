@@ -48,6 +48,17 @@ namespace webshop.Controllers
             return new OkObjectResult(result);
         }
 
+        [HttpGet("GetTitles")]
+        public IActionResult GetTitles()
+        {
+            var result = this._context.Products.Select(product => new
+            {
+                product.Title
+            }).ToList();
+
+            return new OkObjectResult(result);
+        }
+
         [HttpGet("{id}")]
         public IQueryable Get(int id)
         {
