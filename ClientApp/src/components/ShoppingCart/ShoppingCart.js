@@ -36,6 +36,7 @@ class ShoppingCart extends Component {
     let items = JSON.parse(window.localStorage.getItem("cart") || "[]");
     let result = _.map(items, "id");
     this.setState({ ...this.state, shoppingcart: items, index: result });
+    this.getDiscount();
   };
 
   getQt = id => {
@@ -59,7 +60,6 @@ class ShoppingCart extends Component {
     let movies = this.state.movies;
     let sh = this.state.shoppingcart;
     let total = 0;
-
     for (var i = 0; i < sh.length; i++) {
       var obj = movies.find(item => item.id === sh[i].id);
       if (obj) {
@@ -67,6 +67,24 @@ class ShoppingCart extends Component {
       }
     }
     return total;
+  };
+
+  getDiscount = () => {
+    return fetch("/api/discount", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.length !== 0)
+          this.setState({ ...this.state, discount: data[0].percentage });
+      })
+      .catch(() => {
+        console.log("error");
+      });
   };
 
   getShoppingCartFromDb = () => {
@@ -228,7 +246,10 @@ class ShoppingCart extends Component {
               <List.Content floated="right">
                 <List.Item>
                   <List.Header>
-                    Totaal: {this.state.total.toLocaleString()} €
+                    Totaal:{" "}
+                    {this.state.total -
+                      (this.state.total * this.state.discount) / 100}{" "}
+                    €
                   </List.Header>
                 </List.Item>
               </List.Content>
