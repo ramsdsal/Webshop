@@ -11,6 +11,7 @@ import {
 } from "semantic-ui-react";
 import _ from "lodash";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 class ShoppingCart extends Component {
   constructor(props) {
@@ -164,8 +165,8 @@ class ShoppingCart extends Component {
   render() {
     return (
       <Container style={{ marginTop: "7em" }}>
-        <Segment inverted size="big">
-          <List divided inverted relaxed>
+        <Segment size="massive">
+          <List divided relaxed>
             <List.Item>
               <List.Content>
                 <List.Header>Winkelwagen</List.Header>
@@ -187,7 +188,9 @@ class ShoppingCart extends Component {
           {this.state.movies.map(item => (
             <List.Item key={item.id}>
               <Image avatar src={item.poster} />
-              {item.title}
+              <List.Content>
+                <List.Header>{item.title}</List.Header>
+              </List.Content>
               <List floated="right" horizontal divided size="big">
                 <List.Item>In voorraad: {item.quantity} stuk(s).</List.Item>
                 <List.Item>Prijs: {item.price.toLocaleString()}€</List.Item>
@@ -228,8 +231,8 @@ class ShoppingCart extends Component {
             </List.Item>
           ))}
         </List>
-        <Segment inverted>
-          <List divided inverted relaxed>
+        <Segment size="massive" textAlign="center">
+          <List divided relaxed>
             <List.Item>
               <List.Content floated="right">
                 <List.Header>
@@ -247,16 +250,36 @@ class ShoppingCart extends Component {
                 <List.Item>
                   <List.Header>
                     Totaal:{" "}
-                    {this.state.total -
-                      (this.state.total * this.state.discount) / 100}{" "}
+                    {(
+                      this.state.total -
+                      (this.state.total * this.state.discount) / 100
+                    ).toLocaleString()}{" "}
                     €
                   </List.Header>
                 </List.Item>
               </List.Content>
             </List.Item>
             <List.Item>
-              <List.Content floated="right">
-                <Button>Checkout</Button>
+              <List.Content>
+                <Button.Group size="massive">
+                  <Link to="/">
+                    <Button
+                      content="Blijf shoppen"
+                      icon="shop"
+                      labelPosition="left"
+                    />
+                  </Link>
+                  <Button.Or />
+                  <Link to={"/checkout"}>
+                    <Button
+                      positive
+                      disabled={this.state.movies.length === 0}
+                      content="Verder"
+                      icon="arrow alternate circle right outline"
+                      labelPosition="right"
+                    />
+                  </Link>
+                </Button.Group>
               </List.Content>
             </List.Item>
           </List>

@@ -14,6 +14,7 @@ import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
 import { UpdateUser } from "./components/Pages/UpdateUser";
 import { Statistics } from "./components/Pages/Statistics";
 import { UserProfile } from "./components/Pages/UserProfile";
+import Checkout from "./components/Checkout/Checkout";
 
 export default class App extends Component {
   displayName = App.name;
@@ -43,8 +44,9 @@ export default class App extends Component {
         <Route path="/manageproducts" component={ManageProducts} />
         <Route path="/addproduct" component={AddProduct} />
         <Route path="/manageusers" component={ManageUsers} />
-        <Route path="/userprofile" component={UserProfile}/>
+        <Route path="/userprofile" component={UserProfile} />
         <Route path="/statistics" component={Statistics} />
+        <Route path="/checkout" component={Checkout} />
       </Layout>
     );
   }

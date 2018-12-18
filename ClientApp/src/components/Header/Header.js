@@ -97,13 +97,13 @@ class Header extends Component {
                     <Icon name="options" />
                     <Dropdown text="Admin" direction="left">
                       <Dropdown.Menu>
-                        <Dropdown.Item as={Link} to={"manageusers"}>
+                        <Dropdown.Item as={Link} to={"/manageusers"}>
                           Users manage
                         </Dropdown.Item>
-                        <Dropdown.Item as={Link} to={"manageproducts"}>
+                        <Dropdown.Item as={Link} to={"/manageproducts"}>
                           Products manage
                         </Dropdown.Item>
-                        <Dropdown.Item as={Link} to={"statistics"}>
+                        <Dropdown.Item as={Link} to={"/statistics"}>
                           Statistics
                         </Dropdown.Item>
                       </Dropdown.Menu>
