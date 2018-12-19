@@ -7,62 +7,62 @@ export class AddProduct extends Component {
     super(props);
 
     this.state = {
-      Title : "",
-      Description : "",
-      Released : "",
-      RunTime : "",
-      Poster : "",
-      AgeRating : "",
-      TrailerURL : "",
-      Quantity : "",
-      Category : "",
+      Title: "",
+      Description: "",
+      Released: "",
+      RunTime: "",
+      Poster: "",
+      AgeRating: "",
+      TrailerURL: "",
+      Quantity: "",
+      Category: "",
 
-      CategoryName : "",
-      CategoryDescription : ""
+      CategoryName: "",
+      CategoryDescription: ""
     };
   }
 
-  sendAddedProduct = () => {
-    var jsonToSend = {
-      "Product" : {
-        Title : this.state.Title,
-        Description : this.state.Description,
-        Released : this.state.Released,
-        RunTime : this.state.RunTime,
-        Poster : this.state.Poster,
-        AgeRating : this.state.AgeRating,
-        TrailerURL : this.state.TrailerURL,
-        Quantity : this.state.Quantity        
-      },
-    };
-    const rawResponse = fetch("/api/product/addproduct", {
-      method: "POST",
-      headers : {
-        Accept : "application/json",
-        "Content-Type" : "application/json"
-      },
-      body : JSON.stringify(jsonToSend)
-    });
-  }
-  
-  sendAddedCategory = () => {
-    var jsonToSend = {
-      "Category" : {
-        Name : this.state.CategoryName
-      },
-    };
-    const rawResponse = fetch("/api/category/addcategory", {
-      method : "POST",
-      headers : {
-        Accept : "application/json",
-        "Content-Type" : "application/json"
-      },
-      body : JSON.stringify(jsonToSend)
-    });
-  }
+  // sendAddedProduct = () => {
+  //   var jsonToSend = {
+  //     Product: {
+  //       Title: this.state.Title,
+  //       Description: this.state.Description,
+  //       Released: this.state.Released,
+  //       RunTime: this.state.RunTime,
+  //       Poster: this.state.Poster,
+  //       AgeRating: this.state.AgeRating,
+  //       TrailerURL: this.state.TrailerURL,
+  //       Quantity: this.state.Quantity
+  //     }
+  //   };
+  //   // const rawResponse = fetch("/api/product/addproduct", {
+  //   //   method: "POST",
+  //   //   headers: {
+  //   //     Accept: "application/json",
+  //   //     "Content-Type": "application/json"
+  //   //   },
+  //   //   body: JSON.stringify(jsonToSend)
+  //   // });
+  // };
 
-  handleChange = (e, { CategoryName, value }) => this.setState({ [CategoryName] : value}, console.log(this.state))
+  // sendAddedCategory = () => {
+  //   var jsonToSend = {
+  //     Category: {
+  //       Name: this.state.CategoryName
+  //     }
+  //   };
+  //   // const rawResponse = fetch("/api/category/addcategory", {
+  //   //   method : "POST",
+  //   //   headers : {
+  //   //     Accept : "application/json",
+  //   //     "Content-Type" : "application/json"
+  //   //   },
+  //   //   body : JSON.stringify(jsonToSend)
+  //   // });
+  // };
 
+  handleChange = (e, { CategoryName, value }) =>
+    this.setState({ [CategoryName]: value }, console.log(this.state));
 
   render() {
     return (

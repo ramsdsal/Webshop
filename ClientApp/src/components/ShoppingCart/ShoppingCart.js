@@ -61,8 +61,9 @@ class ShoppingCart extends Component {
     let movies = this.state.movies;
     let sh = this.state.shoppingcart;
     let total = 0;
+    let fn = item => item.id === sh[i].id;
     for (var i = 0; i < sh.length; i++) {
-      var obj = movies.find(item => item.id === sh[i].id);
+      var obj = movies.find(fn);
       if (obj) {
         total = total + sh[i].qt * obj.price;
       }

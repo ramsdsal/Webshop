@@ -44,6 +44,8 @@ class Checkout extends Component {
         return <h1>OVERZICHT</h1>;
       case 4:
         return <h1>SUCESS</h1>;
+      default:
+        return;
     }
   };
 

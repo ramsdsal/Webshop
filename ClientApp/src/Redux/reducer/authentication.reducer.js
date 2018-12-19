@@ -1,12 +1,11 @@
 import { userConstants } from "../constants";
-import { userService } from "../services";
 
 let user = JSON.parse(localStorage.getItem("user"));
 const initialState = user
   ? {
       loggedIn: true,
       user,
-      favorits: userService.favorits(user.id)
+      favorits: [] //na home pq aqui nao espera pela fetchsssss
     }
   : {};
 
