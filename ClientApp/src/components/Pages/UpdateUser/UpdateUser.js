@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Form, Message, Segment, Header, Table, Icon } from "semantic-ui-react";
 import "./UpdateUser.css";
 
-export class UpdateUser extends Component {// TODO: UPDATE DE ADRESSES TABLE MET DE NIEUWE ADRES ALS JE EEN ADRES TOEVOEGD
+export class UpdateUser extends Component {
   constructor(props) {
     super(props);
 
