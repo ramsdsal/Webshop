@@ -14,6 +14,7 @@ import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
 import { UpdateUser } from "./components/Pages/UpdateUser";
 import { Statistics } from "./components/Pages/Statistics";
 import { UserProfile } from "./components/Pages/UserProfile";
+import { UpdateProduct } from "./components/Pages/UpdateProduct/UpdateProduct";
 
 export default class App extends Component {
   displayName = App.name;
@@ -35,6 +36,10 @@ export default class App extends Component {
         <Route
           path="/updateuser/:userId"
           render={props => <UpdateUser userId={props.match.params.userId} />}
+        />
+        <Route
+          path="/updateproduct/:productId"
+          render={props => <UpdateProduct productId={props.match.params.productId} />}
         />
         <Route path="/fetchdata" component={FetchData} />
         <Route path="/login" component={Login} />
