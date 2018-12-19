@@ -10,6 +10,10 @@ namespace webshop.Models
         public Discount Discount { get; set; }
         public DateTime Date { get; set; }
         public int OrderStatus { get; set; }
+        public double Total { get; set; }
+        public double TotalWithDiscoun { get; set; }
+        public string Name { get; set; }
+        public string Bank { get; set; }
         public string ZipCode { get; set; }
         public string Street { get; set; }
         public string City { get; set; }

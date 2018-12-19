@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using webshop.Models;
@@ -9,9 +10,10 @@ using webshop.Models;
 namespace webshop.Migrations
 {
     [DbContext(typeof(DbConnectionContext))]
-    partial class DbConnectionContextModelSnapshot : ModelSnapshot
+    [Migration("20181218195506_OrderAangepast")]
+    partial class OrderAangepast
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,8 +120,6 @@ namespace webshop.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Bank");
-
                     b.Property<string>("City");
 
                     b.Property<string>("Country");
@@ -127,8 +127,6 @@ namespace webshop.Migrations
                     b.Property<DateTime>("Date");
 
                     b.Property<int>("DiscountId");
-
-                    b.Property<string>("Name");
 
                     b.Property<int>("OrderStatus");
 

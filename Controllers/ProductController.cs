@@ -91,6 +91,17 @@ namespace webshop.Controllers
 
             return result;
         }
+        
+        [HttpGet("GetTitles")]
+        public IActionResult GetTitles()
+        {
+            var result = this._context.Products.Select(product => new
+            {
+                product.Title
+            }).ToList();
+
+            return new OkObjectResult(result);
+        }
 
         [HttpGet("{id}")]
         public IQueryable Get(int id)
@@ -132,8 +143,6 @@ namespace webshop.Controllers
             return new OkObjectResult(result);
 
         }
-
-
 
         [HttpGet("adminproducts/{index_page}/{page_size}")]
         public IActionResult GetAdminProducts(int index_page, int page_size)

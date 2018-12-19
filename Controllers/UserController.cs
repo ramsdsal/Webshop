@@ -47,11 +47,11 @@ namespace webshop.Controllers
                 LastName = user.LastName,
                 BirthDate = user.BirthDate,
                 Email = user.Email
-            }).Where(user => user.Id == id);      
-            
+            }).Where(user => user.Id == id);
+
             return result;
         }
-        
+
         [HttpGet("getdata/{id}")]
         public IActionResult GetData(int id)
         {
@@ -134,17 +134,19 @@ namespace webshop.Controllers
         public IActionResult Authenticate([FromBody] User u)
         {
 
+            var loginToken = Guid.NewGuid().ToString();
+
             var result = this._context.Users
             .Where(us => us.Email == u.Email && us.Password == u.Password)
-            .Select(
-                us => new { us.Id, us.Email, us.FirstName, token = "token" });
+            .Select(us => new { us.Id, us.Email, us.FirstName, token = loginToken });
 
 
-            //var res = new { id = result.FirstOrDefault().Id, firstName = result.FirstOrDefault().FirstName, token = "fake-jwt-token" };
+            Console.Write(result);
 
 
-            //return JsonConvert.SerializeObject(res);
+
             return new OkObjectResult(result);
+
         }
 
         [HttpGet("GetUserById/{id}")]
