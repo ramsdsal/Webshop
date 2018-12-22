@@ -38,7 +38,7 @@ namespace webshop.Controllers
                 foreach (var pri in prices)
                 {
                     pri.Current = 0;
-					//Date off and date on maybe??
+                    pri.DateOff = price.DateOn;
                 }
 				
 				price.Product = product;

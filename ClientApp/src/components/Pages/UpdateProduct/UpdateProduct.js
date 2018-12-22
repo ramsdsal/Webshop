@@ -80,10 +80,9 @@ export class UpdateProduct extends Component {
         <Header as="h2" attached="top">
           Product aanpassen
         </Header>
-        <Segment inverted>
+        <Segment>
 		<Form 
 		  size="big"  
-		  inverted
           onSubmit={this.updateProduct}
           loading = {this.state.productFormIsLoading}
           error={this.state.updateProductError}
@@ -208,7 +207,7 @@ export class UpdateProduct extends Component {
         <Header as="h2" attached="top">
           Prijs toevoegen
         </Header>
-        <Segment inverted>
+        <Segment>
         <Table celled>
           <Table.Header>
             <Table.Row>
@@ -239,9 +238,8 @@ export class UpdateProduct extends Component {
             })}
           </Table.Body>
         </Table>
-		<Form 
-	      size="big"  
-		  inverted
+		      <Form 
+          size="big"  
           onSubmit={this.addPrice}
           loading = {this.state.priceFormIsLoading}
           error={this.state.addPriceError}
@@ -266,41 +264,17 @@ export class UpdateProduct extends Component {
               required
               label="Euro"
               placeholder="10.00"
-			  name="value"
-			  type="number"
-			  min="0"
-              onChange={this.handleChange}
-            />
-            <Form.Input
-			  required
-			  type="date"
-              label="Begin Datum"
-              placeholder="Begin Datum"
-			  name="priceBeginDate"
-			  max= "9999-07-06"
-              min= {currentDate}
-              value={this.state.priceBeginDate}
-              onChange={this.handleChange}
-            />
-			<Form.Input
-			  required
-			  type="date"
-              label="Eind Datum"
-              placeholder="Eind Datum"
-			  name="priceEndDate"
-			  max= "9999-07-06"
-              min= {currentDate}
-              value={this.state.priceEndDate}
-              onChange={this.handleChange}
-            />
-          </Form.Group>
-          <Form.Button
-            color='blue'
-            type='submit'
-            disabled={
+              name="value"
+              type="number"
+              min="0"
+                onChange={this.handleChange}
+              />
+            </Form.Group>
+            <Form.Button
+              color='blue'
+              type='submit'
+              disabled={
               !this.state.value
-			  || !this.state.priceBeginDate
-			  || !this.state.priceEndDate
             }
           >
             <Icon name="plus" /> Toevoegen
@@ -314,10 +288,18 @@ export class UpdateProduct extends Component {
   addPrice = () => {
     this.setState({...this.state, priceFormIsLoading: true})
 
+    var today = new Date();
+    var dateFrom =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +//06:32:00
+      today.getDate() + " " + today.getHours()  + ":" + today.getMinutes() + ":" + today.getSeconds();
+
     var jsonToSend = {
 		value: this.state.value,
-		dateOn: this.state.priceBeginDate,
-		dateOff: this.state.priceEndDate,
+		dateOn: dateFrom,
+		// dateOff: this.state.priceEndDate,
 		"Product":{
 			id: this.props.productId,
 		},
@@ -336,13 +318,20 @@ export class UpdateProduct extends Component {
     .then(data => {
       
       var newPrice = {
-		value: this.state.value,
-		dateOn: this.state.priceBeginDate,
-		dateOff: this.state.priceEndDate
-	};
+        value: this.state.value,
+        dateOn: dateFrom,
+        dateOff: ""
+	    };
         
-      var pricesInState = this.state.prices;
-      pricesInState.push(newPrice);
+  if (data.priceAdded) {
+    var previousPrice = this.state.prices[this.state.prices.length - 1];
+    if (previousPrice != null) {
+      previousPrice.dateOff = dateFrom 
+    }
+
+    var pricesInState = this.state.prices;
+    pricesInState.push(newPrice); 
+  }
       
       this.setState({...this.state, serverPriceResponse: data.response, addPriceError: data.isError, priceAdded: data.priceAdded, priceFormIsLoading: false})
     });
