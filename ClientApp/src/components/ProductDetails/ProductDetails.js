@@ -1,6 +1,17 @@
 import React, { Component } from "react";
-import { Container, Icon, Item, Label } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Header,
+  Icon,
+  Item,
+  Label,
+  List,
+  Modal
+} from "semantic-ui-react";
 import AddToShopingCart from "../ShoppingCart/AddToShoppingCart";
+import YouTube from "react-youtube";
+import "./ProductDetails.css";
 
 export class ProductDetails extends Component {
   constructor(props) {
@@ -32,23 +43,61 @@ export class ProductDetails extends Component {
   componentDidMount() {
     this.getMovie(this.state.id);
   }
-
   renderMovie(movie) {
+    const YoutubeOpts = {
+      height: "495",
+      width: "880",
+      playerVars: {
+        autoplay: 1
+      }
+    };
+
     return (
       <Container style={{ marginTop: "7em" }}>
-        {console.log(this.state.id)}
+        {console.log(this.state.movie)}
         <Item.Group>
           <Item>
             <Item.Image size="medium" src={movie.poster} />
             <Item.Content>
               <Item.Header as="a" size="big">
-                {movie.title}
-              </Item.Header>{" "}
-              [{movie.year}]<Item.Meta>{movie.categories}</Item.Meta>
+                {movie.title} ({movie.year})
+              </Item.Header>
+              <Item.Meta>
+                <List horizontal size="large">
+                  <List.Item>{movie.categories}</List.Item>
+                  <List.Item>{movie.runTime} minuten.</List.Item>
+                  <List.Item>
+                    <Label>{movie.ageRating}</Label>
+                    <Label>HD</Label>
+                    <Label>5.1</Label>
+                  </List.Item>
+                  <List.Item>
+                    <Modal
+                      trigger={
+                        <Button
+                          icon
+                          labelPosition="right"
+                          onClick={this.watchTrailer}
+                        >
+                          <Icon name="video" />
+                          Bekijk de trailer
+                        </Button>
+                      }
+                      closeIcon
+                      centered
+                    >
+                      <Header icon="video" content={movie.title} />
+                      <Modal.Content>
+                        <YouTube
+                          videoId={movie.trailerUrl}
+                          opts={YoutubeOpts}
+                        />
+                      </Modal.Content>
+                    </Modal>
+                  </List.Item>
+                </List>
+              </Item.Meta>
               <Item.Description>{movie.description}</Item.Description>
-              <Item.Extra>
-                {movie.runTime} minuten. PG: {movie.ageRating}
-              </Item.Extra>
               <Item.Extra>
                 <Label
                   color={movie.quantity < 1 ? "red" : "green"}
