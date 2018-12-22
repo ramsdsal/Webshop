@@ -30,7 +30,8 @@ namespace webshop.Controllers
                 Title = product.Title,
                 Year = product.Year,
                 Poster = product.Poster,
-                Price = product.Prices.Where(price => price.Current == 1).Select(price => price.Value).DefaultIfEmpty(-1000000).Single()//Return -1000000 if no price was found
+                Price = product.Prices.Where(price => price.Current == 1).Select(price => price.Value).DefaultIfEmpty(-1000000).Single(),
+                Favorite = product.Favorits.Where(fav => fav.UserId == 16).Select(m => m.UserId)
             });
 
             return new OkObjectResult(result);
@@ -65,10 +66,10 @@ namespace webshop.Controllers
 
                 _context.SaveChanges();
 
-                return new OkObjectResult(new {isError = false, productUpdated = true, response = "Product is aangepast."});
+                return new OkObjectResult(new { isError = false, productUpdated = true, response = "Product is aangepast." });
             }
 
-            return new OkObjectResult(new {isError = true, productUpdated = false, response = "Product bestaat niet."});
+            return new OkObjectResult(new { isError = true, productUpdated = false, response = "Product bestaat niet." });
         }
 
         [HttpGet("GetUpdateProduct/{id}")]
@@ -91,7 +92,7 @@ namespace webshop.Controllers
 
             return result;
         }
-        
+
         [HttpGet("GetTitles")]
         public IActionResult GetTitles()
         {
@@ -137,6 +138,7 @@ namespace webshop.Controllers
                            Poster = prod.Poster,
                            Quantity = prod.Quantity,
                            Price = prod.Prices.Where(price => price.Current == 1).Select(price => price.Value).Single()
+
                        }).Where(prod => items.Contains(prod.Id));
 
 
@@ -156,7 +158,7 @@ namespace webshop.Controllers
                 Quantity = prod.Quantity,
                 Price = prod.Prices.Where(price => price.Current == 1).Select(price => price.Value).DefaultIfEmpty(-1000000).Single(),//Return -1000000 if no price was found
             });
-            return new OkObjectResult(new {TotalPages = paginationResult.TotalPages, Items = resultToReturn});
+            return new OkObjectResult(new { TotalPages = paginationResult.TotalPages, Items = resultToReturn });
         }
         // [HttpGet("GetAdminProducts/{index_page}/{page_size}")]
         // public IActionResult GetAdminProducts(int index_page, int page_size)
