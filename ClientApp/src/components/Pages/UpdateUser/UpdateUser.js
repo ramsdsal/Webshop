@@ -272,7 +272,7 @@ export class UpdateUser extends Component {
       "-" +
       (today.getMonth() + 1) +
       "-" +
-      today.getDate();
+      today.getDate() + " " + today.getHours()  + ":" + today.getMinutes() + ":" + today.getSeconds();
 
     var jsonToSend = {
       Address: {
@@ -297,14 +297,16 @@ export class UpdateUser extends Component {
     .then(response => response.json())
     .then(data => {
       
-      var newAddress = {street: this.state.street,
-        city: this.state.city,
-        country: this.state.country,
-        zipCode: this.state.zipCode,
-        dateFrom: dateFrom};
+      if (data.addresAdded) {
+        var newAddress = {street: this.state.street,
+          city: this.state.city,
+          country: this.state.country,
+          zipCode: this.state.zipCode,
+          dateFrom: dateFrom};
         
-      var addressesInState = this.state.addresses;
-      addressesInState.push(newAddress);
+        var addressesInState = this.state.addresses;
+        addressesInState.push(newAddress); 
+      }
       
       this.setState({...this.state, serverAddressResponse: data.response, addAddressError: data.isError, addresAdded: data.addresAdded, addressFormIsLoading: false})
     });
