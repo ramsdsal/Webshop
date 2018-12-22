@@ -6,7 +6,8 @@ import { history } from "../helpers";
 export const userActions = {
   login,
   logout,
-  remenber
+  remenber,
+  refreshfavoritesList
 };
 
 function login(username, password) {
@@ -33,6 +34,14 @@ function remenber(user) {
   return dispatch => {
     dispatch(success(user));
     userService.favorits(user.id).then(data => {
+      dispatch(getFav(data));
+    });
+  };
+}
+
+function refreshfavoritesList(id) {
+  return dispatch => {
+    userService.favorits(id).then(data => {
       dispatch(getFav(data));
     });
   };

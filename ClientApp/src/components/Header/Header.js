@@ -10,7 +10,6 @@ import {
 import { Link } from "react-router-dom";
 import { SearchMovie } from "./SearchMovie";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 
 import { userActions } from "../../Redux/actions";
 
@@ -90,7 +89,7 @@ class Header extends Component {
                     Profiel bekijken
                   </Dropdown.Item>
                   <Dropdown.Item as={Link} to="/shoppingcart">
-                    <Icon name="shop" />
+                    <Icon name="shop" position="rigth" />
                     Winkelwagen <Label>{this.props.counter}</Label>
                   </Dropdown.Item>
                   <Dropdown.Item>

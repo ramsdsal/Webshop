@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using webshop.Models;
@@ -9,9 +10,10 @@ using webshop.Models;
 namespace webshop.Migrations
 {
     [DbContext(typeof(DbConnectionContext))]
-    partial class DbConnectionContextModelSnapshot : ModelSnapshot
+    [Migration("20181222203603_FavoritIdRemoved")]
+    partial class FavoritIdRemoved
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
