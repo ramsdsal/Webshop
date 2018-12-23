@@ -10,7 +10,6 @@ import {
 import { Link } from "react-router-dom";
 import { SearchMovie } from "./SearchMovie";
 import { connect } from "react-redux";
-
 import { userActions } from "../../Redux/actions";
 
 class Header extends Component {
@@ -53,7 +52,7 @@ class Header extends Component {
               <Label color="red">{this.props.counter}</Label>
             </Menu.Item>
             {this.props.user ? (
-              <Menu.Item as={Link} to="/">
+              <Menu.Item as={Link} to="/favoriteslist">
                 <Icon name="star" />
                 FAVORIETEN{" "}
                 <Label color="red">{this.props.favorites.length}</Label>
@@ -92,7 +91,7 @@ class Header extends Component {
                     <Icon name="shop" position="rigth" />
                     Winkelwagen <Label>{this.props.counter}</Label>
                   </Dropdown.Item>
-                  <Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/favoriteslist">
                     <Icon name="heart" />
                     Favorieten <Label>{this.props.favorites.length}</Label>
                   </Dropdown.Item>

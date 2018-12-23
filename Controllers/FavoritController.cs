@@ -48,6 +48,22 @@ namespace webshop.Controllers
             return new OkObjectResult(new { isError = false, response = "Prijs is succesvol toegevoegd." });
         }
 
+        [HttpPost("delete")]
+        public IActionResult deleteItem([FromBody] Favorit favorit)
+        {
+
+            if (favorit == null)
+            {
+                return new OkObjectResult(new { isError = true, response = "Er is iets fout gegaan... Probeer het later." });
+            }
+
+            Favorit f = _context.Favorits.Where(x => x.UserId == favorit.UserId && x.ProductId == favorit.ProductId).Single();
+            _context.Favorits.Remove(f);
+            _context.SaveChanges();
+
+            return new OkObjectResult(new { isError = false, response = "Verwijdeerd met sucess" });
+        }
+
 
     }
 }
