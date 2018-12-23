@@ -11,6 +11,7 @@ import {
 import { connect } from "react-redux";
 import _ from "lodash";
 import { userActions } from "../../Redux/actions";
+import AddToShopingCartHome from "../ShoppingCart/AddToShoppingCartHome";
 
 class FavoritesList extends Component {
   constructor(props) {
@@ -97,9 +98,11 @@ class FavoritesList extends Component {
             {this.state.movies.map(item => (
               <List.Item key={item.id}>
                 <List.Content floated="right">
+                  <AddToShopingCartHome id={item.id} />
                   <Button
+                    size="large"
                     color="red"
-                    icon="trash"
+                    icon="times"
                     onClick={() => this.removeFromFavorite(item.id)}
                   />
                 </List.Content>
