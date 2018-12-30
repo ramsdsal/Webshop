@@ -44,6 +44,7 @@ class AddToShopingCartHome extends Component {
         onClick={this.AddToCart}
         icon="shop"
         size="large"
+        color={added ? "grey" : "red"}
       />
     );
   }
