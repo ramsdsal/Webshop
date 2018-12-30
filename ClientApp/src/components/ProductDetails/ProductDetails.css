@@ -1,0 +1,14 @@
+/* .visible.transition {
+  margin-top: 10px !important;
+  display: inline-block !important;
+  position: relative;
+  top: 0%;
+} */
+.ui.modal:not(.compact) {
+  width: calc(100% - 350px) !important;
+  margin-left: 150px !important;
+  height: calc(100% - 20px) !important;
+  margin-top: 25px !important;
+  align-items: center;
+  justify-content: center;
+}

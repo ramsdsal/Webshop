@@ -10,16 +10,21 @@ import {
 import { Link } from "react-router-dom";
 import { SearchMovie } from "./SearchMovie";
 import { connect } from "react-redux";
-
 import { userActions } from "../../Redux/actions";
 
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+
+    let user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      this.props.dispatch(userActions.remenber(user));
+    }
   }
   logout = () => {
     this.props.dispatch(userActions.logout());
+    window.location.reload(true);
   };
   render() {
     return (
@@ -43,12 +48,14 @@ class Header extends Component {
             </Menu.Item>
             <Menu.Item as={Link} to="/shoppingcart">
               <Icon name="shop" />
+              WINKELWAGEN
               <Label color="red">{this.props.counter}</Label>
             </Menu.Item>
             {this.props.user ? (
-              <Menu.Item as={Link} to="/">
-                <Icon name="heart" />
-                <Label color="red">2</Label>
+              <Menu.Item as={Link} to="/favoriteslist">
+                <Icon name="star" />
+                FAVORIETEN{" "}
+                <Label color="red">{this.props.favorites.length}</Label>
               </Menu.Item>
             ) : (
               ""
@@ -81,12 +88,12 @@ class Header extends Component {
                     Profiel bekijken
                   </Dropdown.Item>
                   <Dropdown.Item as={Link} to="/shoppingcart">
-                    <Icon name="shop" />
+                    <Icon name="shop" position="rigth" />
                     Winkelwagen <Label>{this.props.counter}</Label>
                   </Dropdown.Item>
-                  <Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/favoriteslist">
                     <Icon name="heart" />
-                    Favorits
+                    Favorieten <Label>{this.props.favorites.length}</Label>
                   </Dropdown.Item>
                   <Dropdown.Item>
                     <Icon name="clipboard check" />
@@ -126,7 +133,11 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => {
-  return { user: state.authentication.user, counter: state.cart.counter };
+  return {
+    user: state.authentication.user,
+    counter: state.cart.counter,
+    favorites: state.favorits
+  };
 };
 
 export default connect(mapStateToProps)(Header);
