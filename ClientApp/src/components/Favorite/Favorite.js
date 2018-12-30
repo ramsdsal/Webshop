@@ -54,8 +54,8 @@ class Favorite extends Component {
           this.props.favorits.some(
             item => item.productId === this.state.movieId
           ) || this.state.added
-            ? "facebook"
-            : "yellow"
+            ? "yellow"
+            : "grey"
         }
         onClick={this.setFavorit}
       />
