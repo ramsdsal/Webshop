@@ -1,18 +1,21 @@
 import React, { Component } from "react";
-import { Container, Icon, Step, List, Button } from "semantic-ui-react";
+import { Container, Icon, Step, List } from "semantic-ui-react";
 import { connect } from "react-redux";
 import Step1 from "./Step1";
+import Step2 from "./Step2";
 
 class Checkout extends Component {
   constructor(props) {
     super(props);
     this.state = {
       step: 1,
+      bezorgen: "klantadres",
       name: "",
       street: "",
       city: "",
       country: "",
-      zipcode: ""
+      zipcode: "",
+      payment: ""
     };
   }
 
@@ -31,15 +34,39 @@ class Checkout extends Component {
   };
 
   handleChange = input => event => {
-    this.setState({ [input]: event.target.value });
+    if (input === "payment") {
+      this.setState({ [input]: event.target.textContent });
+    } else {
+      this.setState({ [input]: event.target.value });
+    }
   };
+
+  handleCheckboxChange = (e, { value }) => this.setState({ bezorgen: value });
 
   getPage = values => {
     switch (this.state.step) {
       case 1:
-        return <Step1 handleChange={this.handleChange} values={values} />;
+        return (
+          <Step1
+            handleChange={this.handleChange}
+            values={values}
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            step={this.state.step}
+            handleCheckboxChange={this.handleCheckboxChange}
+            bezorgen={this.state.bezorgen}
+          />
+        );
       case 2:
-        return <h1>BETALING</h1>;
+        return (
+          <Step2
+            handleChange={this.handleChange}
+            payment={this.state.payment}
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            step={this.state.step}
+          />
+        );
       case 3:
         return <h1>OVERZICHT</h1>;
       case 4:
@@ -52,11 +79,19 @@ class Checkout extends Component {
   render() {
     console.log(this.state);
     const { step } = this.state;
-    const { name, street, zipcode, city, country } = this.state;
-    const values = { name, street, zipcode, city, country };
+    const {
+      name,
+      street,
+      zipcode,
+      city,
+      country,
+      bezorgen,
+      payment
+    } = this.state;
+    const values = { name, street, zipcode, city, country, bezorgen, payment };
 
     return (
-      <Container style={{ marginTop: "7em" }} textAlign="center">
+      <Container style={{ marginTop: "7em" }}>
         <Step.Group size="massive">
           <Step
             disabled={step !== 1 ? true : false}
@@ -92,26 +127,7 @@ class Checkout extends Component {
 
         <List>
           <List.Item>{this.getPage(values)}</List.Item>
-          <List.Item>
-            <Button
-              icon
-              labelPosition="right"
-              onClick={this.prevStep}
-              disabled={step <= 1 ? true : false}
-            >
-              Terug
-              <Icon name="left arrow" />
-            </Button>
-            <Button
-              icon
-              labelPosition="right"
-              onClick={this.nextStep}
-              disabled={step > 2 ? true : false}
-            >
-              Verder
-              <Icon name="right arrow" />
-            </Button>
-          </List.Item>
+          <List.Item />
         </List>
       </Container>
     );
