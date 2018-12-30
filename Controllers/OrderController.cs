@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using webshop.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace webshop.Controllers
 {
@@ -23,6 +24,102 @@ namespace webshop.Controllers
         {
             var result = _context.Orders;
             return Ok(result);
+        }
+
+        [HttpGet("GetOrdersForManage")]
+        public IActionResult GetOrdersForManage()
+        {
+            var allOrders = _context.Orders.Select(o => o);
+            var finishedOrders = allOrders.Where(o => o.OrderStatus == 1).OrderBy(o => o.Date);
+            var pendingOrders = allOrders.Where(o => o.OrderStatus == 0).OrderBy(o => o.Date);
+
+            return new OkObjectResult(new {FinishedOrders = finishedOrders, PendingOrders = pendingOrders});
+
+        }
+
+        [HttpPut("OrderProduct/{productId}/{quantityToOrder}")]
+        public IActionResult OrderProduct(int productId, int quantityToOrder)
+        {
+			Product product = _context.Products.Where(pro => pro.Id == productId).FirstOrDefault();
+            if (product != null)
+            {
+                product.Quantity += quantityToOrder;
+                _context.SaveChanges();
+
+                //Quantity changed
+                return new OkObjectResult(new {NewQuantity = product.Quantity, isError = false, orderUpdated = true, response = "Product hoeveelheid is aangepast."});
+            }
+
+            //Product not found
+            return new OkObjectResult(new {isError = true, orderUpdated = false, response = "Product niet gevonden."});
+        }
+
+        [HttpPut("ApproveOrder/{orderId}")]
+        public IActionResult ApproveOrder(int orderId)
+        {
+			Order order = _context.Orders.Where(o => o.Id == orderId).Include("Products.Product").FirstOrDefault();
+            if (order != null && order.OrderStatus == 1)
+            {
+                return new OkObjectResult(new {orderStatus = 1, isError = true, orderUpdated = false, response = "Bestelling is al geaccepteerd."});
+            }
+
+            if (order != null)
+            {
+                bool productsHaveEnoughQuantity = true;
+                //Check if every product is in stock
+                foreach (var orderProduct in order.Products)
+                {
+                    if (orderProduct.Product != null && orderProduct.Quantity <= orderProduct.Product.Quantity)
+                    {
+                        orderProduct.Product.Quantity -= orderProduct.Quantity;
+                    }
+                    else
+                    {
+                        productsHaveEnoughQuantity = false;
+                    }
+                }
+                
+                if (productsHaveEnoughQuantity)
+                {
+                    order.OrderStatus = 1;
+                    _context.SaveChanges();
+
+                    //Succesful
+                    return new OkObjectResult(new {orderStatus = 1, isError = false, orderUpdated = true, response = "Bestelling is geaccepteerd."});
+                }
+
+                    //Not enough Quantity of products
+                    return new OkObjectResult(new {orderStatus = 0, isError = true, orderUpdated = false, response = "Niet genoeg producten in voorraad, bestel eerst de benodigde producten."});
+            }
+
+            //Order could not be found
+            return new OkObjectResult(new {orderStatus = 0, isError = true, orderUpdated = false, response = "Bestelling niet gevonden"});
+        }
+
+        [HttpGet("GetOrderById/{id}")]
+        public IQueryable GetOrderById(int id)
+        {
+            var result = this._context.Orders
+                        .Select(order => new
+                        {
+                            order.Id,
+                            order.OrderStatus,
+                            order.Name,
+                            order.Street,
+                            order.Total,
+                            TotalWithDiscount = order.TotalWithDiscoun,
+                            order.ZipCode,
+                            Products = order.Products.Select(pr => pr).Select(pr => new {
+                                Id = pr.ProductId,
+                                pr.Quantity,
+                                pr.Price,
+                                pr.Product.Title,
+                                StockQuantity = _context.Products.Where(pro => pro.Id == pr.ProductId).Select(pro => pro.Quantity)
+                            }),
+
+                        }).Where(order => order.Id == id);
+
+            return result;
         }
 
         [HttpGet("GetStats/")]
@@ -96,6 +193,7 @@ namespace webshop.Controllers
 
             return Ok(result);
         }
+
         [HttpGet("GetPriceChanges/{id}")]
         public IActionResult GetPriceChanges(int id)
         {
