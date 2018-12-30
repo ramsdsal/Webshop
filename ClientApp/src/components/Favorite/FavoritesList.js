@@ -17,6 +17,7 @@ class FavoritesList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      ids: this.props.favorits,
       movies: [],
       isLoading: true
     };
@@ -55,7 +56,7 @@ class FavoritesList extends Component {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(_.map(this.props.favorits, "productId"))
+      body: JSON.stringify(_.map(this.state.ids, "productId"))
     })
       .then(response => response.json())
       .then(data => {
@@ -66,8 +67,34 @@ class FavoritesList extends Component {
       });
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.favorits !== prevState.favorits)
+      return { ids: nextProps.favorits };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.ids !== this.state.ids) {
+      fetch("/api/Product/getshoppingcart", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(_.map(this.state.ids, "productId"))
+      })
+        .then(response => response.json())
+        .then(data => {
+          this.setState({ ...this.state, movies: data, isLoading: false });
+        })
+        .catch(() => {
+          console.log("error");
+        });
+    }
+  }
+
   render() {
     const { isLoading } = this.state;
+    console.log(this.state);
 
     return (
       <Container style={{ marginTop: "7em" }}>
