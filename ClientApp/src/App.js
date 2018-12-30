@@ -6,7 +6,7 @@ import { ProductDetails } from "./components/ProductDetails";
 import { Register } from "./components/Register";
 import { ManageProducts } from "./components/Pages/ManageProducts";
 import { AddProduct } from "./components/Pages/AddProduct";
-import { ManageUsers } from "./components/Pages/ManageUsers";//ManageOrders
+import { ManageUsers } from "./components/Pages/ManageUsers"; //ManageOrders
 import { ManageOrders } from "./components/Pages/ManageOrders";
 import { Login } from "./components/Login";
 import { ConfirmationMail } from "./components/ConfirmationMail";
@@ -51,7 +51,6 @@ export default class App extends Component {
           render={props => <UpdateOrder orderId={props.match.params.orderId} />}
         />
         <Route path="/manageOrders" component={ManageOrders} />
-        <Route path="/fetchdata" component={FetchData} />
         <Route path="/favoriteslist" component={FavoritesList} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
