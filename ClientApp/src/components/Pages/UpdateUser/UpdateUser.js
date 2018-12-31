@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+ import React, { Component } from "react";
 import { Container, Form, Table, Icon } from "semantic-ui-react";
 import "./UpdateUser.css";
 

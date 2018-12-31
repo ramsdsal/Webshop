@@ -3,6 +3,7 @@ import { Container } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import "./ManageUsers.css";
 
+
 //State: users: User[], isLoading: string
 export class ManageUsers extends Component {
   constructor() {

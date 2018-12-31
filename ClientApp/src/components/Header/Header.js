@@ -76,7 +76,7 @@ class Header extends Component {
                 className="link item"
               >
                 <Dropdown.Menu>
-                  <Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/userprofile">
                     <Icon name="user circle outline" />
                     Profiel bekijken
                   </Dropdown.Item>
