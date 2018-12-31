@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Segment, Header, Table, Icon } from "semantic-ui-react";
+import { Container, Segment, Header, Table } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import "./ManageOrders.css";
 
