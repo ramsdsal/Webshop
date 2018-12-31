@@ -1,6 +1,7 @@
 export const userService = {
   login,
-  logout
+  logout,
+  favorits
 };
 
 function login(username, password) {
@@ -18,6 +19,19 @@ function login(username, password) {
       }
 
       return user[0];
+    })
+    .catch(error => console.log(error));
+}
+function favorits(id) {
+  const requestOptions = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" }
+  };
+
+  return fetch("api/favorit/" + id, requestOptions)
+    .then(handleResponse)
+    .then(data => {
+      return data;
     })
     .catch(error => console.log(error));
 }

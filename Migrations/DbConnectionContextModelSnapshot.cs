@@ -104,8 +104,6 @@ namespace webshop.Migrations
 
                     b.Property<int>("ProductId");
 
-                    b.Property<int>("Id");
-
                     b.HasKey("UserId", "ProductId");
 
                     b.HasIndex("ProductId");
@@ -118,6 +116,8 @@ namespace webshop.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Bank");
+
                     b.Property<string>("City");
 
                     b.Property<string>("Country");
@@ -126,9 +126,15 @@ namespace webshop.Migrations
 
                     b.Property<int>("DiscountId");
 
+                    b.Property<string>("Name");
+
                     b.Property<int>("OrderStatus");
 
                     b.Property<string>("Street");
+
+                    b.Property<double>("Total");
+
+                    b.Property<double>("TotalWithDiscoun");
 
                     b.Property<int>("UserId");
 
@@ -169,7 +175,7 @@ namespace webshop.Migrations
 
                     b.Property<DateTime>("DateOn");
 
-                    b.Property<int?>("ProductId");
+                    b.Property<int>("ProductId");
 
                     b.Property<double>("Value");
 
@@ -342,9 +348,10 @@ namespace webshop.Migrations
 
             modelBuilder.Entity("webshop.Models.Price", b =>
                 {
-                    b.HasOne("webshop.Models.Product")
+                    b.HasOne("webshop.Models.Product", "Product")
                         .WithMany("Prices")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("webshop.Models.ProductCategory", b =>

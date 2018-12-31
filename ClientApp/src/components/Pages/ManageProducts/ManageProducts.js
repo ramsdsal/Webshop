@@ -53,7 +53,7 @@ export class ManageProducts extends Component {
       <Container style={{ marginTop: "7em" }}>
         <h1>Admin</h1>
         <Link className="nav-link" to={"/addproduct"}>
-          Voeg Product
+          Nieuw product
         </Link>
         {contents}
       </Container>

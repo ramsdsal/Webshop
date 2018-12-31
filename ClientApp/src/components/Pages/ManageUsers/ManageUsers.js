@@ -37,7 +37,7 @@ export class ManageUsers extends Component {
               <td>{user.email}</td>
               <td>
                 <button className="btn btn-primary" type="button">
-                  x
+                  Block
                 </button>
               </td>
               <td>

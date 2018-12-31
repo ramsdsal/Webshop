@@ -30,7 +30,8 @@ namespace webshop.Controllers
                 Title = product.Title,
                 Year = product.Year,
                 Poster = product.Poster,
-                Price = product.Prices.Where(price => price.Current == 1).Select(price => price.Value).DefaultIfEmpty(-1000000).Single()//Return -1000000 if no price was found
+                Price = product.Prices.Where(price => price.Current == 1).Select(price => price.Value).DefaultIfEmpty(-1000000).Single(),
+                Favorite = product.Favorits.Where(fav => fav.UserId == 16).Select(m => m.UserId)
             });
 
             return new OkObjectResult(result);
@@ -48,10 +49,64 @@ namespace webshop.Controllers
             return new OkObjectResult(result);
         }
 
+        [HttpPut("UpdateProduct")]
+        public IActionResult UpdateProduct([FromBody] Product product)
+        {
+            Product productToUpdate = _context.Products.FirstOrDefault(pr => pr.Id == product.Id);
+            if (productToUpdate != null)
+            {
+                productToUpdate.Title = product.Title;
+                productToUpdate.Released = product.Released;
+                productToUpdate.RunTime = product.RunTime;
+                productToUpdate.Description = product.Description;
+                productToUpdate.Poster = product.Poster;
+                productToUpdate.AgeRating = product.AgeRating;
+                productToUpdate.TrailerUrl = product.TrailerUrl;
+                productToUpdate.Quantity = product.Quantity;
+
+                _context.SaveChanges();
+
+                return new OkObjectResult(new { isError = false, productUpdated = true, response = "Product is aangepast." });
+            }
+
+            return new OkObjectResult(new { isError = true, productUpdated = false, response = "Product bestaat niet." });
+        }
+
+        [HttpGet("GetUpdateProduct/{id}")]
+        public IQueryable GetUpdateProduct(int id)
+        {
+            var result = this._context.Products
+                        .Select(prod => new
+                        {
+                            Id = prod.Id,
+                            Title = prod.Title,
+                            Quantity = prod.Quantity,
+                            Released = prod.Released,
+                            RunTime = prod.RunTime,
+                            Description = prod.Description,
+                            Poster = prod.Poster,
+                            TrailerUrl = prod.TrailerUrl,
+                            AgeRating = prod.AgeRating,
+                            Prices = prod.Prices.Select(p => p)
+                        }).Where(prod => prod.Id == id);
+
+            return result;
+        }
+
+        [HttpGet("GetTitles")]
+        public IActionResult GetTitles()
+        {
+            var result = this._context.Products.Select(product => new
+            {
+                product.Title
+            }).ToList();
+
+            return new OkObjectResult(result);
+        }
+
         [HttpGet("{id}")]
         public IQueryable Get(int id)
         {
-
             var result = this._context.Products
                         .Select(prod => new
                         {
@@ -83,14 +138,13 @@ namespace webshop.Controllers
                            Poster = prod.Poster,
                            Quantity = prod.Quantity,
                            Price = prod.Prices.Where(price => price.Current == 1).Select(price => price.Value).Single()
+
                        }).Where(prod => items.Contains(prod.Id));
 
 
             return new OkObjectResult(result);
 
         }
-
-
 
         [HttpGet("adminproducts/{index_page}/{page_size}")]
         public IActionResult GetAdminProducts(int index_page, int page_size)
@@ -104,7 +158,7 @@ namespace webshop.Controllers
                 Quantity = prod.Quantity,
                 Price = prod.Prices.Where(price => price.Current == 1).Select(price => price.Value).DefaultIfEmpty(-1000000).Single(),//Return -1000000 if no price was found
             });
-            return new OkObjectResult(new {TotalPages = paginationResult.TotalPages, Items = resultToReturn});
+            return new OkObjectResult(new { TotalPages = paginationResult.TotalPages, Items = resultToReturn });
         }
         // [HttpGet("GetAdminProducts/{index_page}/{page_size}")]
         // public IActionResult GetAdminProducts(int index_page, int page_size)

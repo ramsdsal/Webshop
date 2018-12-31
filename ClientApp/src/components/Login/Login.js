@@ -51,6 +51,8 @@ class Login extends Component {
             <Form.Field>
               <Form.Input
                 fluid
+                icon="at"
+                iconPosition="left"
                 label="Email"
                 placeholder="Email"
                 error={submitted && !username}
@@ -62,6 +64,8 @@ class Login extends Component {
             <Form.Field>
               <Form.Input
                 fluid
+                icon="lock"
+                iconPosition="left"
                 label="Password"
                 placeholder="Password"
                 error={submitted && !password}

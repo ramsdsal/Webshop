@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import "./ProductListItem.css";
-import { Button, Card, Image, Grid, Label } from "semantic-ui-react";
+import { Card, Image, Grid, Label } from "semantic-ui-react";
 import AddToShopingCartHome from "../ShoppingCart/AddToShoppingCartHome";
+import Favorite from "../Favorite/Favorite";
 
 export default class ProductListItem extends React.Component {
   render() {
@@ -26,7 +27,7 @@ export default class ProductListItem extends React.Component {
           </Card.Content>
           <Card.Content extra textAlign="right">
             <AddToShopingCartHome id={movie.id} stock={movie.quantity} />
-            <Button size="large" icon="heart" />
+            <Favorite id={movie.id} />
           </Card.Content>
         </Card>
       </Grid.Column>
