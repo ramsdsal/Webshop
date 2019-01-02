@@ -5,6 +5,8 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 
+const zipcodeRegex = RegExp(/^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i);
+
 class Checkout extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +18,15 @@ class Checkout extends Component {
       city: "",
       country: "",
       zipcode: "",
-      payment: ""
+      payment: "",
+      formValid: true,
+      formErrors: {
+        name: "",
+        street: "",
+        city: "",
+        country: "",
+        zipcode: ""
+      }
     };
   }
 
@@ -24,6 +34,12 @@ class Checkout extends Component {
     const { step } = this.state;
     this.setState({
       step: step + 1
+    });
+  };
+
+  changeFormValid = value => {
+    this.setState({
+      formValid: value
     });
   };
 
@@ -35,11 +51,43 @@ class Checkout extends Component {
   };
 
   handleChange = input => event => {
+    let formErrors = { ...this.state.formErrors };
+    const { name, value } = event.target;
+
+    this.setState({ ...this.state, formValid: true });
     if (input === "payment") {
       this.setState({ [input]: event.target.textContent });
     } else {
       this.setState({ [input]: event.target.value });
     }
+
+    switch (name) {
+      case "name":
+        formErrors.name =
+          value.length < 3 ? "minimum 3 characaters required" : "";
+        break;
+      case "street":
+        formErrors.street =
+          value.length < 3 ? "minimum 3 characaters required" : "";
+        break;
+      case "city":
+        formErrors.city =
+          value.length < 3 ? "minimum 3 characaters required" : "";
+        break;
+      case "country":
+        formErrors.country =
+          value.length < 3 ? "minimum 3 characaters required" : "";
+        break;
+      case "zipcode":
+        formErrors.zipcode = zipcodeRegex.test(value)
+          ? ""
+          : "invalid postcode, voorbeeld: 2133AA";
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ formErrors, [name]: value });
   };
 
   handleCheckboxChange = (e, { value }) => this.setState({ bezorgen: value });
@@ -56,6 +104,10 @@ class Checkout extends Component {
             step={this.state.step}
             handleCheckboxChange={this.handleCheckboxChange}
             bezorgen={this.state.bezorgen}
+            formErrors={this.state.formErrors}
+            payment={this.state.payment}
+            formValid={this.state.formValid}
+            changeFormValid={this.changeFormValid}
           />
         );
       case 2:
@@ -75,6 +127,7 @@ class Checkout extends Component {
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             step={this.state.step}
+            payment={this.state.payment}
             bezorgen={this.state.bezorgen}
             user={this.props.user}
           >
@@ -89,18 +142,9 @@ class Checkout extends Component {
   };
 
   render() {
-    console.log(this.state);
     const { step } = this.state;
-    const {
-      name,
-      street,
-      zipcode,
-      city,
-      country,
-      bezorgen,
-      payment
-    } = this.state;
-    const values = { name, street, zipcode, city, country, bezorgen, payment };
+    const { name, street, zipcode, city, country } = this.state;
+    const values = { name, street, zipcode, city, country };
 
     return (
       <Container style={{ marginTop: "7em" }} textAlign="center">
