@@ -3,6 +3,7 @@ import { Container, Icon, Step, List } from "semantic-ui-react";
 import { connect } from "react-redux";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
+import Step3 from "./Step3";
 
 class Checkout extends Component {
   constructor(props) {
@@ -68,7 +69,18 @@ class Checkout extends Component {
           />
         );
       case 3:
-        return <h1>OVERZICHT</h1>;
+        return (
+          <Step3
+            values={values}
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            step={this.state.step}
+            bezorgen={this.state.bezorgen}
+            user={this.props.user}
+          >
+            {" "}
+          </Step3>
+        );
       case 4:
         return <h1>SUCESS</h1>;
       default:
@@ -91,7 +103,7 @@ class Checkout extends Component {
     const values = { name, street, zipcode, city, country, bezorgen, payment };
 
     return (
-      <Container style={{ marginTop: "7em" }}>
+      <Container style={{ marginTop: "7em" }} textAlign="center">
         <Step.Group size="massive">
           <Step
             disabled={step !== 1 ? true : false}

@@ -89,6 +89,7 @@ class Step1 extends Component {
                 ""
               )}
               <Button
+                style={{ marginTop: "5em" }}
                 icon
                 labelPosition="right"
                 onClick={this.saveAndContinue}

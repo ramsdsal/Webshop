@@ -11,10 +11,20 @@ class Step2 extends Component {
     this.props.prevStep();
   };
 
+  StoreOrder = () => {};
+
   render() {
     const options = [
-      { key: "ing", text: "ING", value: "ING" },
-      { key: "abn", text: "ABN-AMRO", value: "ABN-AMRO" }
+      { key: "iDeal", text: "iDeal", value: "iDeal" },
+      { key: "Paypal", text: "Paypal", value: "Paypal" },
+      { key: "CreditCard", text: "CreditCard", value: "CreditCard" },
+      { key: "MasterPass", text: "MasterPass", value: "MasterPass" },
+      {
+        key: "Betaalgemak (Betalen in termijnen)",
+        text: "Betaalgemak (Betalen in termijnen)",
+        value: "Betaalgemak (Betalen in termijnen)"
+      },
+      { key: "Cadeaukaart", text: "Cadeaukaart", value: "Cadeaukaart" }
     ];
 
     return (
@@ -27,23 +37,30 @@ class Step2 extends Component {
           <Form color="green">
             <Form.Field
               control={Select}
-              label="Betaal Bank"
+              label="Betaalwijze"
               options={options}
-              placeholder="Kies je bank"
+              placeholder="Betaalmethode"
               onChange={this.props.handleChange("payment")}
               defaultValue={this.props.payment}
             />
-            <Button icon labelPosition="left" onClick={this.back} size="big">
+            <Button
+              icon
+              labelPosition="left"
+              onClick={this.back}
+              size="big"
+              style={{ marginTop: "5em" }}
+            >
               Terug
               <Icon name="left arrow" />
             </Button>
             <Button
+              style={{ marginTop: "5em" }}
               icon
               labelPosition="right"
               onClick={this.saveAndContinue}
               size="big"
             >
-              Verder
+              Kopen
               <Icon name="right arrow" />
             </Button>
           </Form>
