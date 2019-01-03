@@ -20,10 +20,17 @@ namespace webshop.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAction()
+        public IActionResult Get()
         {
-            var result = _context.Orders;
-            return Ok(result);
+            var result = this._context.Orders.Select(order => new
+            {
+                order.Id,
+                order.Date,
+                order.OrderStatus,
+                order.ZipCode
+            });
+
+            return new OkObjectResult(result);
         }
 
         [HttpGet("GetOrdersForManage")]

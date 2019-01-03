@@ -28,7 +28,7 @@ export class Password extends Component{
                 <Segment attached >
                     <Menu.Item name='Gegevens' as={Link} to="/userprofile" active={activeItem === 'Gegevens'} onClick={this.handleItemClick}/>
                     <Menu.Item name='Wachtwoord wijzigen' active={activeItem === 'Wachtwoord wijzigen'} onClick={this.handleItemClick}/>
-                    <Menu.Item name='Bestellingen' active={activeItem === 'Bestellingen'} onClick={this.handleItemClick} />
+                    <Menu.Item name='Bestellingen' as={Link} to="/orderhistory" active={activeItem === 'Bestellingen'} onClick={this.handleItemClick} />
                 </Segment>
                 </Menu>
                 </Grid.Column>
