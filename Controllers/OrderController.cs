@@ -238,5 +238,30 @@ namespace webshop.Controllers
             return new OkResult();
 
         }
+
+        [HttpGet("GetOrderByUserId/{userId}")]
+        public IQueryable GetOrdersByUserId(int UserId)
+        {
+            var result = this._context.Orders
+                        .Select(order => new
+                        {
+                            order.UserId,
+                            order.OrderStatus,
+                            order.Name,
+                            order.Street,
+                            order.Total,
+                            TotalWithDiscount = order.TotalWithDiscoun,
+                            order.ZipCode,
+                            Products = order.Products.Select(pr => pr).Select(pr => new {
+                                Id = pr.ProductId,
+                                pr.Quantity,
+                                pr.Price,
+                                pr.Product.Title
+                            }),
+
+                        }).Where(order => order.UserId == UserId);
+
+            return result;
+        }
     }
 }
