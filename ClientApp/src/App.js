@@ -6,7 +6,7 @@ import { ProductDetails } from "./components/ProductDetails";
 import { Register } from "./components/Register";
 import { ManageProducts } from "./components/Pages/ManageProducts";
 import { AddProduct } from "./components/Pages/AddProduct";
-import { ManageUsers } from "./components/Pages/ManageUsers";//ManageOrders
+import { ManageUsers } from "./components/Pages/ManageUsers"; //ManageOrders
 import { ManageOrders } from "./components/Pages/ManageOrders";
 import { Login } from "./components/Login";
 import { ConfirmationMail } from "./components/ConfirmationMail";
@@ -18,6 +18,9 @@ import { UserProfile } from "./components/Pages/UserProfile";
 import { UpdateProduct } from "./components/Pages/UpdateProduct/UpdateProduct";
 import Checkout from "./components/Checkout/Checkout";
 import FavoritesList from "./components/Favorite/FavoritesList";
+import { Password } from "./components/Pages/Password";
+import { OrderHistory } from "./components/Pages/OrderHistory";
+
 
 export default class App extends Component {
   displayName = App.name;
@@ -51,7 +54,6 @@ export default class App extends Component {
           render={props => <UpdateOrder orderId={props.match.params.orderId} />}
         />
         <Route path="/manageOrders" component={ManageOrders} />
-        {/* <Route path="/fetchdata" component={FetchData} /> */}
         <Route path="/favoriteslist" component={FavoritesList} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
@@ -62,6 +64,8 @@ export default class App extends Component {
         <Route path="/userprofile" component={UserProfile} />
         <Route path="/statistics" component={Statistics} />
         <Route path="/checkout" component={Checkout} />
+        <Route path="/password" component={Password} />
+        <Route path="/orderHistory" component={OrderHistory}/>
       </Layout>
     );
   }

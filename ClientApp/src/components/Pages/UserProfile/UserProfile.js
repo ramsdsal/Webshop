@@ -1,75 +1,99 @@
 import React, { Component } from 'react';
 import './UserProfile.css';
+import { Link} from "react-router-dom";
+import { Container, Grid, Segment, Header, Menu, Form, Input } from 'semantic-ui-react';
+
 
 
 export class UserProfile extends Component{
-    constructor()
+    constructor(props)
     {
-        super();
-        this.state = { user : "isLoading"}
+        super(props);
+        this.state = { user : "isLoading", activeItem: 'Gegevens' }
         fetch("/api/User/2")
             .then(response => response.json())
             .then(data => {
             console.log(data)
              this.setState({...this.state, user : data[0]})});
+
+             
         
     }    
-            
-    
-    
+
+    handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+
     render() {
+        const { activeItem } = this.state
+
+        
+
         if (this.state.user === "isLoading")
         {
             return <p>Loading...</p>
         }
-        return (
-            <div>
-                <h1>Profile</h1>
-                <p>Dummy Profile. We will see how it will look like.</p>
-                <div>
-                    <h3> Gegevens </h3>
-                    <li><strong>Naam :</strong> { this.state.user.firstName } </li>
-                    <li><strong>Achternaam :</strong> { this.state.user.lastName } </li>
-                    <li><strong>Geboortedatum :</strong> { this.state.user.birthDate } </li>
-                    <li><strong>E-mail :</strong> { this.state.user.email } </li>           
 
-                    <li><strong>Address : </strong>Schapenburg 2</li>
-                </div>
-                <div>
-                    <h3> Favorieten </h3>
-                    <li>Halloween</li>
-                    <li>Avengers : Infinity War</li>
-                </div>
-                <div>
-                    <h3> Orders </h3>
-                    <table>
-                    <thead>
-                        <tr>
-                            <th scope="col">Title</th>
-                            <th scope="col">Date of delivery</th>
-                            <th scope="col">Address</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>The Grinch</td>
-                            <td>28-2-2019</td>
-                            <td>Holé Straat 78</td>
-                        </tr>
-                        <tr>
-                            <td>Titanic</td>
-                            <td>18-4-2020</td>
-                            <td>Holé Street 78</td>
-                        </tr>
-                        <tr>
-                            <td>Venom</td>
-                            <td>2-3-2019</td>
-                            <td>Holé Street 76</td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-            </div>
+        return (
+        <Container style={{ marginTop: "7em" }}>
+        <Grid>
+            <Grid.Column width={4}>
+            <Header as='h2' attached='top'>
+            Instellingen
+            </Header>
+                <Menu fluid vertical  >
+                <Segment attached >
+                    <Menu.Item name='Gegevens'   active={activeItem === 'Gegevens'} onClick={this.handleItemClick}/>
+                    <Menu.Item name='Wachtwoord wijzigen' as={Link} to="/password" active={activeItem === 'Wachtwoord wijzigen'} onClick={this.handleItemClick}/>
+                    <Menu.Item name='Bestellingen' as={Link} to="/orderhistory" active={activeItem === 'Bestellingen'} onClick={this.handleItemClick} />
+                </Segment>
+                </Menu>
+                </Grid.Column>
+                <Grid.Column stretched width={12}>
+                <Header as='h2' attached='top'>
+                {this.state.activeItem}
+                </Header>
+                <Segment attached>
+                <Form>
+                    <Form.Group>
+                        <Form.Field  >
+                        <h6>Voornaam</h6>
+                        <Input placeholder={this.state.user.firstName} readOnly/>
+                        </Form.Field>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Field >
+                        <h6>Achternaam</h6>
+                        <Input placeholder={this.state.user.lastName} readOnly/>
+                        </Form.Field>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Field >
+                        <h6>Geboortedatum</h6>
+                        <Input type="text" onFocus = {this._onFocus} placeholder={this.state.user.birthDate} readOnly/>
+                        </Form.Field>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Field >
+                        <h6>E-mail</h6>
+                        <Input placeholder={this.state.user.email} readOnly/>
+                        </Form.Field>
+                    </Form.Group>
+                </Form>
+                </Segment>
+            </Grid.Column>
+        </Grid>
+        </Container>
         )
     }
+
+    
 }
+
+// const mapStateToProps = state => {
+//     return {
+//       user: state.authentication.user,
+      
+//     };
+// };
+
+// export default UserProfile;
