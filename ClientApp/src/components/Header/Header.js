@@ -110,6 +110,9 @@ class Header extends Component {
                         <Dropdown.Item as={Link} to={"/manageproducts"}>
                           Products manage
                         </Dropdown.Item>
+                        <Dropdown.Item as={Link} to={"/manageorders"}>
+                          Orders manage
+                        </Dropdown.Item>
                         <Dropdown.Item as={Link} to={"/statistics"}>
                           Statistics
                         </Dropdown.Item>
