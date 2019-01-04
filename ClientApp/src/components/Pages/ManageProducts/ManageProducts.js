@@ -31,6 +31,7 @@ export class ManageProducts extends Component {
             <th scope="col">Titel</th>
             <th scope="col">Prijs</th>
             <th scope="col">Voorraad</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +41,9 @@ export class ManageProducts extends Component {
               <td>{movie.title}</td>
               <td>{movie.price}</td>
               <td>{movie.quantity}</td>
+              <td>                    <Link className="nav-link" to={"/updateproduct/" + movie.id}>
+                      Update
+                    </Link></td>
             </tr>
           ))}
         </tbody>
