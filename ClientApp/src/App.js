@@ -51,7 +51,7 @@ export default class App extends Component {
           render={props => <UpdateOrder orderId={props.match.params.orderId} />}
         />
         <Route path="/manageOrders" component={ManageOrders} />
-        <Route path="/fetchdata" component={FetchData} />
+        {/* <Route path="/fetchdata" component={FetchData} /> */}
         <Route path="/favoriteslist" component={FavoritesList} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
