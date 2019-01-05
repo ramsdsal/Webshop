@@ -53,6 +53,11 @@ export default class App extends Component {
           path="/updateOrder/:orderId"
           render={props => <UpdateOrder orderId={props.match.params.orderId} />}
         />
+        <Route
+          path="/password/:userId"
+          render={props => <Password userId={props.match.params.userId} />}
+        />
+      
         <Route path="/manageOrders" component={ManageOrders} />
         <Route path="/favoriteslist" component={FavoritesList} />
         <Route path="/login" component={Login} />
@@ -64,7 +69,6 @@ export default class App extends Component {
         <Route path="/userprofile" component={UserProfile} />
         <Route path="/statistics" component={Statistics} />
         <Route path="/checkout" component={Checkout} />
-        <Route path="/password" component={Password} />
         <Route path="/orderHistory" component={OrderHistory}/>
       </Layout>
     );
