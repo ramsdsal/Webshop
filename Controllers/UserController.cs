@@ -79,6 +79,23 @@ namespace webshop.Controllers
             }
 
             return new OkObjectResult(false);
+        
+        }
+
+        [HttpPut("password")]
+        public IActionResult password([FromBody] User user)
+        {
+            User userToUpdate = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+            if (userToUpdate != null)
+            {
+                userToUpdate.Password = user.Password;
+
+                _context.SaveChanges();
+
+                return new OkObjectResult(new { isError = false, userUpdated = true, response = "Gebruiker is aangepast." });
+            }
+
+            return new OkObjectResult(new { isError = true, userUpdated = false, response = "Gebruiker bestaat niet." });
         }
 
         [HttpPut("UpdateUser")]
@@ -95,10 +112,10 @@ namespace webshop.Controllers
 
                 _context.SaveChanges();
 
-                return new OkObjectResult(new {isError = false, userUpdated = true, response = "Gebruiker is aangepast."});
+                return new OkObjectResult(new { isError = false, userUpdated = true, response = "Gebruiker is aangepast." });
             }
 
-            return new OkObjectResult(new {isError = true, userUpdated = false, response = "Gebruiker bestaat niet."});
+            return new OkObjectResult(new { isError = true, userUpdated = false, response = "Gebruiker bestaat niet." });
         }
 
         [HttpPost("AddUserAddress")]
@@ -106,7 +123,7 @@ namespace webshop.Controllers
         {
             if (userAddress == null)
             {
-                return new OkObjectResult(new {isError = true, addresAdded = false, response = "Adres is niet goed ingevuld."});
+                return new OkObjectResult(new { isError = true, addresAdded = false, response = "Adres is niet goed ingevuld." });
             }
 
             User user = _context.Users.FirstOrDefault(u => u.Id == userAddress.UserId);
@@ -122,11 +139,11 @@ namespace webshop.Controllers
                 userAddress.User = user;
                 _context.UserAddresses.Add(userAddress);
                 _context.SaveChanges();
-                
-                return new OkObjectResult(new {isError = false, addresAdded = true, response = "Adres is succesvol toegevoegd."});
+
+                return new OkObjectResult(new { isError = false, addresAdded = true, response = "Adres is succesvol toegevoegd." });
             }
 
-            return new OkObjectResult(new {isError = true, addresAdded = false, response = "Gebruiker bestaat niet."});
+            return new OkObjectResult(new { isError = true, addresAdded = false, response = "Gebruiker bestaat niet." });
 
         }
 
@@ -148,6 +165,24 @@ namespace webshop.Controllers
             return new OkObjectResult(result);
 
         }
+        [HttpGet("GetUserAdress/{id}")]
+        public IActionResult GetUserAdress(int id)
+        {
+            var result = this._context.Users
+                        .Select(u => new
+                        {
+                            u.Id,
+                            u.FirstName,
+                            u.LastName,
+                            u.BirthDate,
+                            u.Email,
+                            Addresses = u.Addresses.Select(a => a).Where(a => a.Current == 1).Select(ad => ad.Address).Single()
+                        }).Where(u => u.Id == id);
+
+            return new OkObjectResult(result);
+
+
+        }
 
         [HttpGet("GetUserById/{id}")]
         public IQueryable GetUserById(int id)
@@ -160,6 +195,7 @@ namespace webshop.Controllers
                             u.LastName,
                             u.BirthDate,
                             u.Email,
+                            u.Password,
                             Addresses = u.Addresses.Select(a => a).Select(ad => ad.Address),
                         }).Where(u => u.Id == id);
 
