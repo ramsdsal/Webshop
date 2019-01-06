@@ -26,7 +26,7 @@ namespace webshop.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var result = this._context.Users.Select(user => new
+            var result = this._context.Users.OrderBy(user => user.Id).Select(user => new
             {
                 user.Id,
                 user.FirstName,
