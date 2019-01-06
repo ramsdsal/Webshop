@@ -1,25 +1,340 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, Form, Message, TextArea, Segment, Header, Table, Icon } from "semantic-ui-react";
 import "./AddProduct.css";
 
 export class AddProduct extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
-      Title: "",
-      Description: "",
-      Released: "",
-      RunTime: "",
-      Poster: "",
-      AgeRating: "",
-      TrailerURL: "",
-      Quantity: "",
-      Category: "",
-
-      CategoryName: "",
-      CategoryDescription: ""
+      categoryDropdown : [ ],
+      // Product
+      title: "",
+      description: "",
+      releaseDate: "",
+      runTime: "",
+      poster: "",
+      ageRating: "",
+      trailerUrl: "",
+      quantity: "",
+      
+      //Price
+      priceValue: 0,
+      priceBeginDate: "",
+      
+      // Categorie
+      categoryName: "",
+      categoryDescription: "",
+      
+      //ProductCategorie
+      categoryId : "",
+      productId : "",
+      
+      //Product validatie
+      addProductError : false,
+      productAdded : false,
+      serverAddedProductResponse : "",
+      productFormIsLoading : false,
+      
+      //Catogorie validatie
+      addCategoryError : false,
+      categoryAdded : false,
+      serverCateoryResponse : "",
+      categoryFormIsLoading: false
+      
     };
+    fetch("api/Category/GetCategories")
+    .then(response => response.json())
+    .then(data => {this.setState({
+      ...this.state,
+      categoryDropdown : data
+    })})
+  }
+  
+  sendAddedProduct = () => { 
+    
+    var jsonToSend = {
+      Title : this.state.title,
+      Description : this.state.description,
+      Released : this.state.releaseDate,
+      RunTime : this.state.runTime,
+      Poster : this.state.poster, 
+      AgeRating : this.state.ageRating,
+      TrailerUrl : this.state.trailerUrl, 
+      Quantity : this.state.quantity,
+      Prices : [
+        { Value : this.state.priceValue,
+          Current : 1,
+          DateOn : new Date() }]
+        }
+        
+        fetch ("api/product/addproduct", {
+          method : "Post",
+          headers : {
+            Accept : "application/json",
+            "Content-Type" : "application/json"
+          },
+      body : JSON.stringify(jsonToSend)
+    }).then(response => response.json())
+    .then(data => {
+      console.log(data)
+      this.setState({
+        ...this.state,
+        productId : data.productId,
+        serverAddedProductResponse : data.response,
+        addProductError : data.isError,
+        productAdded : data.productAdd,
+        productFormIsLoading : false
+      });
+      console.log(this.state)
+      if (this.state.productId > 0)
+      {
+        var addingPC = { ProductId : this.state.productId, CategoryId : this.state.categoryId }
+        console.log(addingPC)
+        this.sendProductCategory(addingPC)
+        this.setState({
+          ...this.state,
+          title : "",
+          description : "",
+          releaseDate : "",
+          runTime : "",
+          poster : "",
+          ageRating : "",
+          trailerUrl : "",
+          quantity : ""
+        })
+      }    
+    });
+    
+  }
+  
+  sendProductCategory = (procat) => {
+    console.log(procat)
+    fetch ("api/Category/addproductcategory", {
+      method : "Post",
+      headers : {
+        Accept : "application/json",
+        "Content-Type" : "application/json"
+      },
+      body : JSON.stringify(procat)
+    })
+
+  }
+
+  sendAddedCategory = () => {
+
+    var jsonToSend = {
+      Name : this.state.categoryName,
+      Description : this.state.categoryDescription
+    }
+
+    fetch ("api/category/addcategory", {
+      method : "Post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(jsonToSend)
+    })
+      .then(response => response.json())
+      .then(data => { this.setState({
+        ...this.state,
+        serverCateoryResponse : data.response,
+        addCategoryError : data.isError,
+        categoryAdded : data.categoryAdded,
+        categoryFormIsLoading : false
+      })
+      if(this.state.categoryAdded) 
+      {
+        console.log(this.state)
+        this.setState({
+          ...this.state,
+          Name : "",
+          Description : ""
+        })
+      }
+    })
+  };
+
+  renderPage() {
+    return (
+      <Container style={{ marginTop : "7em"}}>
+        <Header as="h2" attached="top">
+          Product Toevoegen
+        </Header>
+        <Segment>
+          <Form 
+            size="big"
+            onSubmit={this.sendAddedProduct}
+            loading={this.state.productFormIsLoading}
+            error={this.state.addProductError}
+            succes={this.state.productAdded}
+          >
+          {this.state.addProductError ? (
+            <Message
+              size="large"
+              error
+              header="Product bestaat al"
+              content={this.state.serverAddedProductResponse}/>
+          ) : null}
+
+          {this.state.productAdded ? (
+            <Message
+              size="large"
+              succes
+              header="Product toegevoegd"
+              content={this.state.serverAddedProductResponse}/>
+          ) : null}
+            <Form.Group unstackable widths={2}>
+              <Form.Input
+                required
+                label="Titel"
+                placeholder="Titel"
+                name="title"
+                onChange={this.handleChange}
+              />
+              <Form.Input
+                required
+                type="date"
+                label="Publicatiedatum"
+                placeholder="Publicatiedatum"
+                name="releaseDate"
+                max="2200-07-06"
+                min="1000-07-27"
+                onChange={this.handleChange}
+              />
+            </Form.Group>
+            <Form.Group unstackable widths={2}>
+              <Form.Input
+                required
+                label="Speelduur"
+                placeholder="Speelduur"
+                name="runTime"
+                type="number"
+                onChange={this.handleChange}
+              />
+              <Form.Input
+                required
+                type="number"
+                label="Leeftijdsclassificatie"
+                placeholder="Leeftijdsclassificatie"
+                name="ageRating"
+                min="0"
+                onChange={this.handleChange}
+              />
+              <Form.Input
+                required
+                type="number"
+                label="Kwantiteit"
+                placeholder="Kwantiteit"
+                name="quantity"
+                min="0"
+                onChange={this.handleChange}
+              />
+              <Form.Input
+                required
+                type="number"
+                label="Prijs"
+                placeholder="10.00"
+                name="priceValue"
+                min="0"
+                onChange={this.handleChange}
+              />
+            </Form.Group>
+            <Form.Field
+              required
+              type="text"
+              label="Beschrijving"
+              placeholder="Beschrijving"
+              name="description"
+              control={TextArea}
+              onChange={this.handleChange}
+            />
+            <Form.Group unstackable widths={"equal"}>
+              <Form.Input
+                required
+                label="Afbeelding URL"
+                placeholder="Afbeelding URL"
+                name="poster"
+                onChange={this.handleChange}
+              />
+              <Form.Input
+                required
+                label="Trailer Code"
+                placeholder="Traier Code"
+                name="trailerUrl"
+                onChange={this.handleChange}
+              />
+              <Form.Dropdown
+                required
+                label="Categorie"
+                placeholder="Categorie"
+                name="categoryId"
+                fluid selection
+                options={this.state.categoryDropdown}
+                onChange={this.handleChange}
+              />
+            </Form.Group>
+            <Form.Button
+              color="blue"
+              type="submit"
+              >
+              <Icon name="write" /> Toevoegen
+              </Form.Button>
+          </Form>
+        </Segment>
+        <Header as="h2" attached="top">
+          Catogoriëen Toevoegen
+        </Header>
+        <Segment>
+          <Form 
+            size='big'
+            onSubmit={this.sendAddedCategory}
+            loading={this.state.categoryFormIsLoading}
+            error={this.state.addCategoryError}
+            succes={this.state.categoryAdded}
+          >
+            {this.state.addCategoryError ? (
+              <Message 
+                size="large"
+                error
+                header="Categorie bestaat al"
+                content={this.state.serverCateoryResponse}/>
+            ) : null}
+            {this.state.categoryAdded ? (
+              <Message 
+                size="large"
+                succes
+                header="Categorie toegevoegd"
+                content={this.state.serverCateoryResponse}
+              />
+            ) : null}
+            <Form.Input
+              required
+              label="Categorie"
+              placeholder="Categorie"
+              name="categoryName"
+              onChange={this.handleChange}
+          />
+            <Form.Field
+              type="text"
+              label="Beschrijving"
+              placeholder="Beschrijf je categorie"
+              name="categoryDescription"
+              onChange={this.handleChange}
+              control={TextArea}
+            />
+            <Form.Button
+              color="blue"
+              type="submit"
+              disables={!this.state.categoryName}>              
+              <Icon name="write"/> Toevoegen
+            </Form.Button>
+          </Form>
+        
+        </Segment>
+      </Container>
+    )
   }
 
   // sendAddedProduct = () => {
@@ -45,189 +360,11 @@ export class AddProduct extends Component {
   //   // });
   // };
 
-  // sendAddedCategory = () => {
-  //   var jsonToSend = {
-  //     Category: {
-  //       Name: this.state.CategoryName
-  //     }
-  //   };
-  //   // const rawResponse = fetch("/api/category/addcategory", {
-  //   //   method : "POST",
-  //   //   headers : {
-  //   //     Accept : "application/json",
-  //   //     "Content-Type" : "application/json"
-  //   //   },
-  //   //   body : JSON.stringify(jsonToSend)
-  //   // });
-  // };
-
-  handleChange = (e, { CategoryName, value }) =>
-    this.setState({ [CategoryName]: value }, console.log(this.state));
+  handleChange = (e, { name, value }) => this.setState({ [name]: value }, console.log(this.state));
 
   render() {
-    return (
-      <Container style={{ marginTop: "7em" }}>
-        <div className="spacesection-one">
-          <h3>Product toevoegen</h3>
-          <div className="spacesection-two">
-            <form>
-              <div className="form-row" type="addproduct">
-                <div className="col">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Titel"
-                  />
-                </div>
-              </div>
-              <div className="form-row" type="addproduct">
-                <div className="col">
-                  <textarea
-                    className="form-control"
-                    id="exampleFormControlTextarea1"
-                    placeholder="Beschrijving"
-                  />
-                </div>
-              </div>
-              <div className="form-row" type="addproduct">
-                <div className="col">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Releasedatum"
-                  />
-                </div>
-                <div className="col">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Duur"
-                  />
-                </div>
-                <div className="col">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Min. leeftijd"
-                  />
-                </div>
-              </div>
-              <div className="form-row" type="addproduct">
-                <div className="col">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Afbeelding URL"
-                  />
-                </div>
-                <div className="col">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Trailer URL"
-                  />
-                </div>
-              </div>
-              <div className="form-row" type="addproduct">
-                <div className="col">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Prijs"
-                  />
-                </div>
-                <div className="form-row" type="addproduct">
-                  <div className="col">
-                    <textarea
-                      className="form-control"
-                      id="exampleFormControlTextarea1"
-                      placeholder="Beschrijving"
-                    />
-                  </div>
-                </div>
-                <div className="form-row" type="addproduct">
-                  <div className="col">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Releasedatum"
-                    />
-                  </div>
-                  <div className="col">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Duur"
-                    />
-                  </div>
-                  <div className="col">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Min. leeftijd"
-                    />
-                  </div>
-                </div>
-                <div className="form-row" type="addproduct">
-                  <div className="col">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Afbeelding URL"
-                    />
-                  </div>
-                  <div className="col">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Trailer URL"
-                    />
-                  </div>
-                </div>
-                <div className="form-row" type="addproduct">
-                  <div className="col">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Prijs"
-                    />
-                  </div>
-                  <div className="col">
-                    <label className="form" type="categorien">
-                      Categorie:
-                    </label>
-                  </div>
-                  <div className="col-4">
-                    <select className="form-control">
-                      <option>Actie</option>
-                      <option>Kinderfilm</option>
-                      <option>Romance</option>
-                      <option>Thriller</option>
-                      <option>Comedy</option>
-                    </select>
-                  </div>
-                  <div className="col-4">
-                    <select className="form-control">
-                      <option>Categorie 2 (null)</option>
-                      <option>Actie</option>
-                      <option>Kinderfilm</option>
-                      <option>Romance</option>
-                      <option>Thriller</option>
-                      <option>Comedy</option>
-                    </select>
-                  </div>
-                </div>
-                <button type="submit" className="btn btn-primary">
-                  Voeg product toe
-                </button>
-              </div>
-              <button type="submit" className="btn btn-primary">
-                Voeg product toe
-              </button>
-            </form>
-          </div>
-        </div>
-      </Container>
-    );
+    const contents = this.renderPage();
+
+    return contents;
   }
 }
