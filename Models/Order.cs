@@ -6,12 +6,12 @@ namespace webshop.Models
     public class Order : BaseEntity
     {
         public int UserId { get; set; }
-        public int DiscountId { get; set; }
+        public int? DiscountId { get; set; }
         public Discount Discount { get; set; }
         public DateTime Date { get; set; }
         public int OrderStatus { get; set; }
         public double Total { get; set; }
-        public double TotalWithDiscoun { get; set; }
+        public double TotalWithDiscount { get; set; }
         public string Name { get; set; }
         public string Bank { get; set; }
         public string ZipCode { get; set; }

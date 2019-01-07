@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Form, Grid, Button, Icon, Select, Message } from "semantic-ui-react";
 import "./Checkout.css";
+import _ from "lodash";
+import { connect } from "react-redux";
 
 const formValid = ({ payment }) => {
   let valid = true;
@@ -16,6 +18,7 @@ class Step2 extends Component {
       formValid: true
     };
   }
+
   saveAndContinue = e => {
     e.preventDefault();
     this.props.nextStep();
@@ -26,10 +29,46 @@ class Step2 extends Component {
     this.props.prevStep();
   };
 
+  storeOrder = () => {
+    let items = JSON.parse(window.localStorage.getItem("cart") || "[]");
+    var result = items.map(o => {
+      return Object.assign(
+        {
+          productid: o.id,
+          quantity: o.qt
+        },
+        _.omit(o, "id", "qt")
+      );
+    });
+
+    var jsonToSend = {
+      userid: this.props.user.id,
+      zipcode: this.props.values.zipcode,
+      street: this.props.values.street,
+      country: this.props.values.country,
+      name: this.props.values.name,
+      city: this.props.values.city,
+      bank: this.props.payment,
+      products: result
+    };
+
+    fetch("/api/order/save", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(jsonToSend)
+    });
+  };
+
   handleSubmit = e => {
     e.preventDefault();
 
     if (formValid(this.props)) {
+      this.storeOrder();
+      window.localStorage.removeItem("cart");
+      this.props.dispatch({ type: "CART_COUNTER_UPDATE" });
       this.props.nextStep();
     } else {
       this.setState({ ...this.state, formValid: false });
@@ -102,4 +141,11 @@ class Step2 extends Component {
   }
 }
 
-export default Step2;
+const mapDispatchToProps = dispatch => {
+  return {
+    updateCart: () => {
+      dispatch({ type: "CART_COUNTER_UPDATE" });
+    }
+  };
+};
+export default connect(mapDispatchToProps)(Step2);

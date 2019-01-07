@@ -114,7 +114,7 @@ namespace webshop.Controllers
                             order.Name,
                             order.Street,
                             order.Total,
-                            TotalWithDiscount = order.TotalWithDiscoun,
+                            TotalWithDiscount = order.TotalWithDiscount,
                             order.ZipCode,
                             Products = order.Products.Select(pr => pr).Select(pr => new
                             {
@@ -238,6 +238,82 @@ namespace webshop.Controllers
         [HttpPost("save")]
         public IActionResult SaveOrder([FromBody] Order order)
         {
+
+            if (order.Name == "")
+            {
+                var user = this._context.Users
+                        .Select(u => new
+                        {
+                            u.Id,
+                            u.FirstName,
+                            u.LastName,
+                            u.BirthDate,
+                            u.Email,
+                            Addresses = u.Addresses.Select(a => a).Where(a => a.Current == 1).Select(ad => ad.Address).Single()
+                        }).Where(u => u.Id == order.UserId).Single();
+                order.Name = user.FirstName + " " + user.LastName;
+                order.ZipCode = user.Addresses.ZipCode;
+                order.Street = user.Addresses.Street;
+                order.Country = user.Addresses.Country;
+                order.City = user.Addresses.City;
+            }
+            order.OrderStatus = 1;
+
+            bool stok = true;
+            double total = 0;
+
+            foreach (var element in order.Products)
+            {
+                element.Price = (from p in this._context.Prices
+                                 where p.ProductId == element.ProductId && p.Current == 1
+                                 select p.Value).Single();
+
+                var st = (from p in this._context.Products
+                          where p.Id == element.ProductId
+                          select p.Quantity).Single();
+
+                if (st < element.Quantity)
+                {
+                    stok = false;
+                }
+
+                total = total + element.Quantity * element.Price;
+            }
+            order.Total = total;
+            order.Date = DateTime.Today;
+
+            var discount = (from d in this._context.Discounts
+                            where d.Current == 1
+                            select new
+                            {
+                                d.Id,
+                                d.Percentage
+                            }).Single();
+
+            if (discount != null)
+            {
+                order.DiscountId = discount.Id;
+                order.TotalWithDiscount = total - (total * discount.Percentage) / 100;
+            }
+            else
+            {
+                order.TotalWithDiscount = total;
+            }
+
+            if (!stok)
+            {
+                order.OrderStatus = 0;
+            }
+            else
+            {
+                foreach (var element in order.Products)
+                {
+                    var prod = (from p in this._context.Products
+                                where p.Id == element.ProductId
+                                select p).Single();
+                    prod.Quantity = prod.Quantity - element.Quantity;
+                }
+            }
 
             _context.Orders.Add(order);
             _context.SaveChanges();
