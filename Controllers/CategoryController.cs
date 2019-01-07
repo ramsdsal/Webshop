@@ -29,10 +29,35 @@ namespace webshop.Controllers
             return new ObjectResult(result);
         }
 
+        [HttpGet("GetCategories")]
+        public IActionResult GetCategories()
+        {
+            var result = this._context.Categories.Select(cat => new {
+                text = cat.Name,
+                value = cat.Id
+            }).ToList();
+            return Ok(result);
+        }
+
         [HttpPost("addcategory")]
         public IActionResult Add([FromBody] Category category)
         {
-            _context.Categories.Add(category);
+            Category existingCategory = _context.Categories.FirstOrDefault(cat => cat.Name == category.Name);
+
+            if(existingCategory == null)
+            {                        
+                _context.Categories.Add(category);
+                _context.SaveChanges();
+
+                return new OkObjectResult(new {isError = false, categoryAdded = true, response = "Categorie toegevoegd."});
+            }
+            return new OkObjectResult(new {isError = true, categoryAdded = false, response = "Categorie bestaat al"});
+        }
+
+        [HttpPost("addproductcategory")]
+        public IActionResult Add([FromBody] ProductCategory productCategory)
+        {            
+            _context.ProductCategories.Add(productCategory);
             _context.SaveChanges();
             return Ok();
         }

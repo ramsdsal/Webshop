@@ -26,7 +26,7 @@ namespace webshop.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var result = this._context.Users.Select(user => new
+            var result = this._context.Users.OrderBy(user => user.Id).Select(user => new
             {
                 user.Id,
                 user.FirstName,
@@ -79,6 +79,23 @@ namespace webshop.Controllers
             }
 
             return new OkObjectResult(false);
+        
+        }
+
+        [HttpPut("password")]
+        public IActionResult password([FromBody] User user)
+        {
+            User userToUpdate = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+            if (userToUpdate != null)
+            {
+                userToUpdate.Password = user.Password;
+
+                _context.SaveChanges();
+
+                return new OkObjectResult(new { isError = false, userUpdated = true, response = "Gebruiker is aangepast." });
+            }
+
+            return new OkObjectResult(new { isError = true, userUpdated = false, response = "Gebruiker bestaat niet." });
         }
 
         [HttpPut("UpdateUser")]
@@ -178,6 +195,7 @@ namespace webshop.Controllers
                             u.LastName,
                             u.BirthDate,
                             u.Email,
+                            u.Password,
                             Addresses = u.Addresses.Select(a => a).Select(ad => ad.Address),
                         }).Where(u => u.Id == id);
 

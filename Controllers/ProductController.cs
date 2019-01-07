@@ -19,6 +19,8 @@ namespace webshop.Controllers
         {
             this._context = context;
         }
+        
+        
 
         // GET api/Products
         [HttpGet]
@@ -182,9 +184,20 @@ namespace webshop.Controllers
         [HttpPost("addproduct")]
         public IActionResult Post([FromBody] Product product)
         {
-            _context.Products.Add(product);
-            _context.SaveChanges();
-            return Ok();
+            Product existingProduct = _context.Products.FirstOrDefault(pr => pr.Title == product.Title);
+            if (existingProduct == null)
+            {
+                product.Year = product.Released.Year;
+                _context.Products.Add(product);
+                _context.SaveChanges();
+
+                int productId = (from prod in _context.Products
+                                 where prod.Title == product.Title
+                                 select prod.Id).FirstOrDefault();
+
+                return new ObjectResult(new { isError = false, productAdd = true, response = "Product is toegevoegd", productId = productId});
+            }
+            return new ObjectResult(new { isError = true, productAdd = false, response = "Product bestaat al.", producId = 0});
         }
 
 

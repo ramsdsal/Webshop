@@ -133,6 +133,7 @@ export class UpdateUser extends Component {
               name="birthDate" 
               max= {currentDate}
               min= "1800-07-27"
+              value={this.state.dateFrom}
               // value= {"1800-07-06"} //"2011-09-29"
               onChange={this.handleChange} 
             />
