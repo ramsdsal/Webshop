@@ -20,12 +20,7 @@ import Checkout from "./components/Checkout/Checkout";
 import FavoritesList from "./components/Favorite/FavoritesList";
 import { Password } from "./components/Pages/Password";
 import { OrderHistory } from "./components/Pages/OrderHistory";
-<<<<<<< HEAD
 import test from "./components/Pages/UserProfile/test";
-=======
-import { AddCategory } from "./components/Pages/AddCategory/AddCategory";
-
->>>>>>> 2db60ff15f80ba3d3a72ba2090764aadae8d1bd0
 
 export default class App extends Component {
   displayName = App.name;
@@ -74,13 +69,8 @@ export default class App extends Component {
         <Route path="/userprofile" component={UserProfile} />
         <Route path="/statistics" component={Statistics} />
         <Route path="/checkout" component={Checkout} />
-<<<<<<< HEAD
         <Route path="/orderHistory" component={OrderHistory} />
         <Route path="/test" component={test} />
-=======
-        <Route path="/orderHistory" component={OrderHistory}/>
-        <Route path="/addcategory" component={AddCategory} />
->>>>>>> 2db60ff15f80ba3d3a72ba2090764aadae8d1bd0
       </Layout>
     );
   }
