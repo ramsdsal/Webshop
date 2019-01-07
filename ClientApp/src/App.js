@@ -20,6 +20,7 @@ import Checkout from "./components/Checkout/Checkout";
 import FavoritesList from "./components/Favorite/FavoritesList";
 import { Password } from "./components/Pages/Password";
 import { OrderHistory } from "./components/Pages/OrderHistory";
+import { AddCategory } from "./components/Pages/AddCategory/AddCategory";
 
 
 export default class App extends Component {
@@ -70,6 +71,7 @@ export default class App extends Component {
         <Route path="/statistics" component={Statistics} />
         <Route path="/checkout" component={Checkout} />
         <Route path="/orderHistory" component={OrderHistory}/>
+        <Route path="/addcategory" component={AddCategory} />
       </Layout>
     );
   }
