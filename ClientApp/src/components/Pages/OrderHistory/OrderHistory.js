@@ -1,45 +1,47 @@
 import React, { Component } from 'react';
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import { Container, Grid, Segment, Header, Menu, Table} from 'semantic-ui-react';
 
-
 export class OrderHistory extends Component{
-constructor(props) {
+      
+    constructor(props) {
 
-    super(props);
-    this.state = { isLoading: "Loading", orders: [] , activeItem: 'Bestellingen'};
-
-    fetch("/api/Order")
-        .then(response => response.json())
-        .then(data => {
-        this.setState({ ...this.state, orders: data, isLoading: "Loading" });
-        });
+        super(props);
+        this.state = { orders: [] , activeItem: 'Bestellingen'};
     }
 
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
-
-    renderOrderTable(orders) {
+    renderOrderTable() {
     return (
         <Table celled>
-        <Table.Header>
-            <Table.Row>
-            <Table.HeaderCell>Bestelling id</Table.HeaderCell>
-            <Table.HeaderCell>Postcode</Table.HeaderCell>
-            <Table.HeaderCell>Status</Table.HeaderCell>
-            <Table.HeaderCell>Datum</Table.HeaderCell>
-            </Table.Row>
-        </Table.Header>
-        <Table.Body>
-        {this.state.orders.map(order => (
-            <Table.Row key= {order.id}>
-            <Table.Cell>{order.id}</Table.Cell>
-            <Table.Cell>{order.zipCode}</Table.Cell>
-            <Table.Cell>{order.orderStatus}</Table.Cell>
-            <Table.Cell>{order.date}</Table.Cell>
-            </Table.Row>
-            
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>Id</Table.HeaderCell>
+                    <Table.HeaderCell>Postcode</Table.HeaderCell>
+                    <Table.HeaderCell>Status</Table.HeaderCell>
+                    <Table.HeaderCell>Datum</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {this.state.orders.map(order => (                
+                    <Table.Row key= {order.id}>
+                        <Table.Cell>{order.id}</Table.Cell>
+                        <Table.Cell>{order.zipCode}</Table.Cell>
+                        <Table.Cell>{order.orderStatus}</Table.Cell>
+                        <Table.Cell>{order.date}</Table.Cell>
+                        <Table.Cell>Details</Table.Cell>
+                    </Table.Row>
                 ))}
+                <Table.Row key= {1}>
+                        <Table.Cell>Mark</Table.Cell>
+                        <Table.Cell>Mark1</Table.Cell>
+                        <Table.Cell>Mark2</Table.Cell>
+                        <Table.Cell>Mark3</Table.Cell>
+                        <Table.Cell>Mark4</Table.Cell>
+                </Table.Row>
             </Table.Body>
         </Table>
     
@@ -47,7 +49,7 @@ constructor(props) {
     }
 
     render() {
-    let contents = this.renderOrderTable(this.state.orders);
+    let contents = this.renderOrderTable();
 
     const { activeItem } = this.state
     
@@ -79,4 +81,9 @@ constructor(props) {
     )
   }
 }
-        
+
+const mapStateToProps = state => {
+    return { user: state.authentication.user };
+};
+  
+export default connect(mapStateToProps)(OrderHistory);

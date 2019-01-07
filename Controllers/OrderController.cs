@@ -322,15 +322,17 @@ namespace webshop.Controllers
 
         }
 
-        [HttpGet("GetOrderByUserId/{userId}")]
-        public IQueryable GetOrdersByUserId(int UserId)
+        [HttpGet("GetOrdersByUserId/{userId}")]
+        public IQueryable GetOrdersByUserId(int userId)
         {
             var result = this._context.Orders
                         .Select(order => new
                         {
+                            order.Id,
                             order.UserId,
                             order.OrderStatus,
                             order.Name,
+<<<<<<< HEAD
                             order.Street,
                             order.Total,
                             TotalWithDiscount = order.TotalWithDiscount,
@@ -342,8 +344,12 @@ namespace webshop.Controllers
                                 pr.Price,
                                 pr.Product.Title
                             }),
+=======
+                            order.ZipCode,
+                            order.Date
+>>>>>>> 3767ccde0f68af7f92945f53958c71177a027492
 
-                        }).Where(order => order.UserId == UserId);
+                        }).Where(order => order.UserId == userId).OrderBy(o => o.Id);
 
             return result;
         }
