@@ -7,27 +7,6 @@ class Step3 extends Component {
     this.state = {};
   }
 
-  componentWillMount() {
-    if (this.props.bezorgen === "klantadres") {
-      fetch("api/user/getuseradress/" + this.props.user.id, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      })
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            ...this.state,
-            adress: data
-          });
-        });
-    } else {
-      console.log("Nieuw adress");
-    }
-  }
-
   render() {
     return (
       <Segment.Group>

@@ -278,6 +278,7 @@ export class UpdateProduct extends Component {
                 name="value"
                 type="number"
                 min="0"
+                step="any"
                 onChange={this.handleChange}
               />
             </Form.Group>
