@@ -28,11 +28,6 @@ export class AddProduct extends Component {
 
       //Price
       priceValue: 0,
-      priceBeginDate: "",
-
-      // Categorie
-      categoryName: "",
-      categoryDescription: "",
 
       //ProductCategorie
       categoryId: "",
@@ -42,22 +37,8 @@ export class AddProduct extends Component {
       addProductError: false,
       productAdded: false,
       serverAddedProductResponse: "",
-      productFormIsLoading: false,
-
-      //Catogorie validatie
-      addCategoryError: false,
-      categoryAdded: false,
-      serverCateoryResponse: "",
-      categoryFormIsLoading: false
+      productFormIsLoading: false
     };
-    fetch("api/Category/GetCategories")
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          ...this.state,
-          categoryDropdown: data
-        });
-      });
   }
 
   sendAddedProduct = () => {
@@ -74,6 +55,41 @@ export class AddProduct extends Component {
     };
 
     fetch("api/product/addproduct", {
+      method: "Post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(jsonToSend)
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          ...this.state,
+          productId: data.productId,
+          serverAddedProductResponse: data.response,
+          addProductError: data.isError,
+          productAdded: data.productAdd,
+          productFormIsLoading: false
+        });
+
+        if (this.state.productId > 0) {
+          var addingPC = {
+            ProductId: this.state.productId,
+            CategoryId: this.state.categoryId
+          };
+
+          this.sendProductCategory(addingPC);
+          this.setState({
+            ...this.state,
+            categoryDropdown: data
+          });
+        }
+      });
+  };
+
+  sendProductCategory = procat => {
+    fetch("api/Category/addproductcategory", {
       method: "Post",
       headers: {
         Accept: "application/json",
@@ -127,40 +143,6 @@ export class AddProduct extends Component {
     });
   };
 
-  sendAddedCategory = () => {
-    var jsonToSend = {
-      Name: this.state.categoryName,
-      Description: this.state.categoryDescription
-    };
-
-    fetch("api/category/addcategory", {
-      method: "Post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(jsonToSend)
-    })
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          ...this.state,
-          serverCateoryResponse: data.response,
-          addCategoryError: data.isError,
-          categoryAdded: data.categoryAdded,
-          categoryFormIsLoading: false
-        });
-        if (this.state.categoryAdded) {
-          console.log(this.state);
-          this.setState({
-            ...this.state,
-            Name: "",
-            Description: ""
-          });
-        }
-      });
-  };
-
   renderPage() {
     return (
       <Container style={{ marginTop: "7em" }}>
@@ -173,7 +155,7 @@ export class AddProduct extends Component {
             onSubmit={this.sendAddedProduct}
             loading={this.state.productFormIsLoading}
             error={this.state.addProductError}
-            succes={this.state.productAdded}
+            success={this.state.productAdded}
           >
             {this.state.addProductError ? (
               <Message
@@ -288,86 +270,11 @@ export class AddProduct extends Component {
             </Form.Button>
           </Form>
         </Segment>
-        <Header as="h2" attached="top">
-          Catogoriëen Toevoegen
-        </Header>
-        <Segment>
-          <Form
-            size="big"
-            onSubmit={this.sendAddedCategory}
-            loading={this.state.categoryFormIsLoading}
-            error={this.state.addCategoryError}
-            succes={this.state.categoryAdded}
-          >
-            {this.state.addCategoryError ? (
-              <Message
-                size="large"
-                error
-                header="Categorie bestaat al"
-                content={this.state.serverCateoryResponse}
-              />
-            ) : null}
-            {this.state.categoryAdded ? (
-              <Message
-                size="large"
-                succes
-                header="Categorie toegevoegd"
-                content={this.state.serverCateoryResponse}
-              />
-            ) : null}
-            <Form.Input
-              required
-              label="Categorie"
-              placeholder="Categorie"
-              name="categoryName"
-              onChange={this.handleChange}
-            />
-            <Form.Field
-              type="text"
-              label="Beschrijving"
-              placeholder="Beschrijf je categorie"
-              name="categoryDescription"
-              onChange={this.handleChange}
-              control={TextArea}
-            />
-            <Form.Button
-              color="blue"
-              type="submit"
-              disables={!this.state.categoryName}
-            >
-              <Icon name="write" /> Toevoegen
-            </Form.Button>
-          </Form>
-        </Segment>
       </Container>
     );
   }
 
-  // sendAddedProduct = () => {
-  //   var jsonToSend = {
-  //     Product: {
-  //       Title: this.state.Title,
-  //       Description: this.state.Description,
-  //       Released: this.state.Released,
-  //       RunTime: this.state.RunTime,
-  //       Poster: this.state.Poster,
-  //       AgeRating: this.state.AgeRating,
-  //       TrailerURL: this.state.TrailerURL,
-  //       Quantity: this.state.Quantity
-  //     }
-  //   };
-  //   // const rawResponse = fetch("/api/product/addproduct", {
-  //   //   method: "POST",
-  //   //   headers: {
-  //   //     Accept: "application/json",
-  //   //     "Content-Type": "application/json"
-  //   //   },
-  //   //   body: JSON.stringify(jsonToSend)
-  //   // });
-  // };
-
-  handleChange = (e, { name, value }) =>
-    this.setState({ [name]: value }, console.log(this.state));
+  handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   render() {
     const contents = this.renderPage();
