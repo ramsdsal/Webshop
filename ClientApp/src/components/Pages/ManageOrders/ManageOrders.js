@@ -103,7 +103,17 @@ export class ManageOrders extends Component {
                     <Table.Cell>{order.id}</Table.Cell>
                     <Table.Cell>{order.name}</Table.Cell>
                     <Table.Cell>{order.date}</Table.Cell>
-                    <Table.Cell>{order.orderStatus}</Table.Cell>
+                    <Table.Cell>
+                      {order.orderStatus == 1 ? (
+                        <Label color="green" horizontal>
+                          Geacepteerd
+                        </Label>
+                      ) : (
+                        <Label color="yellow" horizontal>
+                          Vastgehouden
+                        </Label>
+                      )}
+                    </Table.Cell>
                     <Table.Cell>
                       <Link
                         className="nav-link"

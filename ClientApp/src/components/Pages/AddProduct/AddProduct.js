@@ -89,6 +89,10 @@ export class AddProduct extends Component {
   };
 
   sendProductCategory = procat => {
+    var jsonToSend = {
+      Name: this.state.categoryName,
+      Description: this.state.categoryDescription
+    };
     fetch("api/Category/addproductcategory", {
       method: "Post",
       headers: {
