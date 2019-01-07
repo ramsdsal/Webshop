@@ -112,7 +112,6 @@ export class Statistics extends Component {
       <Container style={{ marginTop: "7em" }}>
       <Segment>
       <Header as = 'h2' attached='top' textAlign='center'>Producten</Header>
-      <Form.Button onClick={this.setState({...this.state, defaultstats : false})}>Klanten</Form.Button>
       <Grid divided='vertically'>
         <Grid.Row columns={2}>
           <Grid.Column>
