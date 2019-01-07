@@ -42,7 +42,7 @@ namespace webshop.Controllers
         [HttpPost("addcategory")]
         public IActionResult Add([FromBody] Category category)
         {
-            Category existingCategory = _context.Categories.FirstOrDefault(cat => cat.Name == category.Name);
+            Category existingCategory = _context.Categories.FirstOrDefault(cat => cat.Name.ToLower() == category.Name.ToLower());
 
             if(existingCategory == null)
             {                        

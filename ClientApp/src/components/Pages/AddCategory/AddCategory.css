@@ -1,0 +1,20 @@
+.spacesection-one{
+    margin-top: 50px;
+}
+
+.spacesection-two{
+    margin-top: 25px;
+}
+
+.spacesection-three{
+    margin-bottom: 5px;
+}
+
+.form-row[type="addproduct"]{
+    margin-bottom: 15px;
+}
+
+label[type="categorien"]{
+    margin-top:5px;
+    margin-left:15px;
+}
