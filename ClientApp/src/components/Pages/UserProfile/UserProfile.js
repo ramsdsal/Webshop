@@ -52,7 +52,7 @@ export class UserProfile extends Component{
         <Grid>
             <Grid.Column width={4}>
             <Header as='h2' attached='top'>
-            Instellingen
+                Instellingen
             </Header>
                 <Menu fluid vertical  >
                 <Segment attached >
@@ -64,7 +64,7 @@ export class UserProfile extends Component{
                 </Grid.Column>
                 <Grid.Column stretched width={12}>
                 <Header as='h2' attached='top'>
-                {this.state.activeItem}
+                    {this.state.activeItem}
                 </Header>
                 <Segment attached>
                 <Form>
