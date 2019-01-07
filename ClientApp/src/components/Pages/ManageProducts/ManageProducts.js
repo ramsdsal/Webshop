@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import "./ManageProducts.css";
 
-//State: movies: Product[], isLoading: string
 export class ManageProducts extends Component {
   constructor() {
     super();
-    fetch("/api/Product/adminproducts/0/8")
+    fetch("/api/Product/GetAdminProducts")
       .then(response => response.json())
       .then(data => {
         console.log(data);

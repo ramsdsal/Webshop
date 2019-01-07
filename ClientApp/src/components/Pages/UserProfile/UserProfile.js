@@ -3,30 +3,23 @@ import './UserProfile.css';
 import { Link} from "react-router-dom";
 import { Container, Grid, Segment, Header, Menu, Form, Input } from 'semantic-ui-react';
 
-
-
 export class UserProfile extends Component{
     constructor(props)
     {
         super(props);
         this.state = { user : "isLoading", activeItem: 'Gegevens' }
-        fetch("/api/User/2")
-            .then(response => response.json())
-            .then(data => {
-            console.log(data)
-             this.setState({...this.state, user : data[0]})});
 
-             
-        
+        fetch("/api/User/2").then(response => response.json()).then(data => {
+            console.log(data)
+            this.setState({...this.state, user : data[0]})
+        });  
     }    
 
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
-
     render() {
-        const { activeItem } = this.state
 
-        
+        const { activeItem } = this.state
 
         if (this.state.user === "isLoading")
         {
@@ -38,7 +31,7 @@ export class UserProfile extends Component{
         <Grid>
             <Grid.Column width={4}>
             <Header as='h2' attached='top'>
-            Instellingen
+                Instellingen
             </Header>
                 <Menu fluid vertical  >
                 <Segment attached >
@@ -50,7 +43,7 @@ export class UserProfile extends Component{
                 </Grid.Column>
                 <Grid.Column stretched width={12}>
                 <Header as='h2' attached='top'>
-                {this.state.activeItem}
+                    {this.state.activeItem}
                 </Header>
                 <Segment attached>
                 <Form>
