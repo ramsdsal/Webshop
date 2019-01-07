@@ -332,22 +332,8 @@ namespace webshop.Controllers
                             order.UserId,
                             order.OrderStatus,
                             order.Name,
-<<<<<<< HEAD
-                            order.Street,
-                            order.Total,
-                            TotalWithDiscount = order.TotalWithDiscount,
-                            order.ZipCode,
-                            Products = order.Products.Select(pr => pr).Select(pr => new
-                            {
-                                Id = pr.ProductId,
-                                pr.Quantity,
-                                pr.Price,
-                                pr.Product.Title
-                            }),
-=======
                             order.ZipCode,
                             order.Date
->>>>>>> 3767ccde0f68af7f92945f53958c71177a027492
 
                         }).Where(order => order.UserId == userId).OrderBy(o => o.Id);
 
