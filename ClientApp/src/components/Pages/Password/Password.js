@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link} from "react-router-dom";
-import { Container, Grid, Segment, Header, Menu, Form, Message} from 'semantic-ui-react';
+import {Form, Message,Header,Segment} from 'semantic-ui-react';
+import { UserProfile } from '../UserProfile/UserProfile';
 
 
 export class Password extends Component{
@@ -36,8 +36,7 @@ export class Password extends Component{
     }
   
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name }) 
-  
+
     updateUser = () => {
       this.setState({...this.state, userFormIsLoading: true})
       var jsonToSend = {
@@ -61,27 +60,12 @@ export class Password extends Component{
   
   
     render() {
-      const { activeItem } = this.state
 
       return (
-          <Container style={{ marginTop: "7em" }}>
-          <Grid>
-            <Grid.Column width={4}>
-            <Header as='h2' attached='top'>
-            Instellingen
-            </Header>
-                <Menu fluid vertical  >
-                <Segment attached >
-                    <Menu.Item name='Gegevens' as={Link} to="/userprofile" active={activeItem === 'Gegevens'} onClick={this.handleItemClick}/>
-                    <Menu.Item name='Wachtwoord wijzigen' active={activeItem === 'Wachtwoord wijzigen'} onClick={this.handleItemClick}/>
-                    <Menu.Item name='Bestellingen' as={Link} to="/orderhistory" active={activeItem === 'Bestellingen'} onClick={this.handleItemClick} />
-                </Segment>
-                </Menu>
-                </Grid.Column>
-                <Grid.Column stretched width={12}>
-                <Header as='h2' attached='top'>
-                {this.state.activeItem}
-                </Header>
+          <UserProfile>
+          <Header as="h2" attached="top">
+          {this.state.activeItem}
+          </Header>
           <Segment attached>
           <Form 
             onSubmit={this.updateUser}
@@ -123,10 +107,8 @@ export class Password extends Component{
              Wijzigen
             </Form.Button>
           </Form>
-      </ Segment>
-      </Grid.Column>
-      </Grid>
-  </Container>
+          </Segment>
+  </UserProfile>
       );
     }
   }
