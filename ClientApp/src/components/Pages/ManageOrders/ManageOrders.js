@@ -56,7 +56,7 @@ export class ManageOrders extends Component {
                     <Table.Cell>{order.name}</Table.Cell>
                     <Table.Cell>{order.date}</Table.Cell>
                     <Table.Cell>
-                      {order.orderStatus == 1 ? (
+                      {order.orderStatus === 1 ? (
                         <Label color="green" horizontal>
                           Geacepteerd
                         </Label>
@@ -104,7 +104,7 @@ export class ManageOrders extends Component {
                     <Table.Cell>{order.name}</Table.Cell>
                     <Table.Cell>{order.date}</Table.Cell>
                     <Table.Cell>
-                      {order.orderStatus == 1 ? (
+                      {order.orderStatus === 1 ? (
                         <Label color="green" horizontal>
                           Geacepteerd
                         </Label>

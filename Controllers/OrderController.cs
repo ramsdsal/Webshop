@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using webshop.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
+using System.Net.Mail;
 
 namespace webshop.Controllers
 {
@@ -303,6 +305,12 @@ namespace webshop.Controllers
             if (!stok)
             {
                 order.OrderStatus = 0;
+                foreach (var element in order.Products)
+                {
+                    var prod = (from p in this._context.Products
+                                where p.Id == element.ProductId
+                                select p).Single();
+                }
             }
             else
             {
@@ -315,10 +323,26 @@ namespace webshop.Controllers
                 }
             }
 
+            order.User = (from u in this._context.Users
+                          where u.Id == order.UserId
+                          select new User()
+                          {
+
+                              FirstName = u.FirstName,
+                              LastName = u.LastName,
+                              Email = u.Email
+                          }
+                        ).FirstOrDefault();
+
             _context.Orders.Add(order);
             _context.SaveChanges();
 
-            return new OkResult();
+
+            // Console.WriteLine(this.SendEmail(order));
+
+
+
+            return new OkObjectResult(order);
 
         }
 
@@ -338,6 +362,50 @@ namespace webshop.Controllers
                         }).Where(order => order.UserId == userId).OrderBy(o => o.Id);
 
             return result;
+        }
+
+        private bool SendEmail(Order order)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append("<html><head><title>Bestelling bevesteging:</title></head><body>");
+                sb.Append("<p>Bestelling bevesteging:<br></p><p>Geachte: " + order.User.FirstName + " " + order.User.LastName + "</p><br/>");
+                sb.Append("<br><p>Bezorgenadres:</p><p>" + order.Name + "</p><p> " + order.Street + "</p><p> " + order.ZipCode + " " + order.City + "</p><p> " + order.Country + "</p>");
+                sb.Append("<p>Artikel(en):<br/><hr/>");
+                foreach (var element in order.Products)
+                {
+                    sb.Append("<p>" + element.Product.Title + " prijs: " + element.Price + "€ hoeveelheid: " + element.Quantity + "</p>");
+                }
+                sb.Append("<p>Totaal: " + order.TotalWithDiscount + "</p><hr/>");
+
+                sb.Append("PLEASE DO NOT REPLY TO THIS MESSAGE AS IT IS FROM AN UNATTENDED MAILBOX. ANY REPLIES TO THIS EMAIL WILL NOT BE RESPONDED TO OR FORWARDED. THIS SERVICE IS USED FOR OUTGOING EMAILS ONLY AND CANNOT RESPOND TO INQUIRIES.");
+
+                SmtpClient SmtpServer = new SmtpClient("smtp.live.com");
+
+                var mail = new MailMessage();
+                mail.From = new MailAddress("mediamaniawebshop@hotmail.com");
+                mail.To.Add(order.User.Email);
+                mail.Subject = "Bestelling bevesteging";
+                mail.IsBodyHtml = true;
+
+                string htmlBody;
+
+                htmlBody = "@ Hello! " + order.User.FirstName + "\n your MediaMania account is about to be created, please click the following activation link: \n " + "<a href=\"www.google.com\">login</a>";
+                mail.Body = sb.ToString();
+
+                SmtpServer.Port = 587;
+                SmtpServer.UseDefaultCredentials = false;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("mediamaniawebshop@hotmail.com", "mediamania1!");
+                SmtpServer.EnableSsl = true;
+                SmtpServer.Send(mail);
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }
