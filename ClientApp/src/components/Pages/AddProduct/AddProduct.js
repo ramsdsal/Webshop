@@ -1,13 +1,21 @@
 import React, { Component } from "react";
-import { Container, Form, Message, TextArea, Segment, Header, Icon } from "semantic-ui-react";
+import {
+  Container,
+  Form,
+  Message,
+  TextArea,
+  Segment,
+  Header,
+  Icon
+} from "semantic-ui-react";
 import "./AddProduct.css";
 
 export class AddProduct extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
-      categoryDropdown : [ ],
+      categoryDropdown: [],
       // Product
       title: "",
       description: "",
@@ -17,121 +25,159 @@ export class AddProduct extends Component {
       ageRating: "",
       trailerUrl: "",
       quantity: "",
-      
+
       //Price
       priceValue: 0,
-      
+
       //ProductCategorie
-      categoryId : "",
-      productId : "",
-      
+      categoryId: "",
+      productId: "",
+
       //Product validatie
-      addProductError : false,
-      productAdded : false,
-      serverAddedProductResponse : "",
-      productFormIsLoading : false,    
+      addProductError: false,
+      productAdded: false,
+      serverAddedProductResponse: "",
+      productFormIsLoading: false
     };
   }
-  
-  sendAddedProduct = () => { 
-    
+
+  sendAddedProduct = () => {
     var jsonToSend = {
-      Title : this.state.title,
-      Description : this.state.description,
-      Released : this.state.releaseDate,
-      RunTime : this.state.runTime,
-      Poster : this.state.poster, 
-      AgeRating : this.state.ageRating,
-      TrailerUrl : this.state.trailerUrl, 
-      Quantity : this.state.quantity,
-      Prices : [
-        { Value : this.state.priceValue,
-          Current : 1,
-          DateOn : new Date() }]
-        }
-        
-        fetch ("api/product/addproduct", {
-          method : "Post",
-          headers : {
-            Accept : "application/json",
-            "Content-Type" : "application/json"
-          },
-      body : JSON.stringify(jsonToSend)
-    }).then(response => response.json())
-    .then(data => {
+      Title: this.state.title,
+      Description: this.state.description,
+      Released: this.state.releaseDate,
+      RunTime: this.state.runTime,
+      Poster: this.state.poster,
+      AgeRating: this.state.ageRating,
+      TrailerUrl: this.state.trailerUrl,
+      Quantity: this.state.quantity,
+      Prices: [{ Value: this.state.priceValue, Current: 1, DateOn: new Date() }]
+    };
 
-      this.setState({
-        ...this.state,
-        productId : data.productId,
-        serverAddedProductResponse : data.response,
-        addProductError : data.isError,
-        productAdded : data.productAdd,
-        productFormIsLoading : false
-      });
-
-      if (this.state.productId > 0)
-      {
-        var addingPC = { ProductId : this.state.productId, CategoryId : this.state.categoryId }
-
-        this.sendProductCategory(addingPC)
+    fetch("api/product/addproduct", {
+      method: "Post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(jsonToSend)
+    })
+      .then(response => response.json())
+      .then(data => {
         this.setState({
           ...this.state,
-          title : "",
-          description : "",
-          releaseDate : "",
-          runTime : "",
-          poster : "",
-          ageRating : "",
-          trailerUrl : "",
-          quantity : ""
-        })
-      }    
-    });
-    
-  }
-  
-  sendProductCategory = (procat) => {
+          productId: data.productId,
+          serverAddedProductResponse: data.response,
+          addProductError: data.isError,
+          productAdded: data.productAdd,
+          productFormIsLoading: false
+        });
 
-    fetch ("api/Category/addproductcategory", {
-      method : "Post",
-      headers : {
-        Accept : "application/json",
-        "Content-Type" : "application/json"
+        if (this.state.productId > 0) {
+          var addingPC = {
+            ProductId: this.state.productId,
+            CategoryId: this.state.categoryId
+          };
+
+          this.sendProductCategory(addingPC);
+          this.setState({
+            ...this.state,
+            categoryDropdown: data
+          });
+        }
+      });
+  };
+
+  sendProductCategory = procat => {
+    var jsonToSend = {
+      Name: this.state.categoryName,
+      Description: this.state.categoryDescription
+    };
+    fetch("api/Category/addproductcategory", {
+      method: "Post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
       },
-      body : JSON.stringify(procat)
+      body: JSON.stringify(jsonToSend)
     })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        this.setState({
+          ...this.state,
+          productId: data.productId,
+          serverAddedProductResponse: data.response,
+          addProductError: data.isError,
+          productAdded: data.productAdd,
+          productFormIsLoading: false
+        });
+        console.log(this.state);
+        if (this.state.productId > 0) {
+          var addingPC = {
+            ProductId: this.state.productId,
+            CategoryId: this.state.categoryId
+          };
+          console.log(addingPC);
+          this.sendProductCategory(addingPC);
+          this.setState({
+            ...this.state,
+            title: "",
+            description: "",
+            releaseDate: "",
+            runTime: "",
+            poster: "",
+            ageRating: "",
+            trailerUrl: "",
+            quantity: ""
+          });
+        }
+      });
+  };
 
-  }
+  sendProductCategory = procat => {
+    console.log(procat);
+    fetch("api/Category/addproductcategory", {
+      method: "Post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(procat)
+    });
+  };
 
   renderPage() {
     return (
-      <Container style={{ marginTop : "7em"}}>
+      <Container style={{ marginTop: "7em" }}>
         <Header as="h2" attached="top">
           Product Toevoegen
         </Header>
         <Segment>
-          <Form 
+          <Form
             size="big"
             onSubmit={this.sendAddedProduct}
             loading={this.state.productFormIsLoading}
             error={this.state.addProductError}
             success={this.state.productAdded}
           >
-          {this.state.addProductError ? (
-            <Message
-              size="large"
-              error
-              header="Product bestaat al"
-              content={this.state.serverAddedProductResponse}/>
-          ) : null}
+            {this.state.addProductError ? (
+              <Message
+                size="large"
+                error
+                header="Product bestaat al"
+                content={this.state.serverAddedProductResponse}
+              />
+            ) : null}
 
-          {this.state.productAdded ? (
-            <Message
-              size="large"
-              succes
-              header="Product toegevoegd"
-              content={this.state.serverAddedProductResponse}/>
-          ) : null}
+            {this.state.productAdded ? (
+              <Message
+                size="large"
+                succes
+                header="Product toegevoegd"
+                content={this.state.serverAddedProductResponse}
+              />
+            ) : null}
             <Form.Group unstackable widths={2}>
               <Form.Input
                 required
@@ -217,21 +263,19 @@ export class AddProduct extends Component {
                 label="Categorie"
                 placeholder="Categorie"
                 name="categoryId"
-                fluid selection
+                fluid
+                selection
                 options={this.state.categoryDropdown}
                 onChange={this.handleChange}
               />
             </Form.Group>
-            <Form.Button
-              color="blue"
-              type="submit"
-              >
+            <Form.Button color="blue" type="submit">
               <Icon name="write" /> Toevoegen
-              </Form.Button>
+            </Form.Button>
           </Form>
         </Segment>
       </Container>
-    )
+    );
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
