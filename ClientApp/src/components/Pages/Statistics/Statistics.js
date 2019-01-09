@@ -112,7 +112,7 @@ export class Statistics extends Component {
       <Container style={{ marginTop: "7em" }}>
       <Segment>
       <Header as = 'h2' attached='top' textAlign='center'>Producten</Header>
-      <Grid divided='vertically'>
+      <Grid divided='vertically' attached='middle'>
         <Grid.Row columns={2}>
           <Grid.Column>
             <Header as='h2' attached='top' textAlign="center">
@@ -206,6 +206,10 @@ export class Statistics extends Component {
       </Grid.Column>
     </Grid.Row>
   </Grid>
+  </Segment>
+  <Segment>
+    <Header as='h2' attached='top' textAlign='center'>Klanten</Header>
+
   </Segment>
   </Container>
     );
