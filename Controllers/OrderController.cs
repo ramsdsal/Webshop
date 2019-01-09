@@ -338,7 +338,7 @@ namespace webshop.Controllers
             _context.SaveChanges();
 
 
-            // Console.WriteLine(this.SendEmail(order));
+            this.SendEmail(order);
 
 
 
@@ -364,7 +364,7 @@ namespace webshop.Controllers
             return result;
         }
 
-        private bool SendEmail(Order order)
+        private void SendEmail(Order order)
         {
             try
             {
@@ -400,7 +400,7 @@ namespace webshop.Controllers
                 SmtpServer.Credentials = new System.Net.NetworkCredential("mediamaniawebshop@hotmail.com", "mediamania1!");
                 SmtpServer.EnableSsl = true;
                 SmtpServer.Send(mail);
-                return true;
+
             }
             catch (Exception e)
             {
