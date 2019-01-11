@@ -13,20 +13,21 @@ export const userActions = {
 function login(username, password) {
   return dispatch => {
     dispatch(request({ username }));
-    userService.login(username, password).then(
-      user => {
+    userService
+      .login(username, password)
+      .then(user => {
         dispatch(success(user));
         userService.favorits(user.id).then(data => {
           dispatch(getFav(data));
         });
 
         history.push("/");
-      },
-      error => {
+      })
+      .catch(error => {
+        console.log("error");
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
-      }
-    );
+      });
   };
 }
 

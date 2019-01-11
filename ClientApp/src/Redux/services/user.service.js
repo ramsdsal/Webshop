@@ -13,12 +13,11 @@ function login(username, password) {
 
   return fetch("api/user/authenticate", requestOptions)
     .then(handleResponse)
-    .then(user => {
-      if (user[0].token) {
-        localStorage.setItem("user", JSON.stringify(user[0]));
+    .then(res => {
+      if (res) {
+        localStorage.setItem("user", JSON.stringify(res));
+        return res;
       }
-
-      return user[0];
     })
     .catch(error => console.log(error));
 }
