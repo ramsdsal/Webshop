@@ -373,6 +373,8 @@ export class UpdateProduct extends Component {
       quantity: this.state.quantity
     };
 
+    console.log(jsonToSend)
+
     fetch("/api/product/updateProduct", {
       method: "PUT",
       headers: {

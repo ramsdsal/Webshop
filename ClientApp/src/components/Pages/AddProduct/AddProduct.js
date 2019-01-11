@@ -230,7 +230,7 @@ export class AddProduct extends Component {
                 label="Prijs"
                 placeholder="10.00"
                 name="priceValue"
-                min="0"
+                min="0.01"
                 onChange={this.handleChange}
               />
             </Form.Group>

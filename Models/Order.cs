@@ -6,6 +6,7 @@ namespace webshop.Models
     public class Order : BaseEntity
     {
         public int UserId { get; set; }
+        public User User { get; set; }
         public int? DiscountId { get; set; }
         public Discount Discount { get; set; }
         public DateTime Date { get; set; }

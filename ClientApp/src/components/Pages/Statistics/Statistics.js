@@ -67,7 +67,6 @@ export class Statistics extends Component {
         ]
       }
     };
-    console.log(this.state.barChartData.datasets);
     fetch("/api/Order/GetStats/")
       .then(response => response.json())
       .then(data => {
@@ -90,14 +89,12 @@ export class Statistics extends Component {
             ]
           }
         });
-        console.log(this.state.data);
         var date = new Date();
-        console.log(date);
-        console.log(date.getFullYear());
       });
   }
 
   changeMovieId = (e, { value }) => {
+    console.log(value)
     fetch("/api/Order/GetPriceChanges/" + value)
       .then(response => response.json())
       .then(data => {
@@ -117,7 +114,6 @@ export class Statistics extends Component {
   renderGraphsProducts() {
     return (
       <Container style={{ marginTop: "7em" }}>
-        <Segment>
           <Header as="h2" attached="top" textAlign="center">
             Producten
           </Header>
@@ -226,7 +222,6 @@ export class Statistics extends Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-        </Segment>
       </Container>
     );
   }
@@ -235,24 +230,24 @@ export class Statistics extends Component {
     this.setState({ ...this.state, defaultstats: true });
   }
 
-  renderStatsCustomer() {
-    return (
-      <Container style={{ marginTop: "7em" }}>
-        <Header>Klanten</Header>
-        <Segment>
-          <Grid divided="vertically">
-            <Grid.Row columns={2}>
-              <Grid.Column>
-                <Header as="h2" attached="" top textAlign="center" />
-              </Grid.Column>
-            </Grid.Row>
+  // renderStatsCustomer() {
+  //   return (
+  //     <Container style={{ marginTop: "7em" }}>
+  //       <Header>Klanten</Header>
+  //       <Segment>
+  //         <Grid divided="vertically">
+  //           <Grid.Row columns={2}>
+  //             <Grid.Column>
+  //               <Header as="h2" attached="" top textAlign="center" />
+  //             </Grid.Column>
+  //           </Grid.Row>
 
-            <Statistic label="Aantal Klanten" value="20" />
-          </Grid>
-        </Segment>
-      </Container>
-    );
-  }
+  //           <Statistic label="Aantal Klanten" value="20" />
+  //         </Grid>
+  //       </Segment>
+  //     </Container>
+  //   );
+  // }
 
   render() {
     const contents = this.renderGraphsProducts();
