@@ -25,7 +25,6 @@ export class UserDetails extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.user.id)
     fetch("/api/User/GetUserByIdForUserProfile/" + this.props.user.id)
       .then(response => response.json())
       .then(data => {

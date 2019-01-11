@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Table, Header,Segment, Icon, Modal, Button} from 'semantic-ui-react';
-import { UserProfile } from '../UserProfile/UserProfile';
+import { Table, Header,Segment, Icon, Modal, Button, Container} from 'semantic-ui-react';
+// import { UserProfile } from '../UserProfile/UserProfile';
 import { OrderDetails } from '../OrderDetails/OrderDetails';
 
 export class OrderHistory extends Component{
@@ -13,7 +13,7 @@ constructor(props) {
 }
 
 componentDidMount() {
-    fetch("/api/order/GetOrdersByUserId/1")
+    fetch("/api/order/GetOrdersByUserId/" + 1)
     .then(response => response.json())
     .then(data => {
       var orders = data;
@@ -26,7 +26,6 @@ componentDidMount() {
 
 renderOrderTable() {
 return (
-    console.log(this.props),
     <Table celled>
         <Table.Header>
             <Table.Row>
@@ -71,14 +70,15 @@ return (
 render() {
     let contents = this.renderOrderTable();    
     return (
-    <UserProfile>
+
+    <Container style={{ marginTop: "7em" }}>
         <Header as="h2" attached="top">
             {this.state.activeItem}
         </Header>
         <Segment attached>
         {contents}
         </Segment>
-    </UserProfile>  
+    </ Container>
         )
   }
 }

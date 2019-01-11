@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Form, Table, Button, Message, TextArea, Segment, Header, Icon, List, Item, Label, Input } from "semantic-ui-react";
+import { Container, Table, Segment, Header, List } from "semantic-ui-react";
 import "./OrderDetails.css";
 
 export class OrderDetails extends Component {
