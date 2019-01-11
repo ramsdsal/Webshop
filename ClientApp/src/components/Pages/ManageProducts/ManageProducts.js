@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 import "./ManageProducts.css";
 
-//State: movies: Product[], isLoading: string
 export class ManageProducts extends Component {
   constructor() {
     super();
-    fetch("/api/Product/adminproducts/0/8")
+    fetch("/api/Product/GetAdminProducts")
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -41,9 +40,11 @@ export class ManageProducts extends Component {
               <td>{movie.title}</td>
               <td>{movie.price}</td>
               <td>{movie.quantity}</td>
-              <td>                    <Link className="nav-link" to={"/updateproduct/" + movie.id}>
-                      Update
-                    </Link></td>
+              <td>                    
+                <Link className="nav-link" to={"/updateproduct/" + movie.id}>
+                  Update
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -58,6 +59,10 @@ export class ManageProducts extends Component {
         <h1>Admin</h1>
         <Link className="nav-link" to={"/addproduct"}>
           Nieuw product
+        </Link>
+        {' | '}
+        <Link className="nav-link" to={"/addcategory"}>
+          Nieuw categorie
         </Link>
         {contents}
       </Container>

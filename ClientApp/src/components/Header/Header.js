@@ -29,7 +29,7 @@ class Header extends Component {
   render() {
     return (
       <div>
-        <Menu fixed="top" inverted stackable>
+        <Menu size="massive" fixed="top" inverted stackable>
           <Container>
             <Menu.Item as={Link} to="/">
               <Image
@@ -48,13 +48,13 @@ class Header extends Component {
             </Menu.Item>
             <Menu.Item as={Link} to="/shoppingcart">
               <Icon name="shop" />
-              WINKELWAGEN
+              Winkelwagen
               <Label color="red">{this.props.counter}</Label>
             </Menu.Item>
             {this.props.user ? (
               <Menu.Item as={Link} to="/favoriteslist">
                 <Icon name="star" />
-                FAVORIETEN{" "}
+                Favorieten{" "}
                 <Label color="red">{this.props.favorites.length}</Label>
               </Menu.Item>
             ) : (
@@ -83,17 +83,9 @@ class Header extends Component {
                 className="link item"
               >
                 <Dropdown.Menu>
-                  <Dropdown.Item as={Link} to="/userprofile">
+                  <Dropdown.Item as={Link} to="/userdetails">
                     <Icon name="user circle outline" />
                     Profiel bekijken
-                  </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/shoppingcart">
-                    <Icon name="shop" position="rigth" />
-                    Winkelwagen <Label>{this.props.counter}</Label>
-                  </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/favoriteslist">
-                    <Icon name="heart" />
-                    Favorieten <Label>{this.props.favorites.length}</Label>
                   </Dropdown.Item>
                   <Dropdown.Item>
                     <Icon name="clipboard check" />
@@ -105,16 +97,16 @@ class Header extends Component {
                     <Dropdown text="Admin" direction="left">
                       <Dropdown.Menu>
                         <Dropdown.Item as={Link} to={"/manageusers"}>
-                          Users manage
+                          Gebruiker beheer
                         </Dropdown.Item>
                         <Dropdown.Item as={Link} to={"/manageproducts"}>
-                          Products manage
+                          Product beheer 
                         </Dropdown.Item>
                         <Dropdown.Item as={Link} to={"/manageorders"}>
-                          Orders manage
+                          Bestelling beheer
                         </Dropdown.Item>
                         <Dropdown.Item as={Link} to={"/statistics"}>
-                          Statistics
+                          Statistieken
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>

@@ -20,7 +20,8 @@ import Checkout from "./components/Checkout/Checkout";
 import FavoritesList from "./components/Favorite/FavoritesList";
 import { Password } from "./components/Pages/Password";
 import { OrderHistory } from "./components/Pages/OrderHistory";
-
+import test from "./components/Pages/UserProfile/test";
+import UserDetails from "./components/Pages/UserDetails/UserDetails";
 
 export default class App extends Component {
   displayName = App.name;
@@ -57,7 +58,7 @@ export default class App extends Component {
           path="/password/:userId"
           render={props => <Password userId={props.match.params.userId} />}
         />
-      
+
         <Route path="/manageOrders" component={ManageOrders} />
         <Route path="/favoriteslist" component={FavoritesList} />
         <Route path="/login" component={Login} />
@@ -69,7 +70,9 @@ export default class App extends Component {
         <Route path="/userprofile" component={UserProfile} />
         <Route path="/statistics" component={Statistics} />
         <Route path="/checkout" component={Checkout} />
-        <Route path="/orderHistory" component={OrderHistory}/>
+        <Route path="/orderHistory" component={OrderHistory} />
+        <Route path="/userDetails" component={UserDetails} />
+        <Route path="/test" component={test} />
       </Layout>
     );
   }

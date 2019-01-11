@@ -114,10 +114,12 @@ class Checkout extends Component {
         return (
           <Step2
             handleChange={this.handleChange}
+            values={values}
             payment={this.state.payment}
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             step={this.state.step}
+            user={this.props.user}
           />
         );
       case 3:
@@ -129,7 +131,6 @@ class Checkout extends Component {
             step={this.state.step}
             payment={this.state.payment}
             bezorgen={this.state.bezorgen}
-            user={this.props.user}
           >
             {" "}
           </Step3>

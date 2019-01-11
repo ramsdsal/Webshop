@@ -278,6 +278,7 @@ export class UpdateProduct extends Component {
                 name="value"
                 type="number"
                 min="0"
+                step="any"
                 onChange={this.handleChange}
               />
             </Form.Group>
@@ -371,6 +372,8 @@ export class UpdateProduct extends Component {
       trailerUrl: this.state.trailerUrl,
       quantity: this.state.quantity
     };
+
+    console.log(jsonToSend)
 
     fetch("/api/product/updateProduct", {
       method: "PUT",
