@@ -5,7 +5,7 @@ import {
   Header,
   Segment,
   Dropdown,
-  Statistic
+  // Statistic
 } from "semantic-ui-react";
 import "./Statistics.css";
 import { Pie, Line, Bar } from "react-chartjs-2";
