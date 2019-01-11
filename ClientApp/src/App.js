@@ -21,7 +21,7 @@ import FavoritesList from "./components/Favorite/FavoritesList";
 // import { Password } from "./components/Pages/Password";
 // import { OrderHistory } from "./components/Pages/OrderHistory";
 // import UserDetails from "./components/Pages/UserDetails/UserDetails";
-import { Test } from "./components/Pages/Test/Test";
+import { Test } from "./components/Pages/Mark/Test";
 
 export default class App extends Component {
   displayName = App.name;
