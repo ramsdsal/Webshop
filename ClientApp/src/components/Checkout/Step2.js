@@ -59,7 +59,13 @@ class Step2 extends Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(jsonToSend)
-    });
+    })
+      .then(res => res.json())
+      .then(res => this.props.setResult(res))
+      .catch(e => {
+        console.error(e);
+        this.setState({ ...this.state, error: e });
+      });
   };
 
   handleSubmit = e => {
@@ -76,6 +82,8 @@ class Step2 extends Component {
   };
 
   render() {
+    console.log(this.state);
+
     const options = [
       { key: "iDeal", text: "iDeal", value: "iDeal" },
       { key: "Paypal", text: "Paypal", value: "Paypal" },

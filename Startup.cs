@@ -22,7 +22,7 @@ namespace webshop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddDbContext<DbConnectionContext>(opt =>
             opt.UseNpgsql("User ID=postgres;Password=postgres;Host=145.24.222.77;Port=8080;Database=MediaMania")
             );

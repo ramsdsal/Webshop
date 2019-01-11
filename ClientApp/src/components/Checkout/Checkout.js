@@ -26,7 +26,8 @@ class Checkout extends Component {
         city: "",
         country: "",
         zipcode: ""
-      }
+      },
+      result: {}
     };
   }
 
@@ -90,6 +91,10 @@ class Checkout extends Component {
     this.setState({ formErrors, [name]: value });
   };
 
+  SaveResult = res => {
+    this.setState({ ...this.state, result: res });
+  };
+
   handleCheckboxChange = (e, { value }) => this.setState({ bezorgen: value });
 
   getPage = values => {
@@ -120,6 +125,7 @@ class Checkout extends Component {
             prevStep={this.prevStep}
             step={this.state.step}
             user={this.props.user}
+            setResult={this.SaveResult}
           />
         );
       case 3:
@@ -131,6 +137,7 @@ class Checkout extends Component {
             step={this.state.step}
             payment={this.state.payment}
             bezorgen={this.state.bezorgen}
+            result={this.state.result}
           >
             {" "}
           </Step3>
