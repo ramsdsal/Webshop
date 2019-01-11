@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Form, Message,Header,Segment} from 'semantic-ui-react';
 import { UserProfile } from '../UserProfile/UserProfile';
+import { connect } from "react-redux";
 
 
 export class Password extends Component{
@@ -44,7 +45,7 @@ export class Password extends Component{
         password: this.state.password
       };
   
-      fetch("/api/user/password", {
+      fetch("/api/user/ChangePassword", {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -60,8 +61,8 @@ export class Password extends Component{
   
   
     render() {
-
       return (
+
           <UserProfile>
           <Header as="h2" attached="top">
           {this.state.activeItem}
@@ -89,7 +90,7 @@ export class Password extends Component{
           }
             <Form.Group unstackable widths={2}>
               <Form.Input
-                type="password"
+                // type="password"
                 size="massive"
                 label="Nieuw wachtwoord"
                 placeholder="*****"
@@ -112,4 +113,13 @@ export class Password extends Component{
       );
     }
   }
+
+  const mapStateToProps = state => {
+    return {
+      user: state.authentication.user
+    };
+  };
+  
+  export default connect(mapStateToProps)(Password);
+  
     

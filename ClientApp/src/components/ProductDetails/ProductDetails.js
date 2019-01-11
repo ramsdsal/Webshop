@@ -54,7 +54,6 @@ export class ProductDetails extends Component {
 
     return (
       <Container style={{ marginTop: "7em" }}>
-        {console.log(this.state.movie)}
         <Item.Group>
           <Item>
             <Item.Image size="medium" src={movie.poster} />
@@ -114,7 +113,6 @@ export class ProductDetails extends Component {
             </Item.Content>
           </Item>
         </Item.Group>
-        <h1>Movie : {movie.title}</h1>
       </Container>
     );
   }
