@@ -81,7 +81,7 @@ namespace webshop.Controllers
             }
 
             return new OkObjectResult(false);
-        
+
         }
 
         [HttpPut("ChangePassword")]
@@ -160,9 +160,18 @@ namespace webshop.Controllers
 
             var result = this._context.Users
             .Where(us => us.Email == u.Email && us.Password == u.Password)
+<<<<<<< HEAD
             .Select(us => new { us.Id, us.Email, us.FirstName, token = loginToken });
 
             return new OkObjectResult(result);
+=======
+            .Select(us => new { us.Id, us.Email, us.FirstName, token = loginToken }).FirstOrDefault();
+
+            if (result != null)
+                return new OkObjectResult(result);
+
+            return new ConflictObjectResult(new Exception("Inloggegevens zijn incorrect.."));
+>>>>>>> 502084c30b73fc13a5b6c68368b655e2eb68ab4f
 
         }
 
