@@ -153,13 +153,8 @@ namespace webshop.Controllers
         public IActionResult Authenticate([FromBody] User u)
         {//Inloggen
 
-<<<<<<< HEAD
             var hash = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes(u.Password));
-            var sendHashedPassword =  string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
-=======
-            var hash = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes("markisdik"));
-            var mark = string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
->>>>>>> 11154dea8456042da12c4f9b55c2fe11875c6fb4
+            var sendHashedPassword = string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
 
             var loginToken = Guid.NewGuid().ToString();
 
@@ -246,11 +241,11 @@ namespace webshop.Controllers
                         confirmationMail.User = u.User;
                         confirmationMail.AccountStatus = 0;// eerst 0, als hij in de mail link klikt dan 1
                         confirmationMail.ConfirmationToken = confirmationTokenGuid;
-    
+
                         u.User.ConfirmationMail = confirmationMail;
 
                         var hash = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes(u.User.Password));
-                        var sendHashedPassword =  string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
+                        var sendHashedPassword = string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
 
                         u.User.Password = sendHashedPassword;
 
