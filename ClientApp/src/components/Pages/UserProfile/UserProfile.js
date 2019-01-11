@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import "./UserProfile.css";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   Container,
   Grid,
-  Segment,
   Header,
-  Menu
 } from "semantic-ui-react";
+import { OrderHistory } from "../OrderHistory/OrderHistory";
 
 export class UserProfile extends Component {
   constructor(props) {
@@ -20,22 +18,8 @@ export class UserProfile extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   fetch("/api/User/1")
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       const user = data[0];
-  //       this.setState({
-  //         ...this.state,
-  //         isLoading: false,
-  //         userId: user.id
-  //       });
-  //     });
-  // }
-
-
   render() {
-    const PassLink = "/password/" + this.state.userId;
+    
     return (
       <Container style={{ marginTop: "7em" }}>
         <Grid>
@@ -43,7 +27,7 @@ export class UserProfile extends Component {
             <Header as="h2" attached="top">
               Instellingen
             </Header>
-            <Menu fluid vertical>
+            {/* <Menu fluid vertical>
               <Segment attached>
                 <Menu.Item
                   name="Gegevens"
@@ -61,10 +45,11 @@ export class UserProfile extends Component {
                   to="/orderhistory"
                 />
               </Segment>
-            </Menu>
+            </Menu> */}
           </Grid.Column>
           <Grid.Column stretched width={12}>
-            {this.props.children}
+            <OrderHistory />
+            {/* {this.props.children} */}
           </Grid.Column>
         </Grid>
       </Container>
