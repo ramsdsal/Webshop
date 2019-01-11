@@ -20,6 +20,7 @@ function login(username, password) {
           dispatch(success(user));
           userService.favorits(user.id).then(data => {
             dispatch(getFav(data));
+            dispatch(alertActions.clear());
           });
           history.push("/");
         }
