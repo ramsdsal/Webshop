@@ -29,7 +29,7 @@ namespace webshop.Controllers
 
         public virtual string HashPassword(User user, string password)
         {
-                return Convert.ToBase64String(HashPasswordV2(password, _rng));
+            return Convert.ToBase64String(HashPasswordV2(password, _rng));
         }
         private static byte[] HashPasswordV2(string password, RandomNumberGenerator rng)
         {
@@ -188,7 +188,7 @@ namespace webshop.Controllers
             if (result != null)
                 return new OkObjectResult(result);
 
-            return new ConflictObjectResult(new Exception("Inloggegevens zijn incorrect.."));
+            return new ConflictObjectResult(new { msg = "Inloggegevens zijn incorrect" });
 
         }
         [HttpGet("GetUserAdress/{id}")]

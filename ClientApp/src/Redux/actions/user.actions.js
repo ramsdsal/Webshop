@@ -16,12 +16,13 @@ function login(username, password) {
     userService
       .login(username, password)
       .then(user => {
-        dispatch(success(user));
-        userService.favorits(user.id).then(data => {
-          dispatch(getFav(data));
-        });
-
-        history.push("/");
+        if (user.id) {
+          dispatch(success(user));
+          userService.favorits(user.id).then(data => {
+            dispatch(getFav(data));
+          });
+          history.push("/");
+        }
       })
       .catch(error => {
         console.log("error");
