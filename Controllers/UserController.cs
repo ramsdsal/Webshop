@@ -82,8 +82,8 @@ namespace webshop.Controllers
         
         }
 
-        [HttpPut("password")]
-        public IActionResult password([FromBody] User user)
+        [HttpPut("ChangePassword")]
+        public IActionResult ChangePassword([FromBody] User user)
         {
             User userToUpdate = _context.Users.FirstOrDefault(u => u.Id == user.Id);
             if (userToUpdate != null)
@@ -182,6 +182,24 @@ namespace webshop.Controllers
             return new OkObjectResult(result);
 
 
+        }
+
+        [HttpGet("GetUserByIdForUserProfile/{id}")]
+        public IQueryable GetUserByIdForUserProfile(int id)
+        {
+            var result = this._context.Users
+                        .Select(u => new
+                        {
+                            u.Id,
+                            u.FirstName,
+                            u.LastName,
+                            u.BirthDate,
+                            u.Email,
+                            u.Password,
+                            CurrentAddress = u.Addresses.Where(a => a.Current == 1).Select(a => a.Address).Single()
+                        }).Where(u => u.Id == id);
+
+            return result;
         }
 
         [HttpGet("GetUserById/{id}")]

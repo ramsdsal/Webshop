@@ -112,9 +112,13 @@ namespace webshop.Controllers
                         .Select(order => new
                         {
                             order.Id,
+                            Date = order.Date,
+                            Discount = _context.Discounts.FirstOrDefault(d => d.Id == order.DiscountId).Percentage,
                             order.OrderStatus,
                             order.Name,
                             order.Street,
+                            order.City,
+                            order.Country,
                             order.Total,
                             TotalWithDiscount = order.TotalWithDiscount,
                             order.ZipCode,
@@ -124,7 +128,7 @@ namespace webshop.Controllers
                                 pr.Quantity,
                                 pr.Price,
                                 pr.Product.Title,
-                                StockQuantity = _context.Products.Where(pro => pro.Id == pr.ProductId).Select(pro => pro.Quantity)
+                                StockQuantity = _context.Products.Where(pro => pro.Id == pr.ProductId).Select(pro => pro.Quantity).Single()
                             }),
 
                         }).Where(order => order.Id == id);
@@ -282,7 +286,7 @@ namespace webshop.Controllers
                 total = total + element.Quantity * element.Price;
             }
             order.Total = total;
-            order.Date = DateTime.Today;
+            order.Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
             var discount = (from d in this._context.Discounts
                             where d.Current == 1
@@ -323,16 +327,18 @@ namespace webshop.Controllers
                 }
             }
 
-            order.User = (from u in this._context.Users
-                          where u.Id == order.UserId
-                          select new User()
-                          {
+            order.User = _context.Users.FirstOrDefault(u => u.Id == order.UserId);
 
-                              FirstName = u.FirstName,
-                              LastName = u.LastName,
-                              Email = u.Email
-                          }
-                        ).FirstOrDefault();
+            // order.User = (from u in this._context.Users
+            //               where u.Id == order.UserId
+            //               select new User()
+            //               {
+
+            //                   FirstName = u.FirstName,
+            //                   LastName = u.LastName,
+            //                   Email = u.Email
+            //               }
+            //             ).FirstOrDefault();
 
             _context.Orders.Add(order);
             _context.SaveChanges();

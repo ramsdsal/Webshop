@@ -16,24 +16,22 @@ export class UserProfile extends Component {
     this.state = {
       isLoading: true,
 
-      userId: 0
+      userId: 1
     };
   }
 
-  componentDidMount() {
-    fetch("/api/User/2")
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        const user = data[0];
-        console.log(user);
-        this.setState({
-          ...this.state,
-          isLoading: false,
-          userId: user.id
-        });
-      });
-  }
+  // componentDidMount() {
+  //   fetch("/api/User/1")
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       const user = data[0];
+  //       this.setState({
+  //         ...this.state,
+  //         isLoading: false,
+  //         userId: user.id
+  //       });
+  //     });
+  // }
 
 
   render() {
@@ -75,6 +73,7 @@ export class UserProfile extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log("skert")
   return {
     user: state.authentication.user
   };

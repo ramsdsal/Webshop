@@ -131,7 +131,6 @@ namespace webshop.Controllers
         [HttpPost("getShoppingcart")]
         public IActionResult Post([FromBody]int[] items)
         {
-
             var result = this._context.Products
                        .Select(prod => new
                        {
