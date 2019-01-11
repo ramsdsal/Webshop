@@ -6,8 +6,6 @@ using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -23,31 +21,7 @@ namespace webshop.Controllers
         public UserController(DbConnectionContext context)
         {
             this._context = context;
-        }
 
-        private readonly RandomNumberGenerator _rng;
-
-        public virtual string HashPassword(User user, string password)
-        {
-                return Convert.ToBase64String(HashPasswordV2(password, _rng));
-        }
-        private static byte[] HashPasswordV2(string password, RandomNumberGenerator rng)
-        {
-            const KeyDerivationPrf Pbkdf2Prf = KeyDerivationPrf.HMACSHA1; // default for Rfc2898DeriveBytes
-            const int Pbkdf2IterCount = 1000; // default for Rfc2898DeriveBytes
-            const int Pbkdf2SubkeyLength = 256 / 8; // 256 bits
-            const int SaltSize = 128 / 8; // 128 bits
-
-            // Produce a version 2 text hash.
-            byte[] salt = new byte[SaltSize];
-            rng.GetBytes(salt);
-            byte[] subkey = KeyDerivation.Pbkdf2(password, salt, Pbkdf2Prf, Pbkdf2IterCount, Pbkdf2SubkeyLength);
-
-            var outputBytes = new byte[1 + SaltSize + Pbkdf2SubkeyLength];
-            outputBytes[0] = 0x00; // format marker
-            Buffer.BlockCopy(salt, 0, outputBytes, 1, SaltSize);
-            Buffer.BlockCopy(subkey, 0, outputBytes, 1 + SaltSize, Pbkdf2SubkeyLength);
-            return outputBytes;
         }
 
         // GET api/Products
@@ -179,20 +153,19 @@ namespace webshop.Controllers
         public IActionResult Authenticate([FromBody] User u)
         {
 
+            var hash = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes("markisdik"));
+            var mark =  string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
+
             var loginToken = Guid.NewGuid().ToString();
 
             var result = this._context.Users
             .Where(us => us.Email == u.Email && us.Password == u.Password)
             .Select(us => new { us.Id, us.Email, us.FirstName, token = loginToken });
 
-
-            Console.Write(result);
-
-
-
             return new OkObjectResult(result);
 
         }
+
         [HttpGet("GetUserAdress/{id}")]
         public IActionResult GetUserAdress(int id)
         {
@@ -214,7 +187,7 @@ namespace webshop.Controllers
 
         [HttpGet("GetUserByIdForUserProfile/{id}")]
         public IQueryable GetUserByIdForUserProfile(int id)
-        {
+        {  
             var result = this._context.Users
                         .Select(u => new
                         {
