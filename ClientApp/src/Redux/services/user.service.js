@@ -32,7 +32,7 @@ function favorits(id) {
     .then(data => {
       return data;
     })
-    .catch(error => console.log(error));
+    .catch(error => console.log(error.msg));
 }
 
 function logout() {
@@ -49,7 +49,7 @@ function handleResponse(response) {
         window.location.reload(true);
       }
 
-      const error = (data && data.message) || response.statusText;
+      const error = (data && data.message && data.msg) || response.statusText;
       return Promise.reject(error);
     }
 
