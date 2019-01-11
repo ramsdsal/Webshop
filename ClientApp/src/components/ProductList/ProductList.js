@@ -4,6 +4,7 @@ import "./ProductList.css";
 import { Container, Grid } from "semantic-ui-react";
 
 export default class ProductList extends React.Component {
+  
   state = { movies: [], isLoading: true };
 
   componentDidMount() {

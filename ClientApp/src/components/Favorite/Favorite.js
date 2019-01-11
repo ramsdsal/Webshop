@@ -17,7 +17,9 @@ class Favorite extends Component {
       UserId: this.props.user.id,
       ProductId: this.state.movieId
     };
+    console.log(jsonToSend)
 
+    
     fetch("/api/favorit/set", {
       method: "POST",
       headers: {
