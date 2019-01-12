@@ -17,9 +17,8 @@ class Favorite extends Component {
       UserId: this.props.user.id,
       ProductId: this.state.movieId
     };
-    console.log(jsonToSend)
+    console.log(jsonToSend);
 
-    
     fetch("/api/favorit/set", {
       method: "POST",
       headers: {
@@ -48,7 +47,9 @@ class Favorite extends Component {
         disabled={
           this.props.favorits.some(
             item => item.productId === this.state.movieId
-          ) || this.state.added
+          ) ||
+          this.state.added ||
+          this.props.user === undefined
         }
         icon="star"
         size="large"

@@ -11,6 +11,7 @@ import {
 } from "semantic-ui-react";
 import AddToShopingCart from "../ShoppingCart/AddToShoppingCart";
 import YouTube from "react-youtube";
+import Favorite from "../Favorite/Favorite";
 import "./ProductDetails.css";
 
 export class ProductDetails extends Component {
@@ -93,6 +94,9 @@ export class ProductDetails extends Component {
                         />
                       </Modal.Content>
                     </Modal>
+                  </List.Item>
+                  <List.Item>
+                    <Favorite id={movie.id} />
                   </List.Item>
                 </List>
               </Item.Meta>

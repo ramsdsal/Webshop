@@ -159,8 +159,8 @@ namespace webshop.Controllers
         {//Inloggen
 
             var hash = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes(u.Password));
-            var sendHashedPassword =  string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
-
+            var sendHashedPassword = string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
+            Console.WriteLine("inicio: " + sendHashedPassword + " Fim");
             var loginToken = Guid.NewGuid().ToString();
 
             var result = this._context.Users

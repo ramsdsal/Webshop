@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Container, Segment, Header, Form } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Segment,
+  Header,
+  Form,
+  Message
+} from "semantic-ui-react";
 import { Redirect } from "react-router-dom";
 
 import { userActions } from "../../Redux/actions";
@@ -12,7 +19,8 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      submitted: false
+      submitted: false,
+      error: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -36,13 +44,37 @@ class Login extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.alert !== prevProps.alert) {
+      this.setState({
+        ...this.state,
+        error: this.props.alert
+      });
+    }
+  }
+
+  handleDismiss = () => {
+    this.setState({ ...this.state, error: "" });
+  };
+
   render() {
     const { loggedIn } = this.props;
-    const { username, password, submitted } = this.state;
+    const { username, password, submitted, error } = this.state;
 
     return (
       <Container style={{ marginTop: "7em" }}>
         {loggedIn ? <Redirect to={"/"} /> : ""}
+        {error.message ? (
+          <Message
+            color="red"
+            icon="exclamation"
+            onDismiss={this.handleDismiss}
+            header="De aanmelding is mislukt!"
+            content="Vul het juiste wachtwoord in."
+          />
+        ) : (
+          ""
+        )}
         <Header as="h2" attached="top">
           Login
         </Header>
@@ -86,8 +118,10 @@ class Login extends Component {
 
 function mapStateToProps(state) {
   const { loggedIn } = state.authentication;
+  const { alert } = state;
   return {
-    loggedIn
+    loggedIn,
+    alert
   };
 }
 
