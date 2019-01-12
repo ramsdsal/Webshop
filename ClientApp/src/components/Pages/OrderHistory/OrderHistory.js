@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
-import { Table, Header,Segment, Icon, Modal, Button, Container} from 'semantic-ui-react';
-// import { UserProfile } from '../UserProfile/UserProfile';
+import { Table, Header,Segment, Icon, Modal, Button } from 'semantic-ui-react';
 import { OrderDetails } from '../OrderDetails/OrderDetails';
 
 export class OrderHistory extends Component{
@@ -10,19 +8,30 @@ constructor(props) {
 
     super(props);
     this.state = { orders: [] , activeItem: 'Bestellingen'};
-}
 
-componentDidMount() {
-    fetch("/api/order/GetOrdersByUserId/" + 1)
+    var _isMounted = false;
+    fetch("/api/order/GetOrdersByUserId/" + this.props.userId)
     .then(response => response.json())
     .then(data => {
-      var orders = data;
-      this.setState({
-        ...this.state,
-        orders: orders
-      });
+        if (this._isMounted) {
+            var orders = data;
+            this.setState({
+              ...this.state,
+              orders: orders
+            });
+        }
     });
-  }
+}
+
+componentDidMount() 
+{
+  this._isMounted = true;
+}
+
+componentWillUnmount()
+{
+  this._isMounted = false;
+}
 
 renderOrderTable() {
 return (
@@ -70,25 +79,15 @@ return (
 render() {
     let contents = this.renderOrderTable();    
     return (
-
-    <Container style={{ marginTop: "7em" }}>
+        <div>
         <Header as="h2" attached="top">
             {this.state.activeItem}
         </Header>
         <Segment attached>
         {contents}
         </Segment>
-    </ Container>
+        </div>
         )
   }
 }
-
-const mapStateToProps = state => {
-    console.log("HEEE")
-    return {
-      user: state.authentication.user
-    };
-  };
-  
-export default connect(mapStateToProps)(OrderHistory);
   
