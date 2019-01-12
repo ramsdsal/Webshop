@@ -84,20 +84,25 @@ namespace webshop.Controllers
 
         }
 
-        [HttpPut("ChangePassword")]
-        public IActionResult ChangePassword([FromBody] User user)
+        [HttpPut("ChangePassword/{currentPassword}/{newPassword}/{userId}")]
+        public IActionResult ChangePassword(string currentPassword, string newPassword, int userId)
         {
-            User userToUpdate = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+            var hash = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes(currentPassword));
+            var hashedPassword =  string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
+
+            User userToUpdate = _context.Users.FirstOrDefault(u => u.Id == userId && u.Password == hashedPassword);
             if (userToUpdate != null)
             {
-                userToUpdate.Password = user.Password;
+                var newHash = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes(newPassword));
+                var newHashedPassword =  string.Join("", newHash.Select(b => b.ToString("x2")).ToArray());
+                userToUpdate.Password = newHashedPassword;
 
                 _context.SaveChanges();
 
-                return new OkObjectResult(new { isError = false, userUpdated = true, response = "Gebruiker is aangepast." });
+                return new OkObjectResult(new { isError = false, userUpdated = true, response = "Wachtwoord is aangepast." });
             }
 
-            return new OkObjectResult(new { isError = true, userUpdated = false, response = "Gebruiker bestaat niet." });
+            return new OkObjectResult(new { isError = true, userUpdated = false, response = "Verkeerd huidig wachtwoord." });
         }
 
         [HttpPut("UpdateUser")]

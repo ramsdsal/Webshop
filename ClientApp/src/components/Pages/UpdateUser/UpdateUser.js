@@ -68,6 +68,14 @@ export class UpdateUser extends Component {
 
     var currentDate = today.getFullYear() + '-' + (monthToday) + '-' + dayToday;
 
+    var datetime =this.state.birthDate;
+    console.log(datetime)
+    var year = datetime.substr(0, 4);
+    var month = datetime.substr(5, 2);
+    var day = datetime.substr(8, 2);
+
+    var dateValueForInput = year + "-" + month + "-" + day;
+    console.log("Year: " + year + " month: " + month + " day: " + day)
     return (
       <Container style={{ marginTop: "7em" }}>
         <Header as="h2" attached="top">
@@ -133,7 +141,7 @@ export class UpdateUser extends Component {
               name="birthDate" 
               max= {currentDate}
               min= "1800-07-27"
-              value={this.state.dateFrom}
+              value={dateValueForInput}
               // value= {"1800-07-06"} //"2011-09-29"
               onChange={this.handleChange} 
             />

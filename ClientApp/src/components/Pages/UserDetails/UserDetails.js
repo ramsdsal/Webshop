@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import {
-  List,
- Header,Segment
-} from "semantic-ui-react";
-import { UserProfile } from '../UserProfile/UserProfile';
+import { List, Header, Segment } from "semantic-ui-react";
 
 
 export class UserDetails extends Component {
@@ -22,12 +17,14 @@ export class UserDetails extends Component {
       userBirthDate: "",
       userAddress: {}
     };
-  }
 
-  componentDidMount() {
-    fetch("/api/User/GetUserByIdForUserProfile/" + this.props.user.id)
-      .then(response => response.json())
-      .then(data => {
+    var _isMounted = false;
+
+    fetch("/api/User/GetUserByIdForUserProfile/" + this.props.userId)
+    .then(response => response.json())
+    .then(data => {
+
+      if (this._isMounted) {
         const user = data[0];
         this.setState({
           ...this.state,
@@ -38,25 +35,39 @@ export class UserDetails extends Component {
           userMail: user.email,
           userBirthDate: user.birthDate,
           userAddress: user.currentAddress
-        });
-      });
+        }); 
+      }
+    });
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount()
+  {
+    this._isMounted = false;
   }
 
 
   render() {
-
+    var datetime =this.state.userBirthDate;
+    var date = datetime.substr(0, 10);
     return (
-      <UserProfile>
-
+      <div>
           <Header as="h2" attached="top">
             {this.state.activeItem}
           </Header>
           <Segment attached size="massive">
-          
-            <List>
+            {
+              this.state.isLoading ? "Gebruikers profiel laden." : <List>
               <List.Item>
                 <List.Icon name='user' />
                 <List.Content>{this.state.userName + " " + this.state.userLastName}</List.Content>
+              </List.Item>
+              <List.Item>
+                <List.Icon name='calendar' />
+                <List.Content>{date}</List.Content>
               </List.Item>
               <List.Item>
                 <List.Icon name='marker'/>
@@ -81,17 +92,9 @@ export class UserDetails extends Component {
                 </List.Content>
               </List.Item>
             </List>
+            }         
           </Segment>
-
-      </UserProfile>
+        </ div>
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    user: state.authentication.user
-  };
-};
-
-export default connect(mapStateToProps)(UserDetails);
