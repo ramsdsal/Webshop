@@ -34,6 +34,7 @@ componentWillUnmount()
 }
 
 renderOrderTable() {
+
 return (
     <Table celled>
         <Table.Header>
@@ -45,11 +46,11 @@ return (
             </Table.Row>
         </Table.Header>
         <Table.Body>
-            {this.state.orders.map(order => (                
+            {this.state.orders.map(order => (    
                 <Table.Row key= {order.id}>
                     <Table.Cell>{order.id}</Table.Cell>
                     <Table.Cell>{order.orderStatus}</Table.Cell>
-                    <Table.Cell>{order.date}</Table.Cell>
+                    <Table.Cell>{order.date.substr(0, 10) + " " + order.date.substr(11, 8)}</Table.Cell>
                     <Table.Cell>
                         <Modal
                         trigger={

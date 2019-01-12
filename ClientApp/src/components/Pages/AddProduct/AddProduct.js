@@ -103,7 +103,6 @@ export class AddProduct extends Component {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         this.setState({
           ...this.state,
           productId: data.productId,
@@ -112,13 +111,11 @@ export class AddProduct extends Component {
           productAdded: data.productAdd,
           productFormIsLoading: false
         });
-        console.log(this.state);
         if (this.state.productId > 0) {
           var addingPC = {
             ProductId: this.state.productId,
             CategoryId: this.state.categoryId
           };
-          console.log(addingPC);
           this.sendProductCategory(addingPC);
           this.setState({
             ...this.state,
@@ -136,7 +133,6 @@ export class AddProduct extends Component {
   };
 
   sendProductCategory = procat => {
-    console.log(procat);
     fetch("api/Category/addproductcategory", {
       method: "Post",
       headers: {

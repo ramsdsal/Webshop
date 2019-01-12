@@ -18,6 +18,7 @@ import { UpdateProduct } from "./components/Pages/UpdateProduct/UpdateProduct";
 import Checkout from "./components/Checkout/Checkout";
 import FavoritesList from "./components/Favorite/FavoritesList";
 import UserProfile from "./components/Pages/UserProfile/UserProfile";
+import { ManageDiscounts } from "./components/Pages/ManageDiscounts/ManageDiscounts";
 
 export default class App extends Component {
   displayName = App.name;
@@ -61,6 +62,7 @@ export default class App extends Component {
         <Route path="/userprofile" component={UserProfile} />
         <Route path="/statistics" component={Statistics} />
         <Route path="/checkout" component={Checkout} />
+        <Route path="/manageDiscounts" component={ManageDiscounts} />
       </Layout>
     );
   }
