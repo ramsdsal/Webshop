@@ -20,6 +20,7 @@ import FavoritesList from "./components/Favorite/FavoritesList";
 import UserProfile from "./components/Pages/UserProfile/UserProfile";
 import { ManageDiscounts } from "./components/Pages/ManageDiscounts/ManageDiscounts";
 import RequireAuth from "./components/Login/RequireAuth";
+import RequireAdmin from "./components/Login/RequireAdmin";
 
 export default class App extends Component {
   displayName = App.name;
@@ -43,21 +44,26 @@ export default class App extends Component {
         />
         <Route
           path="/updateproduct/:productId"
-          render={props => (
-            <UpdateProduct productId={props.match.params.productId} />
-          )}
+          render={props =>
+            RequireAuth(
+              <UpdateProduct productId={props.match.params.productId} />
+            )
+          }
         />
         <Route
           path="/updateOrder/:orderId"
           render={props => <UpdateOrder orderId={props.match.params.orderId} />}
         />
-        <Route path="/manageOrders" component={ManageOrders} />
+        <Route
+          path="/manageOrders"
+          component={RequireAuth(RequireAdmin(ManageOrders))}
+        />
         <Route path="/favoriteslist" component={RequireAuth(FavoritesList)} />
 
         <Route path="/manageproducts" component={ManageProducts} />
         <Route path="/addproduct" component={AddProduct} />
         <Route path="/manageusers" component={ManageUsers} />
-        <Route path="/userprofile" component={UserProfile} />
+        <Route path="/userprofile" component={RequireAuth(UserProfile)} />
         <Route path="/statistics" component={Statistics} />
         <Route path="/checkout" component={RequireAuth(Checkout)} />
         <Route path="/manageDiscounts" component={ManageDiscounts} />

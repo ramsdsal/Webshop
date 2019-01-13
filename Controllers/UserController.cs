@@ -165,7 +165,7 @@ namespace webshop.Controllers
 
             var result = this._context.Users
             .Where(us => us.Email == u.Email && us.Password == sendHashedPassword)
-            .Select(us => new { us.Id, us.Email, us.FirstName, token = loginToken, role = us.Roles.First().Role.Name }).FirstOrDefault();
+            .Select(us => new { us.Id, us.Email, us.FirstName, token = loginToken, role = us.Roles.FirstOrDefault().Role.Name }).FirstOrDefault();
 
             if (result != null)
                 return new OkObjectResult(result);
