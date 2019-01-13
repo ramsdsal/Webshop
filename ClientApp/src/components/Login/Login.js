@@ -9,7 +9,6 @@ import {
   Message
 } from "semantic-ui-react";
 import { Redirect } from "react-router-dom";
-import { history } from "../../Redux/helpers/history";
 import { userActions, alertActions } from "../../Redux/actions";
 
 class Login extends Component {
@@ -60,6 +59,7 @@ class Login extends Component {
   render() {
     const { loggedIn, alert } = this.props;
     const { username, password, submitted, error } = this.state;
+    console.log();
 
     return (
       <Container style={{ marginTop: "7em" }}>
@@ -69,19 +69,16 @@ class Login extends Component {
             color="red"
             icon="exclamation"
             onDismiss={this.handleDismiss}
-            header={alert.message}
-            content="De volgende pagina is alleen toegankelijk als u ingelogd bent."
-          />
-        ) : (
-          ""
-        )}
-        {error.message ? (
-          <Message
-            color="red"
-            icon="exclamation"
-            onDismiss={this.handleDismiss}
-            header="De aanmelding is mislukt!"
-            content="Vul het juiste wachtwoord in."
+            header={
+              alert.message === "Unauthorized"
+                ? "Unauthorized"
+                : "De aanmelding is mislukt!"
+            }
+            content={
+              alert.message === "Unauthorized"
+                ? "De volgende pagina is alleen toegankelijk als u ingelogd bent."
+                : "Vul het juiste wachtwoord in."
+            }
           />
         ) : (
           ""
