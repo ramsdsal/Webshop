@@ -6,6 +6,7 @@ import { ProductDetails } from "./components/ProductDetails";
 import { Register } from "./components/Register";
 import { ManageProducts } from "./components/Pages/ManageProducts";
 import { AddProduct } from "./components/Pages/AddProduct";
+import { AddCategory } from "./components/Pages/AddCategory";
 import { ManageUsers } from "./components/Pages/ManageUsers"; //ManageOrders
 import { ManageOrders } from "./components/Pages/ManageOrders";
 import { Login } from "./components/Login";
@@ -65,6 +66,7 @@ export default class App extends Component {
         <Route path="/shoppingcart" component={ShoppingCart} />
         <Route path="/manageproducts" component={ManageProducts} />
         <Route path="/addproduct" component={AddProduct} />
+        <Route path="/addcategory" component={AddCategory} />
         <Route path="/manageusers" component={ManageUsers} />
         <Route path="/userprofile" component={UserProfile} />
         <Route path="/statistics" component={Statistics} />

@@ -37,8 +37,19 @@ export class AddProduct extends Component {
       addProductError: false,
       productAdded: false,
       serverAddedProductResponse: "",
-      productFormIsLoading: false
+      productFormIsLoading: false,
+
     };
+
+    fetch("api/category/GetCategories")
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          ...this.state,
+          categoryDropdown : data
+        })
+      })
+
   }
 
   sendAddedProduct = () => {
@@ -80,60 +91,56 @@ export class AddProduct extends Component {
           };
 
           this.sendProductCategory(addingPC);
-          this.setState({
-            ...this.state,
-            categoryDropdown: data
-          });
         }
       });
   };
 
-  sendProductCategory = procat => {
-    var jsonToSend = {
-      Name: this.state.categoryName,
-      Description: this.state.categoryDescription
-    };
-    fetch("api/Category/addproductcategory", {
-      method: "Post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(jsonToSend)
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        this.setState({
-          ...this.state,
-          productId: data.productId,
-          serverAddedProductResponse: data.response,
-          addProductError: data.isError,
-          productAdded: data.productAdd,
-          productFormIsLoading: false
-        });
-        console.log(this.state);
-        if (this.state.productId > 0) {
-          var addingPC = {
-            ProductId: this.state.productId,
-            CategoryId: this.state.categoryId
-          };
-          console.log(addingPC);
-          this.sendProductCategory(addingPC);
-          this.setState({
-            ...this.state,
-            title: "",
-            description: "",
-            releaseDate: "",
-            runTime: "",
-            poster: "",
-            ageRating: "",
-            trailerUrl: "",
-            quantity: ""
-          });
-        }
-      });
-  };
+  // sendProductCategory = procat => {
+  //   var jsonToSend = {
+  //     Name: this.state.categoryName,
+  //     Description: this.state.categoryDescription
+  //   };
+  //   fetch("api/Category/addproductcategory", {
+  //     method: "Post",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify(jsonToSend)
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log(data);
+  //       this.setState({
+  //         ...this.state,
+  //         productId: data.productId,
+  //         serverAddedProductResponse: data.response,
+  //         addProductError: data.isError,
+  //         productAdded: data.productAdd,
+  //         productFormIsLoading: false
+  //       });
+  //       console.log(this.state);
+  //       if (this.state.productId > 0) {
+  //         var addingPC = {
+  //           ProductId: this.state.productId,
+  //           CategoryId: this.state.categoryId
+  //         };
+  //         console.log(addingPC);
+  //         this.sendProductCategory(addingPC);
+  //         this.setState({
+  //           ...this.state,
+  //           title: "",
+  //           description: "",
+  //           releaseDate: "",
+  //           runTime: "",
+  //           poster: "",
+  //           ageRating: "",
+  //           trailerUrl: "",
+  //           quantity: ""
+  //         });
+  //       }
+  //     });
+  // };
 
   sendProductCategory = procat => {
     console.log(procat);
@@ -146,6 +153,8 @@ export class AddProduct extends Component {
       body: JSON.stringify(procat)
     });
   };
+
+
 
   renderPage() {
     return (

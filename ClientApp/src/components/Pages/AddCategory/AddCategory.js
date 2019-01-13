@@ -1,25 +1,20 @@
 import React, { Component } from "react";
 import { Container, Form, Message, TextArea, Segment, Header, Icon } from "semantic-ui-react";
 import "./AddCategory.css";
+import { relativeTimeThreshold } from "moment";
 
 export class AddCategory extends Component {
   constructor(props) {
     super(props);
     
-    this.state = 
-    {
-      // Categorie
+    this.state = {
       categoryName: "",
       categoryDescription: "",
-      
-      //Catogorie validatie
-      addCategoryError : false,
-      categoryAdded : false,
-      serverCateoryResponse : "",
-      categoryFormIsLoading: false
-      
-    };
 
+      addCategoryError : false,
+      serverCateoryResponse : "",
+      categoryFormIsLoading : false
+    }
   }
 
   sendAddedCategory = () => {
