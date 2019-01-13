@@ -271,15 +271,16 @@ class ShoppingCart extends Component {
                     />
                   </Link>
                   <Button.Or />
-                  <Link to={"/checkout"}>
-                    <Button
-                      positive
-                      disabled={this.state.movies.length === 0}
-                      content="Verder"
-                      icon="arrow alternate circle right outline"
-                      labelPosition="right"
-                    />
-                  </Link>
+
+                  <Button
+                    as={Link}
+                    to={"/checkout"}
+                    positive
+                    disabled={this.state.movies.length === 0}
+                    content="Verder"
+                    icon="arrow alternate circle right outline"
+                    labelPosition="right"
+                  />
                 </Button.Group>
               </List.Content>
             </List.Item>

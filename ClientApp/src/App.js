@@ -59,7 +59,7 @@ export default class App extends Component {
         <Route path="/manageusers" component={ManageUsers} />
         <Route path="/userprofile" component={UserProfile} />
         <Route path="/statistics" component={Statistics} />
-        <Route path="/checkout" component={Checkout} />
+        <Route path="/checkout" component={RequireAuth(Checkout)} />
         <Route path="/manageDiscounts" component={ManageDiscounts} />
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
