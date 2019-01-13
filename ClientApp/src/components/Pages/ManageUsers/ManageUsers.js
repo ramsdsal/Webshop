@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "semantic-ui-react";
+import { Container, Checkbox } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import "./ManageUsers.css";
 
@@ -15,6 +15,38 @@ export class ManageUsers extends Component {
       .then(data => {
         this.setState({ ...this.state, users: data, isLoading: "Not needed" });
       });
+  }
+
+  changeUserBlock = (userToBlock) =>
+  {
+    fetch("/api/user/BlockUser/" + userToBlock.id)
+    .then(response => response.json())
+    .then(data => {
+
+      if (data.error == false) {
+        userToBlock.isBlocked = data.isBlocked
+      }
+
+      this.setState({
+        ...this.state,
+      });
+    });
+  }
+
+  changeUserAdmin = (userToAdmin) =>
+  {
+    fetch("/api/user/SetAdmin/" + userToAdmin.id)
+    .then(response => response.json())
+    .then(data => {
+
+      if (data.error == false) {
+        userToAdmin.isAdmin = data.isAdmin
+      }
+
+      this.setState({
+        ...this.state,
+      });
+    });
   }
 
   renderUserTable(users) {
@@ -36,9 +68,20 @@ export class ManageUsers extends Component {
               <td>{user.lastName}</td>
               <td>{user.email}</td>
               <td>
-                <button className="btn btn-primary" type="button">
-                  Block
-                </button>
+                <Checkbox
+                            label='Blokeer'
+                            name='checkbox'
+                            checked={user.isBlocked}
+                            onChange={this.changeUserBlock.bind(this, user)}
+                />
+              </td>
+              <td>
+                <Checkbox
+                            label='Is Admin'
+                            name='checkbox'
+                            checked={user.isAdmin}
+                            onChange={this.changeUserAdmin.bind(this, user)}
+                />
               </td>
               <td>
                 <Link to={`/updateuser/${user.id}`}>
