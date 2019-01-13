@@ -33,7 +33,9 @@ namespace webshop.Controllers
                 user.Id,
                 user.FirstName,
                 user.LastName,
-                user.Email
+                user.Email,
+                IsBlocked = _context.ConfirmationMails.Any(c => c.UserId == user.Id && c.AccountStatus == -1),
+                IsAdmin = _context.UserRoles.Any(c => c.UserId == user.Id)
             });
 
             return new OkObjectResult(result);
@@ -166,9 +168,17 @@ namespace webshop.Controllers
             var result = this._context.Users
             .Where(us => us.Email == u.Email && us.Password == sendHashedPassword)
             .Select(us => new { us.Id, us.Email, us.FirstName, token = loginToken }).FirstOrDefault();
-
+            
             if (result != null)
+            {
+                bool isUserBlocked = _context.ConfirmationMails.Any(c => c.UserId == result.Id && c.AccountStatus == -1);
+                if (isUserBlocked)
+                {
+                    return new ConflictObjectResult(new { msg = "Gebruiker is geblokkeerd" });
+                }
+
                 return new OkObjectResult(result);
+            }
 
             return new ConflictObjectResult(new { msg = "Inloggegevens zijn incorrect" });
 
@@ -191,6 +201,59 @@ namespace webshop.Controllers
             return new OkObjectResult(result);
 
 
+        }
+
+        [HttpGet("BlockUser/{userId}")]
+        public IActionResult BlockUser(int userId)
+        {
+            ConfirmationMail confirmationMail = this._context.ConfirmationMails.FirstOrDefault(c => c.UserId == userId);
+            if (confirmationMail != null)
+            {
+                bool isUserBlocked = false;
+                if (confirmationMail.AccountStatus == -1)
+                {
+                    confirmationMail.AccountStatus = 1;
+                }
+                else
+                {
+                    confirmationMail.AccountStatus = -1;
+                    isUserBlocked = true;
+                }
+
+                _context.SaveChanges();
+                return new ObjectResult(new {error = false, isBlocked = isUserBlocked});
+            }
+
+            return new ObjectResult(new {error = true, isBlocked = false});
+        }
+
+        [HttpGet("SetAdmin/{userId}")]
+        public IActionResult SetAdmin(int userId)
+        {
+            User user = this._context.Users.Where(c => c.Id == userId).Include("Roles").FirstOrDefault();
+
+            if (user != null)
+            {
+                if (user.Roles != null && user.Roles.Count > 0)//User is an admin
+                {
+                    user.Roles.Clear();
+                    _context.SaveChanges();
+                    return new ObjectResult(new {error = false, isAdmin = false});
+                }
+                else//User is not an admin
+                {
+                    UserRole newUserRole = new UserRole();
+                    newUserRole.User = user;
+                    newUserRole.Role = _context.Roles.FirstOrDefault(r => r.Name.ToLower() == "admin");
+
+                    user.Roles.Add(newUserRole);
+                    _context.SaveChanges();
+
+                    return new ObjectResult(new {error = false, isAdmin = true});
+                }
+            }
+
+            return new ObjectResult(new {error = true, isAdmin = false});
         }
 
         [HttpGet("GetUserByIdForUserProfile/{id}")]
