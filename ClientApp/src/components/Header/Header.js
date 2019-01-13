@@ -88,33 +88,33 @@ class Header extends Component {
                     <Icon name="user circle outline" />
                     Profiel bekijken
                   </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Icon name="clipboard check" />
-                    Aankoop lijst
-                  </Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item>
-                    <Icon name="options" />
-                    <Dropdown text="Admin" direction="left">
-                      <Dropdown.Menu>
-                        <Dropdown.Item as={Link} to={"/manageusers"}>
-                          Gebruiker beheer
-                        </Dropdown.Item>
-                        <Dropdown.Item as={Link} to={"/manageproducts"}>
-                          Product beheer
-                        </Dropdown.Item>
-                        <Dropdown.Item as={Link} to={"/manageorders"}>
-                          Bestelling beheer
-                        </Dropdown.Item>
-                        <Dropdown.Item as={Link} to={"/managediscounts"}>
-                          Korting beheer
-                        </Dropdown.Item>
-                        <Dropdown.Item as={Link} to={"/statistics"}>
-                          Statistieken
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </Dropdown.Item>
+                  {this.props.user.role === "admin" ? (
+                    <Dropdown.Item>
+                      <Icon name="options" />
+                      <Dropdown text="Admin" direction="left">
+                        <Dropdown.Menu>
+                          <Dropdown.Item as={Link} to={"/manageusers"}>
+                            Gebruiker beheer
+                          </Dropdown.Item>
+                          <Dropdown.Item as={Link} to={"/manageproducts"}>
+                            Product beheer
+                          </Dropdown.Item>
+                          <Dropdown.Item as={Link} to={"/manageorders"}>
+                            Bestelling beheer
+                          </Dropdown.Item>
+                          <Dropdown.Item as={Link} to={"/managediscounts"}>
+                            Korting beheer
+                          </Dropdown.Item>
+                          <Dropdown.Item as={Link} to={"/statistics"}>
+                            Statistieken
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </Dropdown.Item>
+                  ) : (
+                    ""
+                  )}
                   <Dropdown.Item as={Link} onClick={this.logout} to={"/"}>
                     <Icon name="sign out alternate" />
                     Uitloggen

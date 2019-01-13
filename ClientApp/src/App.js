@@ -54,19 +54,35 @@ export default class App extends Component {
           path="/updateOrder/:orderId"
           render={props => <UpdateOrder orderId={props.match.params.orderId} />}
         />
+
         <Route
           path="/manageOrders"
           component={RequireAuth(RequireAdmin(ManageOrders))}
         />
         <Route path="/favoriteslist" component={RequireAuth(FavoritesList)} />
 
-        <Route path="/manageproducts" component={ManageProducts} />
-        <Route path="/addproduct" component={AddProduct} />
-        <Route path="/manageusers" component={ManageUsers} />
+        <Route
+          path="/manageproducts"
+          component={RequireAuth(RequireAdmin(ManageProducts))}
+        />
+        <Route
+          path="/addproduct"
+          component={RequireAuth(RequireAdmin(AddProduct))}
+        />
+        <Route
+          path="/manageusers"
+          component={RequireAuth(RequireAdmin(ManageUsers))}
+        />
         <Route path="/userprofile" component={RequireAuth(UserProfile)} />
-        <Route path="/statistics" component={Statistics} />
+        <Route
+          path="/statistics"
+          component={RequireAuth(RequireAdmin(Statistics))}
+        />
         <Route path="/checkout" component={RequireAuth(Checkout)} />
-        <Route path="/manageDiscounts" component={ManageDiscounts} />
+        <Route
+          path="/manageDiscounts"
+          component={RequireAuth(RequireAdmin(ManageDiscounts))}
+        />
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/shoppingcart" component={ShoppingCart} />
