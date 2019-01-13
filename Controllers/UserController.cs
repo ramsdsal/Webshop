@@ -88,13 +88,13 @@ namespace webshop.Controllers
         public IActionResult ChangePassword(string currentPassword, string newPassword, int userId)
         {
             var hash = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes(currentPassword));
-            var hashedPassword =  string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
+            var hashedPassword = string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
 
             User userToUpdate = _context.Users.FirstOrDefault(u => u.Id == userId && u.Password == hashedPassword);
             if (userToUpdate != null)
             {
                 var newHash = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes(newPassword));
-                var newHashedPassword =  string.Join("", newHash.Select(b => b.ToString("x2")).ToArray());
+                var newHashedPassword = string.Join("", newHash.Select(b => b.ToString("x2")).ToArray());
                 userToUpdate.Password = newHashedPassword;
 
                 _context.SaveChanges();
@@ -165,7 +165,7 @@ namespace webshop.Controllers
 
             var result = this._context.Users
             .Where(us => us.Email == u.Email && us.Password == sendHashedPassword)
-            .Select(us => new { us.Id, us.Email, us.FirstName, token = loginToken }).FirstOrDefault();
+            .Select(us => new { us.Id, us.Email, us.FirstName, token = loginToken, role = us.Roles.First().Role.Name }).FirstOrDefault();
 
             if (result != null)
                 return new OkObjectResult(result);
