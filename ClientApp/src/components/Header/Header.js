@@ -84,7 +84,7 @@ class Header extends Component {
                 className="link item"
               >
                 <Dropdown.Menu>
-                  <Dropdown.Item as={Link} to="/userdetails">
+                  <Dropdown.Item as={Link} to="/userprofile">
                     <Icon name="user circle outline" />
                     Profiel bekijken
                   </Dropdown.Item>
@@ -105,6 +105,9 @@ class Header extends Component {
                         </Dropdown.Item>
                         <Dropdown.Item as={Link} to={"/manageorders"}>
                           Bestelling beheer
+                        </Dropdown.Item>
+                        <Dropdown.Item as={Link} to={"/managediscounts"}>
+                          Korting beheer
                         </Dropdown.Item>
                         <Dropdown.Item as={Link} to={"/statistics"}>
                           Statistieken

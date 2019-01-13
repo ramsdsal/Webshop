@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Container, Form, Message, Segment, Header } from "semantic-ui-react";
 
+const zipcodeRegex = RegExp(/^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i);
+
 export class Register extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +25,9 @@ export class Register extends Component {
         createUserError: false,
         emailSend: false,
         serverResponse: "",
-        formIsLoading: false
+        formIsLoading: false,
+
+        zipcodeError: ""
 		};
 	}
 
@@ -64,9 +68,25 @@ export class Register extends Component {
     });
   };
 
-  handleChange = (e, { name, value }) =>this.setState({ [name]: value }, console.log(this.state));
+  handleChange = (e, { name, value }) =>
+  {
+    this.setState({ [name]: value });
+  }
+
+  
+  handleZipCodeChange = (e, { name, value }) =>
+  {
+    var zipcode = zipcodeRegex.test(value)
+    ? ""
+    : "invalid postcode, voorbeeld: 2133AA";
+    this.setState({ [name]: value, zipcodeError: zipcode });
+  }
 
   render() {
+    var errorStyle = {
+        color: 'red',
+        fontSize: 13
+      };
 
     var today = new Date();
 
@@ -180,15 +200,22 @@ export class Register extends Component {
                             name='country'
                             onChange={this.handleChange}
                         />
-                        <Form.Input
+                        <Form.Input error={this.state.zipcodeError.length > 0}
                             required
-                            size='massive'
                             label='Postcode'
-                            placeholder='Postcode'
+                            placeholder="3244PC"
+                            onChange={this.handleZipCodeChange}
+                            size="massive"
                             name='zipCode'
-                            onChange={this.handleChange}
                         />
-                    </Form.Group>		
+                    </Form.Group>
+                    {this.state.zipcodeError.length > 0 ? (
+                        <span style={errorStyle}>
+                            {"Verkeerde postcode ingevuld voorbeeld: 1432AD"}
+                        </span>
+                        ) : (
+                        ""
+                        )}		
                     <Form.Button 
                     content='Submit' 
                     color='blue'
@@ -204,6 +231,7 @@ export class Register extends Component {
                         || !this.state.zipCode
                         || !this.state.birthDate
                         || this.formIsLoading
+                        || this.state.zipcodeError !== ""
                      }
                     />
                 </Form>
