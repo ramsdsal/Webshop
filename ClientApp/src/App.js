@@ -19,6 +19,7 @@ import Checkout from "./components/Checkout/Checkout";
 import FavoritesList from "./components/Favorite/FavoritesList";
 import UserProfile from "./components/Pages/UserProfile/UserProfile";
 import { ManageDiscounts } from "./components/Pages/ManageDiscounts/ManageDiscounts";
+import RequireAuth from "./components/Login/RequireAuth";
 
 export default class App extends Component {
   displayName = App.name;
@@ -26,7 +27,6 @@ export default class App extends Component {
   render() {
     return (
       <Layout>
-        <Route exact path="/" component={Home} />
         <Route
           path="/ProductDetails/:id"
           render={props => <ProductDetails id={props.match.params.id} />}
@@ -52,10 +52,8 @@ export default class App extends Component {
           render={props => <UpdateOrder orderId={props.match.params.orderId} />}
         />
         <Route path="/manageOrders" component={ManageOrders} />
-        <Route path="/favoriteslist" component={FavoritesList} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/shoppingcart" component={ShoppingCart} />
+        <Route path="/favoriteslist" component={RequireAuth(FavoritesList)} />
+
         <Route path="/manageproducts" component={ManageProducts} />
         <Route path="/addproduct" component={AddProduct} />
         <Route path="/manageusers" component={ManageUsers} />
@@ -63,6 +61,10 @@ export default class App extends Component {
         <Route path="/statistics" component={Statistics} />
         <Route path="/checkout" component={Checkout} />
         <Route path="/manageDiscounts" component={ManageDiscounts} />
+        <Route exact path="/" component={Home} />
+        <Route path="/login" component={Login} />
+        <Route path="/shoppingcart" component={ShoppingCart} />
+        <Route path="/register" component={Register} />
       </Layout>
     );
   }

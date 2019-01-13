@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { SearchMovie } from "./SearchMovie";
 import { connect } from "react-redux";
 import { userActions } from "../../Redux/actions";
+import { history } from "../../Redux/helpers";
 
 class Header extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class Header extends Component {
   }
   logout = () => {
     this.props.dispatch(userActions.logout());
-    window.location.reload(true);
+    history.push("/");
   };
   render() {
     return (
