@@ -29,7 +29,6 @@ export default class App extends Component {
   render() {
     return (
       <Layout>
-        <Route exact path="/" component={Home} />
         <Route
           path="/ProductDetails/:id"
           render={props => <ProductDetails id={props.match.params.id} />}
@@ -61,9 +60,7 @@ export default class App extends Component {
         <Route path="/test" component={Test} />
         <Route path="/manageOrders" component={ManageOrders} />
         <Route path="/favoriteslist" component={FavoritesList} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/shoppingcart" component={ShoppingCart} />
+
         <Route path="/manageproducts" component={ManageProducts} />
         <Route path="/addproduct" component={AddProduct} />
         <Route path="/manageusers" component={ManageUsers} />
@@ -72,6 +69,11 @@ export default class App extends Component {
         <Route path="/checkout" component={Checkout} />
         {/* <Route path="/orderHistory" component={OrderHistory} /> */}
         {/* <Route path="/userDetails" component={UserDetails} /> */}
+
+        <Route exact path="/" component={Home} />
+        <Route path="/login" component={Login} />
+        <Route path="/shoppingcart" component={ShoppingCart} />
+        <Route path="/register" component={Register} />
       </Layout>
     );
   }

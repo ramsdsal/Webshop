@@ -9,6 +9,7 @@ import {
   Message
 } from "semantic-ui-react";
 import { Redirect } from "react-router-dom";
+import { history } from "../../Redux/helpers/history";
 
 import { userActions } from "../../Redux/actions";
 
@@ -37,7 +38,6 @@ class Login extends Component {
     this.setState({ submitted: true });
     const { username, password } = this.state;
     const { dispatch } = this.props;
-    console.log(this.state);
 
     if (username && password) {
       dispatch(userActions.login(username, password));
