@@ -14,14 +14,11 @@ import ShoppingCart from "./components/ShoppingCart/ShoppingCart";
 import { UpdateUser } from "./components/Pages/UpdateUser";
 import { UpdateOrder } from "./components/Pages/UpdateOrder";
 import { Statistics } from "./components/Pages/Statistics";
-import { UserProfile } from "./components/Pages/UserProfile";
 import { UpdateProduct } from "./components/Pages/UpdateProduct/UpdateProduct";
 import Checkout from "./components/Checkout/Checkout";
 import FavoritesList from "./components/Favorite/FavoritesList";
-// import { Password } from "./components/Pages/Password";
-// import { OrderHistory } from "./components/Pages/OrderHistory";
-// import UserDetails from "./components/Pages/UserDetails/UserDetails";
-import Test from "./components/Pages/Mark/Test";
+import UserProfile from "./components/Pages/UserProfile/UserProfile";
+import { ManageDiscounts } from "./components/Pages/ManageDiscounts/ManageDiscounts";
 
 export default class App extends Component {
   displayName = App.name;
@@ -53,11 +50,6 @@ export default class App extends Component {
           path="/updateOrder/:orderId"
           render={props => <UpdateOrder orderId={props.match.params.orderId} />}
         />
-        {/* <Route
-          path="/password/:userId"
-          render={props => <Password userId={props.match.params.userId} />}
-        /> */}
-        <Route path="/test" component={Test} />
         <Route path="/manageOrders" component={ManageOrders} />
         <Route path="/favoriteslist" component={FavoritesList} />
 
@@ -67,13 +59,7 @@ export default class App extends Component {
         <Route path="/userprofile" component={UserProfile} />
         <Route path="/statistics" component={Statistics} />
         <Route path="/checkout" component={Checkout} />
-        {/* <Route path="/orderHistory" component={OrderHistory} /> */}
-        {/* <Route path="/userDetails" component={UserDetails} /> */}
-
-        <Route exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/shoppingcart" component={ShoppingCart} />
-        <Route path="/register" component={Register} />
+        <Route path="/manageDiscounts" component={ManageDiscounts} />
       </Layout>
     );
   }

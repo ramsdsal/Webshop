@@ -1,67 +1,118 @@
 import React, { Component } from "react";
-import "./UserProfile.css";
 import { connect } from "react-redux";
 import {
   Container,
   Grid,
-  Header,
+	Header,
+	Menu,
+	Segment,
 } from "semantic-ui-react";
 import { OrderHistory } from "../OrderHistory/OrderHistory";
+import { UserDetails } from "../UserDetails/UserDetails";
+import { Password } from "../Password/Password";
 
-export class UserProfile extends Component {
+class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
-
-      userId: 1
+			userId: "",
+			userPropsLoaded: false,
+			currentPage: "Gegevens"
     };
   }
 
+  componentWillReceiveProps(prevProps) {
+    if (this.props.user !== prevProps.user) {
+      this.setState({
+				...this.state,
+				userPropsLoaded: true,
+				userId: this.props.user.id,
+				currentPage: prevProps.currentPage
+			});
+			this.goToPage(this.state.currentPage)
+    }
+	}
+
+	componentDidMount()
+	{
+		if (this.state.userPropsLoaded == false) {
+			console.log("didmount: " + this.state.userId + "userPropsLoaded: " + this.state.userPropsLoaded)
+			this.setState({
+				...this.state,
+				userPropsLoaded: true,
+				userId: this.props.user.id,
+				currentPage: "Gegevens"
+			});	
+			this.goToPage(this.state.currentPage)
+		}
+	}
+
+	renderPage()
+	{
+		if (this.state.userPropsLoaded) 
+		{
+			switch (this.state.currentPage) {
+				case "Gegevens":
+					return (
+						<UserDetails userId={this.state.userId} />
+					);
+				case "Wachtwoord":
+					return (
+						<Password userId={this.state.userId} />
+					);
+				case "Bestellingen":
+					return (
+						<OrderHistory userId={this.state.userId} />
+					);
+					
+				default:
+					return;
+				}	
+		}
+	}
+	
+	goToPage = (pageToGoTo) =>
+	{
+		this.setState({currentPage: pageToGoTo})
+	}
+
   render() {
-    
     return (
-      <Container style={{ marginTop: "7em" }}>
-        <Grid>
-          <Grid.Column width={4}>
-            <Header as="h2" attached="top">
-              Instellingen
-            </Header>
-            {/* <Menu fluid vertical>
-              <Segment attached>
-                <Menu.Item
-                  name="Gegevens"
-                  as={Link}
-                  to="/userdetails"
-                />
-                <Menu.Item
-                  name="Wachtwoord wijzigen"
-                  as={Link}
-                  to={PassLink}
-                />
-                <Menu.Item
-                  name="Bestellingen"
-                  as={Link}
-                  to="/orderhistory"
-                />
-              </Segment>
-            </Menu> */}
-          </Grid.Column>
-          <Grid.Column stretched width={12}>
-            <OrderHistory />
-            {/* {this.props.children} */}
-          </Grid.Column>
-        </Grid>
-      </Container>
-    );
+			<Container style={{ marginTop: "7em" }}>
+			<Grid>
+				<Grid.Column width={4}>
+					<Header as="h2" attached="top">
+						Instellingen
+					</Header>
+					<Menu fluid vertical>
+						<Segment attached>
+							<Menu.Item
+								onClick={this.goToPage.bind(this, "Gegevens")}
+								name="Gegevens"
+							/>
+							<Menu.Item
+								onClick={this.goToPage.bind(this, "Wachtwoord")}
+								name="Wachtwoord wijzigen"
+							/>
+							<Menu.Item
+								onClick={this.goToPage.bind(this, "Bestellingen")}
+								name="Bestellingen"
+							/>
+						</Segment>
+					</Menu>
+				</Grid.Column>
+				<Grid.Column stretched width={12}>
+				{
+					this.renderPage()
+				}
+				</Grid.Column>
+			</Grid>
+		</Container>
+		);
   }
 }
 
 const mapStateToProps = state => {
-  console.log("skert")
-  return {
-    user: state.authentication.user
-  };
+  return { user: state.authentication.user };
 };
-
 export default connect(mapStateToProps)(UserProfile);

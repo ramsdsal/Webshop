@@ -22,14 +22,12 @@ export class OrderDetails extends Component {
       orderDiscount: 0,
       orderDate: ""
     };
-    
-  }
 
-  componentWillMount()
-  {
+    var _isMounted = false;
     fetch("/api/order/GetOrderById/" + this.props.orderId)
-      .then(response => response.json())
-      .then(data => {
+    .then(response => response.json())
+    .then(data => {
+      if (this._isMounted) {
         const order = data[0];
         this.setState({
           ...this.state,
@@ -45,14 +43,27 @@ export class OrderDetails extends Component {
           orderCountry: order.country,
           orderDiscount: order.discount,
           orderDate: order.date,
-        });
-      });
+        }); 
+      }
+    });
+    
+  }
+
+  componentDidMount()
+  {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount()
+  {
+    this._isMounted = false;
   }
 
   render() {
     var datetime =this.state.orderDate;
-var time = datetime.substr(11, 8);
-var date = datetime.substr(8, 0);
+    var time = datetime.substr(11, 8);
+    var date = datetime.substr(0, 10);
+
     return(
       <Container style={{ marginTop: "7em" }}>
 
@@ -90,7 +101,7 @@ var date = datetime.substr(8, 0);
             </List.Item>
             <List.Item>
               <List.Content>
-                {"Datum: " + time }
+                {"Datum: " + date + " " + time }
               </List.Content>
             </List.Item>
           </List>
