@@ -22,6 +22,7 @@ import FavoritesList from "./components/Favorite/FavoritesList";
 // import { OrderHistory } from "./components/Pages/OrderHistory";
 // import UserDetails from "./components/Pages/UserDetails/UserDetails";
 import Test from "./components/Pages/Mark/Test";
+import RequireAuth from "./components/Login/RequireAuth";
 
 export default class App extends Component {
   displayName = App.name;
@@ -59,7 +60,7 @@ export default class App extends Component {
         /> */}
         <Route path="/test" component={Test} />
         <Route path="/manageOrders" component={ManageOrders} />
-        <Route path="/favoriteslist" component={FavoritesList} />
+        <Route path="/favoriteslist" component={RequireAuth(FavoritesList)} />
 
         <Route path="/manageproducts" component={ManageProducts} />
         <Route path="/addproduct" component={AddProduct} />

@@ -10,8 +10,7 @@ import {
 } from "semantic-ui-react";
 import { Redirect } from "react-router-dom";
 import { history } from "../../Redux/helpers/history";
-
-import { userActions } from "../../Redux/actions";
+import { userActions, alertActions } from "../../Redux/actions";
 
 class Login extends Component {
   constructor(props) {
@@ -55,15 +54,27 @@ class Login extends Component {
 
   handleDismiss = () => {
     this.setState({ ...this.state, error: "" });
+    this.props.dispatch(alertActions.clear());
   };
 
   render() {
-    const { loggedIn } = this.props;
+    const { loggedIn, alert } = this.props;
     const { username, password, submitted, error } = this.state;
 
     return (
       <Container style={{ marginTop: "7em" }}>
         {loggedIn ? <Redirect to={"/"} /> : ""}
+        {alert.message ? (
+          <Message
+            color="red"
+            icon="exclamation"
+            onDismiss={this.handleDismiss}
+            header={alert.message}
+            content="De volgende pagina is alleen toegankelijk als u ingelogd bent."
+          />
+        ) : (
+          ""
+        )}
         {error.message ? (
           <Message
             color="red"
