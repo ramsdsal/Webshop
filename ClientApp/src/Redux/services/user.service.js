@@ -18,8 +18,7 @@ function login(username, password) {
         localStorage.setItem("user", JSON.stringify(res));
         return res;
       }
-    })
-    .catch(error => console.log(error));
+    });
 }
 function favorits(id) {
   const requestOptions = {
@@ -42,12 +41,14 @@ function logout() {
 function handleResponse(response) {
   return response.text().then(text => {
     const data = text && JSON.parse(text);
+
     if (!response.ok) {
       if (response.status === 401) {
       }
 
       const error = (data && data.message && data.msg) || response.statusText;
-      return Promise.reject(error);
+
+      return Promise.reject(data.message);
     }
 
     return data;

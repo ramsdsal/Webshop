@@ -169,19 +169,18 @@ namespace webshop.Controllers
             .Where(us => us.Email == u.Email && us.Password == sendHashedPassword)
             .Select(us => new { us.Id, us.Email, us.FirstName, token = loginToken, role = us.Roles.FirstOrDefault().Role.Name }).FirstOrDefault();
 
-            if (result != null)
+            if (result == null)
             {
-                bool isUserBlocked = _context.ConfirmationMails.Any(c => c.UserId == result.Id && c.AccountStatus == -1);
-                if (isUserBlocked)
-                {
-                    return new ConflictObjectResult(new { msg = "Gebruiker is geblokkeerd" });
-                }
-
-                return new OkObjectResult(result);
+                return new ConflictObjectResult(new { message = "Inloggegevens zijn incorrect" });
             }
 
-            return new ConflictObjectResult(new { msg = "Inloggegevens zijn incorrect" });
+            bool isUserBlocked = _context.ConfirmationMails.Any(c => c.UserId == result.Id && c.AccountStatus == -1);
+            if (isUserBlocked)
+            {
+                return new ConflictObjectResult(new { message = "Gebruiker is geblokkeerd" });
+            }
 
+            return new OkObjectResult(result);
         }
 
         [HttpGet("GetUserAdress/{id}")]
@@ -221,10 +220,10 @@ namespace webshop.Controllers
                 }
 
                 _context.SaveChanges();
-                return new ObjectResult(new {error = false, isBlocked = isUserBlocked});
+                return new ObjectResult(new { error = false, isBlocked = isUserBlocked });
             }
 
-            return new ObjectResult(new {error = true, isBlocked = false});
+            return new ObjectResult(new { error = true, isBlocked = false });
         }
 
         [HttpGet("SetAdmin/{userId}")]
@@ -238,7 +237,7 @@ namespace webshop.Controllers
                 {
                     user.Roles.Clear();
                     _context.SaveChanges();
-                    return new ObjectResult(new {error = false, isAdmin = false});
+                    return new ObjectResult(new { error = false, isAdmin = false });
                 }
                 else//User is not an admin
                 {
@@ -249,11 +248,11 @@ namespace webshop.Controllers
                     user.Roles.Add(newUserRole);
                     _context.SaveChanges();
 
-                    return new ObjectResult(new {error = false, isAdmin = true});
+                    return new ObjectResult(new { error = false, isAdmin = true });
                 }
             }
 
-            return new ObjectResult(new {error = true, isAdmin = false});
+            return new ObjectResult(new { error = true, isAdmin = false });
         }
 
         [HttpGet("GetUserByIdForUserProfile/{id}")]

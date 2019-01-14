@@ -26,7 +26,6 @@ function login(username, password) {
         }
       })
       .catch(error => {
-        console.log("error");
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
       });

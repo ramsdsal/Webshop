@@ -56,10 +56,22 @@ class Login extends Component {
     this.props.dispatch(alertActions.clear());
   };
 
+  getError = error => {
+    switch (error) {
+      case "Gebruiker is geblokkeerd.":
+        return "U bent geblokkeerd, neem contact op met de supportservice.";
+      case "Inloggegevens zijn incorrect.":
+        return "Vul het juiste wachtwoord in.";
+      case "U moet uw bevestigings mail besvestigen.":
+        return "Check uw email.";
+      default:
+        return "Unknown error.";
+    }
+  };
+
   render() {
     const { loggedIn, alert } = this.props;
-    const { username, password, submitted, error } = this.state;
-    console.log();
+    const { username, password, submitted } = this.state;
 
     return (
       <Container style={{ marginTop: "7em" }}>
@@ -69,16 +81,8 @@ class Login extends Component {
             color="red"
             icon="exclamation"
             onDismiss={this.handleDismiss}
-            header={
-              alert.message === "Unauthorized"
-                ? "Unauthorized"
-                : "De aanmelding is mislukt!"
-            }
-            content={
-              alert.message === "Unauthorized"
-                ? "De volgende pagina is alleen toegankelijk als u ingelogd bent."
-                : "Vul het juiste wachtwoord in."
-            }
+            header={alert.message}
+            content={this.getError(alert.message)}
           />
         ) : (
           ""
