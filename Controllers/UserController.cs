@@ -162,7 +162,7 @@ namespace webshop.Controllers
 
             var hash = (new SHA1Managed()).ComputeHash(Encoding.UTF8.GetBytes(u.Password));
             var sendHashedPassword = string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
-            Console.WriteLine("inicio: " + sendHashedPassword + " Fim");
+
             var loginToken = Guid.NewGuid().ToString();
 
             var result = this._context.Users
@@ -172,12 +172,18 @@ namespace webshop.Controllers
             if (result == null)
             {
                 return new ConflictObjectResult(new { message = "Inloggegevens zijn incorrect" });
+
             }
 
             bool isUserBlocked = _context.ConfirmationMails.Any(c => c.UserId == result.Id && c.AccountStatus == -1);
             if (isUserBlocked)
             {
-                return new ConflictObjectResult(new { message = "Gebruiker is geblokkeerd" });
+                return new ConflictObjectResult(new { msg = "Gebruiker is geblokkeerd" });
+            }
+
+            if (_context.ConfirmationMails.Any(c => c.UserId == result.Id && c.AccountStatus == 0))
+            {
+                return new ConflictObjectResult(new { msg = "U moet uw bevestigings mail bevestigen" });
             }
 
             return new OkObjectResult(result);
