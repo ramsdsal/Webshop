@@ -270,8 +270,7 @@ class ShoppingCart extends Component {
                       labelPosition="left"
                     />
                   </Link>
-                  <Button.Or />
-
+                  <Button.Or text="of" />
                   <Button
                     as={Link}
                     to={"/checkout"}
