@@ -64,7 +64,8 @@ export class ManageDiscounts extends Component {
           dateOff: "",
           name: this.state.discountName,
           description: this.state.discountDescription,
-          current: 0
+          current: 0,
+          id: data.id
         };
 
         if (data.discountAdded) {
@@ -140,7 +141,7 @@ export class ManageDiscounts extends Component {
                     <Table.Cell>{discount.percentage}</Table.Cell>
                     <Table.Cell>
                         <Radio
-                          label='Or that'
+                          label='Selecteer'
                           name='radioGroup'
                           value='that'
                           checked={discount.current == 1}

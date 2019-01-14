@@ -40,8 +40,7 @@ namespace webshop.Controllers
                     _context.Discounts.Add(discount);
                     _context.SaveChanges();    
 
-                    return new OkObjectResult(new {isError = false, discountAdded = true, response = "Korting is succesvol toegevoegd."});
-              
+                    return new OkObjectResult(new {id = discount.Id, isError = false, discountAdded = true, response = "Korting is succesvol toegevoegd."});
                 }
 
                 return new OkObjectResult(new {isError = true, discountAdded = false, response = "Korting met dezelfde percentage bestaat al."});
