@@ -177,7 +177,15 @@ namespace webshop.Controllers
                     return new ConflictObjectResult(new { msg = "Gebruiker is geblokkeerd" });
                 }
 
-                return new OkObjectResult(result);
+                if (_context.ConfirmationMails.Any(c => c.UserId == result.Id && c.AccountStatus == 1))
+                {
+                    return new OkObjectResult(result);                    
+                }
+                else
+                {
+                    return new ConflictObjectResult(new { msg = "U moet uw bevestigings mail bevestigen" });  
+                }
+
             }
 
             return new ConflictObjectResult(new { msg = "Inloggegevens zijn incorrect" });
