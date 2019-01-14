@@ -9,13 +9,11 @@ export class ManageProducts extends Component {
     fetch("/api/Product/GetAdminProducts")
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         this.setState({
           ...this.state,
           movies: data.items,
           isLoading: "Not needed"
         });
-        console.log(this.state.movies)
         });
     this.state = { isLoading: "isLoading", movies: [] };
     
