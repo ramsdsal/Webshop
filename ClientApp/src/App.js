@@ -44,11 +44,9 @@ export default class App extends Component {
         />
         <Route
           path="/updateproduct/:productId"
-          render={props =>
-            RequireAuth(
-              <UpdateProduct productId={props.match.params.productId} />
-            )
-          }
+          render={props => (
+            <UpdateProduct productId={props.match.params.productId} />
+          )}
         />
         <Route
           path="/updateOrder/:orderId"

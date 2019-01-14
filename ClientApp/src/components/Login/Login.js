@@ -62,7 +62,7 @@ class Login extends Component {
         return "U bent geblokkeerd, neem contact op met de supportservice.";
       case "Inloggegevens zijn incorrect.":
         return "Vul het juiste wachtwoord in.";
-      case "U moet uw bevestigings mail besvestigen.":
+      case "U moet uw bevestigings mail bevestigen.":
         return "Check uw email.";
       default:
         return "Unknown error.";

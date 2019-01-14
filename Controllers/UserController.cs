@@ -171,19 +171,19 @@ namespace webshop.Controllers
 
             if (result == null)
             {
-                return new ConflictObjectResult(new { message = "Inloggegevens zijn incorrect" });
+                return new ConflictObjectResult(new { message = "Inloggegevens zijn incorrect." });
 
             }
 
             bool isUserBlocked = _context.ConfirmationMails.Any(c => c.UserId == result.Id && c.AccountStatus == -1);
             if (isUserBlocked)
             {
-                return new ConflictObjectResult(new { msg = "Gebruiker is geblokkeerd" });
+                return new ConflictObjectResult(new { message = "Gebruiker is geblokkeerd." });
             }
 
             if (_context.ConfirmationMails.Any(c => c.UserId == result.Id && c.AccountStatus == 0))
             {
-                return new ConflictObjectResult(new { msg = "U moet uw bevestigings mail bevestigen" });
+                return new ConflictObjectResult(new { message = "U moet uw bevestigings mail bevestigen." });
             }
 
             return new OkObjectResult(result);
