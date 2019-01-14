@@ -41,6 +41,22 @@ export class AddProduct extends Component {
     };
   }
 
+  componentWillMount()
+  {
+    
+    fetch("api/category/GetCategories", {
+      method: "Get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({...this.state, categoryDropdown: data });
+      });
+  }
+
   sendAddedProduct = () => {
     var jsonToSend = {
       Title: this.state.title,
@@ -64,6 +80,7 @@ export class AddProduct extends Component {
     })
       .then(response => response.json())
       .then(data => {
+        console.log(data)
         this.setState({
           ...this.state,
           productId: data.productId,
@@ -82,7 +99,7 @@ export class AddProduct extends Component {
           this.sendProductCategory(addingPC);
           this.setState({
             ...this.state,
-            categoryDropdown: data
+            // categoryDropdown: data
           });
         }
       });
@@ -105,11 +122,11 @@ export class AddProduct extends Component {
       .then(data => {
         this.setState({
           ...this.state,
-          productId: data.productId,
-          serverAddedProductResponse: data.response,
-          addProductError: data.isError,
-          productAdded: data.productAdd,
-          productFormIsLoading: false
+          //productId: data.productId,
+          // serverAddedProductResponse: data.response,
+          // addProductError: data.isError,
+          // productAdded: data.productAdd,
+          // productFormIsLoading: false
         });
         if (this.state.productId > 0) {
           var addingPC = {
@@ -169,7 +186,7 @@ export class AddProduct extends Component {
             {this.state.productAdded ? (
               <Message
                 size="large"
-                succes
+                success
                 header="Product toegevoegd"
                 content={this.state.serverAddedProductResponse}
               />
@@ -227,6 +244,7 @@ export class AddProduct extends Component {
                 placeholder="10.00"
                 name="priceValue"
                 min="0.01"
+                step = "0.01"
                 onChange={this.handleChange}
               />
             </Form.Group>

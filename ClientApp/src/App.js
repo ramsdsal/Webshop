@@ -21,6 +21,7 @@ import UserProfile from "./components/Pages/UserProfile/UserProfile";
 import { ManageDiscounts } from "./components/Pages/ManageDiscounts/ManageDiscounts";
 import RequireAuth from "./components/Login/RequireAuth";
 import RequireAdmin from "./components/Login/RequireAdmin";
+import { AddCategory } from "./components/Pages/AddCategory/AddCategory";
 
 export default class App extends Component {
   displayName = App.name;
@@ -66,6 +67,10 @@ export default class App extends Component {
         <Route
           path="/addproduct"
           component={RequireAuth(RequireAdmin(AddProduct))}
+        />
+        <Route
+          path="/addcategory"
+          component={RequireAuth(RequireAdmin(AddCategory))}
         />
         <Route
           path="/manageusers"
